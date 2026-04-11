@@ -1,0 +1,8 @@
+{
+  "common": {
+    "hello": "안녕하세요",
+    "counter": "카운터: {count}",
+    "increment": "증가",
+    "decrement": "감소"
+  }
+}
