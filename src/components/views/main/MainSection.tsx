@@ -20,7 +20,7 @@ export default function MainSection({ title, link, image, tooltip, children }: M
     } catch (e) {
       return title;
     }
-  })(); 
+  })();
 
   const content = (
     <div className="flex justify-between items-center p-2 mb-2 text-text-stress border-b border-border-base text-xs hover:bg-black/5 dark:hover:bg-white/5 transition-colors">

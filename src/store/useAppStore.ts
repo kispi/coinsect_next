@@ -1,3 +1,5 @@
+'use client';
+
 import { create } from 'zustand';
 import { metaStorage } from '@/lib/storage';
 import { setCookie } from '@/lib/cookie';
