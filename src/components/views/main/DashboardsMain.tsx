@@ -9,6 +9,7 @@ import RecentPosts from './RecentPosts';
 import RealTimePriceCards from '../real-time-prices/RealTimePriceCards';
 import CPosition from './CPosition';
 import WhaleAlertItem from './WhaleAlertItem';
+import { useBybitWs } from '@/hooks/websockets/useBybitWs';
 
 export default function DashboardsMain() {
   const { data: dashboards, isLoading } = useDashboards();
@@ -17,6 +18,17 @@ export default function DashboardsMain() {
   const { data: board1Posts } = useBoardPosts(1, 10);
   // Board 2 Posts 
   // const { data: board2Posts } = useBoardPosts(2, 10);
+
+  const bybitMarkets = React.useMemo(() => {
+    if (!dashboards?.realTimePositions?.data) return [];
+    const set = new Set<string>();
+    dashboards.realTimePositions.data.forEach(pos => {
+      if (pos.contract) set.add(pos.contract);
+    });
+    return Array.from(set);
+  }, [dashboards?.realTimePositions?.data]);
+
+  useBybitWs(bybitMarkets);
 
   if (isLoading) {
     return (
