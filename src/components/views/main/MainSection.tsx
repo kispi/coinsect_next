@@ -23,13 +23,13 @@ export default function MainSection({ title, link, image, tooltip, children }: M
   })(); 
 
   const content = (
-    <div className="flex justify-between items-center p-2 mb-2 text-text-stress border-b border-border-base text-xs hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-colors">
+    <div className="flex justify-between items-center p-2 mb-2 text-text-stress border-b border-border-base text-xs hover:bg-black/5 dark:hover:bg-white/5 transition-colors">
       {image && <img src={image} className="w-4 h-4 mr-1 rounded-full" alt="Icon" />}
       <div className="font-bold flex-1 flex items-center">
         <span>{translatedTitle}</span>
         {tooltip && (
           <span title={i18n(tooltip)} className="flex items-center">
-            <HelpCircle className="w-3 h-3 ml-1 cursor-pointer text-text-muted hover:text-text-base" />
+            <HelpCircle className="w-3 h-3 ml-1 cursor-pointer text-text-light hover:text-text-base" />
           </span>
         )}
       </div>
@@ -40,10 +40,10 @@ export default function MainSection({ title, link, image, tooltip, children }: M
   );
 
   return (
-    <div className="rounded-lg bg-background-light dark:bg-zinc-900 flex flex-col h-full shadow-sm">
+    <div className="rounded-lg bg-background-light flex flex-col h-full shadow-sm overflow-hidden">
       {link ? (
         <Link href={link} className="block group">
-          <div className="group-hover:underline">
+          <div className="group-hover:underline decoration-text-stress">
             {content}
           </div>
         </Link>

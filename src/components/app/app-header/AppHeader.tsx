@@ -1,20 +1,22 @@
 'use client';
 
-import React, { useRef, useState } from 'react';
+import { useRef, useState } from 'react';
 import { Share2, Settings, Bell, User, Menu, X, Users } from 'lucide-react';
 import { useI18n } from '@/hooks/useI18n';
+import { ui } from '@/lib/ui';
 import Dropdown from '@/components/common/Dropdown';
 import SettingsPanel from './SettingsPanel';
 import BannerMarketIndices from './BannerMarketIndices';
+import Link from 'next/link';
 
 // Placeholder components if they don't exist yet
-const AppLogo = () => <div className="font-bold text-xl ml-2 text-text-stress">COINSECT</div>;
+const AppLogo = () => <Link href="/"><div className="font-bold text-xl ml-2 text-text-stress">COINSECT</div></Link>;
 const AppNotifications = () => <div className="p-4 w-60 text-sm">No new notifications</div>;
 
 export default function AppHeader() {
   const { t } = useI18n();
   const [showNavigation, setShowNavigation] = useState(false);
-  
+
   const [showSettings, setShowSettings] = useState(false);
   const [showNotifications, setShowNotifications] = useState(false);
   const [showMenuAccount, setShowMenuAccount] = useState(false);
@@ -52,12 +54,12 @@ export default function AppHeader() {
           <span>0</span>
         </div>
       </div>
-      
+
       <div className="flex items-center justify-between py-3 border-t border-zinc-200 dark:border-zinc-800">
         <div className="flex items-center select-none">
           {/* Mobile Menu Icon */}
-          <div 
-            className="w-8 h-8 flex items-center justify-center cursor-pointer mr-2 lg:hidden text-zinc-600 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-100 transition-colors"
+          <div
+            className="w-8 h-8 flex items-center justify-center cursor-pointer mr-2 lg:hidden text-text-stress hover:bg-background-light rounded-full transition-colors"
             onClick={() => setShowNavigation(!showNavigation)}
           >
             {showNavigation ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
@@ -66,24 +68,24 @@ export default function AppHeader() {
         </div>
 
         <div className="flex items-center gap-2 relative">
-          <div 
+          <div
             onClick={onClickShare}
-            className="w-8 h-8 flex items-center justify-center cursor-pointer text-zinc-600 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-100 transition-colors"
+            className="w-8 h-8 flex items-center justify-center cursor-pointer text-text-stress hover:bg-background-light rounded-full transition-colors"
           >
             <Share2 className="w-5 h-5" />
           </div>
 
           <div className="relative">
-            <div 
+            <div
               ref={refIconSettings}
               onClick={() => setShowSettings((prev) => !prev)}
-              className={`w-8 h-8 flex items-center justify-center cursor-pointer transition-colors ${showSettings ? 'text-zinc-900 dark:text-zinc-100' : 'text-zinc-600 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-100'}`}
+              className={`w-8 h-8 flex items-center justify-center cursor-pointer transition-colors rounded-full text-text-stress ${showSettings ? 'bg-background-light' : 'hover:bg-background-light'}`}
             >
               <Settings className="w-5 h-5" />
             </div>
-            <Dropdown 
-              isOpen={showSettings} 
-              onClose={() => setShowSettings(false)} 
+            <Dropdown
+              isOpen={showSettings}
+              onClose={() => setShowSettings(false)}
               triggerRef={refIconSettings}
             >
               <SettingsPanel indices={[0, 1, 2, 3, 4]} onClose={() => setShowSettings(false)} />
@@ -91,16 +93,16 @@ export default function AppHeader() {
           </div>
 
           <div className="relative">
-            <div 
+            <div
               ref={refIconNotifications}
               onClick={() => setShowNotifications((prev) => !prev)}
-              className={`w-8 h-8 flex items-center justify-center cursor-pointer transition-colors ${showNotifications ? 'text-zinc-900 dark:text-zinc-100' : 'text-zinc-600 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-100'}`}
+              className={`w-8 h-8 flex items-center justify-center cursor-pointer transition-colors rounded-full text-text-stress ${showNotifications ? 'bg-background-light' : 'hover:bg-background-light'}`}
             >
               <Bell className="w-5 h-5" />
             </div>
-            <Dropdown 
-              isOpen={showNotifications} 
-              onClose={() => setShowNotifications(false)} 
+            <Dropdown
+              isOpen={showNotifications}
+              onClose={() => setShowNotifications(false)}
               triggerRef={refIconNotifications}
             >
               <AppNotifications />
@@ -108,17 +110,17 @@ export default function AppHeader() {
           </div>
 
           <div className="relative">
-            <div 
+            <div
               ref={refIconMenuAccount}
               onClick={onClickMenuAccount}
-              className={`w-8 h-8 flex items-center justify-center cursor-pointer transition-colors ${showMenuAccount ? 'text-zinc-900 dark:text-zinc-100' : 'text-zinc-600 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-100'}`}
+              className={`w-8 h-8 flex items-center justify-center cursor-pointer transition-colors rounded-full text-text-stress ${showMenuAccount ? 'bg-background-light' : 'hover:bg-background-light'}`}
             >
               {me ? <User className="w-5 h-5" /> : <div className="text-[10px] font-medium leading-tight text-center">{t('COMMON.SIGN_IN')}</div>}
             </div>
             {me && (
-              <Dropdown 
-                isOpen={showMenuAccount} 
-                onClose={() => setShowMenuAccount(false)} 
+              <Dropdown
+                isOpen={showMenuAccount}
+                onClose={() => setShowMenuAccount(false)}
                 triggerRef={refIconMenuAccount}
               >
                 <ul className="min-w-[150px] py-1 text-sm text-zinc-700 dark:text-zinc-300">

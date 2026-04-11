@@ -13,12 +13,10 @@ import { useBybitWs } from '@/hooks/websockets/useBybitWs';
 import { useGeneralWs } from '@/hooks/websockets/useGeneralWs';
 
 export default function DashboardsMain() {
-  const { data: dashboards, isLoading } = useDashboards();
+  const { data: dashboards, isError, error, refetch } = useDashboards();
 
   // Board 1 Posts
   const { data: board1Posts } = useBoardPosts(1, 10);
-  // Board 2 Posts 
-  // const { data: board2Posts } = useBoardPosts(2, 10);
 
   const bybitMarkets = React.useMemo(() => {
     if (!dashboards?.realTimePositions?.data) return [];
@@ -32,18 +30,35 @@ export default function DashboardsMain() {
   useBybitWs(bybitMarkets);
   useGeneralWs();
 
-  if (isLoading) {
+  if (isError) {
+    return (
+      <div className="w-full flex flex-col items-center justify-center p-12 bg-background-light rounded-lg border border-red-500/20">
+        <div className="text-red-500 font-bold mb-2">Failed to load dashboard data</div>
+        <div className="text-text-light text-sm mb-4">{(error as Error)?.message || 'Unknown error occurred'}</div>
+        <button
+          onClick={() => refetch()}
+          className="px-4 py-2 bg-brand-primary text-white rounded hover:bg-brand-primary-hover transition-colors text-sm font-bold"
+        >
+          Retry
+        </button>
+      </div>
+    );
+  }
+
+  if (!dashboards) {
     return (
       <div className="w-full flex-1 animate-pulse">
-        <div className="h-8 bg-zinc-200 dark:bg-zinc-800 rounded mb-4"></div>
+        <div className="h-8 bg-background-light rounded mb-4"></div>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
           {[...Array(4)].map((_, i) => (
-            <div key={i} className="h-[360px] bg-zinc-200 dark:bg-zinc-800 rounded-lg"></div>
+            <div key={i} className="h-[360px] bg-background-light rounded-lg"></div>
           ))}
         </div>
       </div>
     );
   }
+
+
 
   return (
     <div className="w-full">

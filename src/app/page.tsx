@@ -1,18 +1,18 @@
-'use client';
-
-import { useI18n } from '@/hooks/useI18n';
+import { QueryClient, HydrationBoundary, dehydrate } from '@tanstack/react-query';
+import { getDashboards } from '@/hooks/api/useDashboards';
 import DashboardsMain from '@/components/views/main/DashboardsMain';
 
-export default function Home() {
-  const { i18n } = useI18n();
+export default async function Home() {
+  const queryClient = new QueryClient();
+
+  await queryClient.prefetchQuery({
+    queryKey: ['dashboards', 'main'],
+    queryFn: getDashboards,
+  });
 
   return (
-    <main className="flex min-h-screen flex-col items-center p-4 md:p-8 space-y-8 max-w-7xl mx-auto w-full">
-      {/* 
-        In Vue app, ViewMain wrapped DashboardsMain.
-        Here we directly render DashboardsMain in the Home page.
-      */}
+    <HydrationBoundary state={dehydrate(queryClient)}>
       <DashboardsMain />
-    </main>
+    </HydrationBoundary>
   );
 }

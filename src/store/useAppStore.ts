@@ -80,9 +80,13 @@ const DEFAULT_SETTINGS: CoinsectSetting = {
   chatSkin: 'basic',
 };
 
+// Module-level i18n message cache - survives BFCache restoration and
+// is available synchronously before React effects run.
+let messagesCache: Record<string, string> = {};
+
 export const useAppStore = create<AppState>((set, get) => ({
   settings: DEFAULT_SETTINGS,
-  messages: {},
+  messages: messagesCache,
   
   setMessages: (messages) => set({ messages }),
 
@@ -114,20 +118,16 @@ export const useAppStore = create<AppState>((set, get) => ({
       const response = await fetch(`/locales/${locale}.json`);
       if (!response.ok) throw new Error('Failed to load locale');
       const messages = await response.json();
-      
+
+      // Update module-level cache so BFCache restorations
+      // can seed the store synchronously before effects run.
+      messagesCache = messages;
+
       set((state) => {
         const updatedSettings = { ...state.settings, locale };
-        
-        // Sync to perspective storage
         metaStorage.setItem('settings', updatedSettings);
-        
-        // Sync to cookie for SSR/Hydration matching
         setCookie('NEXT_LOCALE', locale);
-        
-        return { 
-          messages, 
-          settings: updatedSettings 
-        };
+        return { messages, settings: updatedSettings };
       });
     } catch (e) {
       console.error('i18n load error:', e);

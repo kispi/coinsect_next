@@ -8,7 +8,7 @@ export const useUpbitWs = (symbols: string[]) => {
   useEffect(() => {
     if (!symbols || symbols.length === 0) return;
 
-    const ws = new WebSocket('wss://api.coinsect.io/upbit');
+    const ws = new WebSocket(`${process.env.NEXT_PUBLIC_API_BASE?.replace('https', 'wss')}/upbit`);
     ws.onopen = () => {
       ws.send(JSON.stringify([{
         ticket: crypto.randomUUID(),
@@ -28,7 +28,7 @@ export const useUpbitWs = (symbols: string[]) => {
         } else if (event.data instanceof ArrayBuffer) {
           text = new TextDecoder().decode(event.data);
         }
-        
+
         const jsonOrArray = JSON.parse(text);
         const items = Array.isArray(jsonOrArray) ? jsonOrArray : [jsonOrArray];
 
@@ -37,7 +37,7 @@ export const useUpbitWs = (symbols: string[]) => {
             setUpbitTicker(json.cd, parseFloat(json.tp));
           }
         });
-      } catch (e) {}
+      } catch (e) { }
     };
 
     wsRef.current = ws;

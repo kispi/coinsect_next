@@ -62,6 +62,7 @@
   --bg-chat-message: rgba(57, 57, 57, 1);
 }
 
+
 @theme inline {
   --color-brand-primary: var(--brand-primary);
   --color-brand-primary-hover: var(--brand-primary-hover);

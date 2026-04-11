@@ -78,7 +78,7 @@ export default function RealTimePriceCard({ symbol }: Props) {
       </div>
       
       {premiumUpbit && (
-        <div className="flex items-center text-[11px] text-text-light mt-0.5">
+        <div className="flex items-center text-[11px] text-text-base mt-0.5">
           <img src="/images/upbit.svg" alt="Upbit" className="w-3 h-3 mr-1 grayscale opacity-70" />
           {tickerUpbit?.price ? formatPrice({ price: tickerUpbit.price, baseCurrency: 'krw' }) : '-'}
           <span className="opacity-80 ml-1">({premiumUpbit}%)</span>

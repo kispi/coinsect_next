@@ -11,14 +11,18 @@ interface ProvidersProps {
   initialMessages: any;
 }
 
-export default function Providers({ children, initialLocale, initialMessages }: ProvidersProps) {
-  const [queryClient] = useState(() => new QueryClient({
-    defaultOptions: {
-      queries: {
-        staleTime: 60 * 1000,
-      },
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      staleTime: 0,        // Always treat data as stale → refetch on every mount
+      gcTime: 60 * 1000,   // Keep data in cache 60s so HydrationBoundary survives React render cycle
+      refetchOnWindowFocus: false,
     },
-  }));
+  },
+});
+
+export default function Providers({ children, initialLocale, initialMessages }: ProvidersProps) {
+
 
   const { settings, setMessages, loadMessages } = useAppStore();
   const [isInitialized, setIsInitialized] = useState(false);
@@ -34,6 +38,19 @@ export default function Providers({ children, initialLocale, initialMessages }: 
     }
     setIsInitialized(true);
   }, [initialLocale, initialMessages, settings.locale, setMessages, loadMessages]);
+
+  // If BFCache restores the page (event.persisted === true), Next.js modules may
+  // re-evaluate resetting module-level state. We force fresh data and messages.
+  useEffect(() => {
+    const handlePageShow = (event: PageTransitionEvent) => {
+      if (event.persisted) {
+        queryClient.invalidateQueries();
+        loadMessages(settings.locale);
+      }
+    };
+    window.addEventListener('pageshow', handlePageShow);
+    return () => window.removeEventListener('pageshow', handlePageShow);
+  }, [settings.locale, loadMessages]);
 
   return (
     <QueryClientProvider client={queryClient}>

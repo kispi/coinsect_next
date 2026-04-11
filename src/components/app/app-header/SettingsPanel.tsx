@@ -85,7 +85,7 @@ export default function SettingsPanel({ indices = [], className = '', onClose }:
     const confirmed = await ui.modal.confirm({
       body: t('SETTINGS.MODAL_INIT_SETTINGS')
     });
-    
+
     if (confirmed) {
       localStorage.removeItem(`coinsect_settings`);
       window.location.reload();
@@ -93,8 +93,8 @@ export default function SettingsPanel({ indices = [], className = '', onClose }:
   };
 
   return (
-    <div className={`w-[320px] p-4 text-sm text-zinc-900 dark:text-zinc-100 ${className}`}>
-      <div className="flex flex-col gap-2">
+    <div className={`w-[320px] p-4 text-sm text-text-stress bg-background-base border border-border-base rounded shadow-lg ${className}`}>
+      <div className="flex flex-col gap-1">
         {settingItems.map((item) => (
           <div key={item.key} className="flex flex-row items-center justify-between py-1 px-3">
             <div className="w-[120px] font-medium opacity-80">{t(item.key)}</div>
@@ -106,12 +106,11 @@ export default function SettingsPanel({ indices = [], className = '', onClose }:
                     key={String(opt.value)}
                     onClick={() => {
                       setSettings({ [item.settingsKey]: opt.value });
-                      // Note: Theme change is now immediately applied via ThemeHandler
                     }}
                     className={`
-                      flex-1 flex items-center justify-center py-1 px-2 rounded cursor-pointer select-none text-xs
+                      flex-1 flex items-center justify-center py-1 px-2 rounded cursor-pointer select-none text-[11px]
                       ${isActive ? 'bg-background-light font-bold' : 'hover:bg-background-light'}
-                      border border-border-base transition-colors
+                      transition-colors
                     `}
                   >
                     {t(opt.title as any)}
@@ -125,7 +124,7 @@ export default function SettingsPanel({ indices = [], className = '', onClose }:
 
       <button
         onClick={handleInitSettings}
-        className="w-full mt-4 py-2 text-center rounded border border-border-base hover:bg-background-light transition-colors text-text-stress font-medium"
+        className="w-full mt-4 py-2 text-center rounded border border-border-base hover:bg-background-light transition-colors text-text-stress font-medium text-xs"
       >
         {t('SETTINGS.INIT_SETTINGS')}
       </button>

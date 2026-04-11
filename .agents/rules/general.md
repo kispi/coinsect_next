@@ -36,6 +36,7 @@ trigger: always_on
   - CSS 클래스에 직접적인 색상값(예: `text-black`, `bg-white`)을 하드코딩하는 것을 지양합니다.
   - **Semantic CSS Variable**을 사용하여 다크모드를 지원합니다.
   - 예: `var(--text-base)`는 라이트 모드에서는 검정색, 다크 모드에서는 흰색을 가리키도록 설정합니다.
+- 모든 컴포넌트의 루트 클래스명은 해당 컴포넌트의 이름을 dash-case로 만든 것을 넣는다. (ex: MainSection.tsx => className="main-section ...")
 
 ## 5. 국제화 (i18n)
 - **i18n 원칙**: 템플릿(JSX) 내에 문자열을 하드코딩하지 않습니다.

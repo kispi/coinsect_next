@@ -21,23 +21,21 @@ export default function BannerMarketIndices() {
     }
   }, [indices?.basePrice, setUsdKrw]);
 
-  if (!indices) return <div className="h-4" />;
-
   const items = [
     {
       key: 'COMMON.USD/KRW',
       link: 'https://www.tradingview.com/chart/tKmOIPae/?symbol=USDKRW',
-      value: usdKrw.toLocaleString(undefined, { maximumFractionDigits: 1 }),
+      value: usdKrw ? usdKrw.toLocaleString(undefined, { maximumFractionDigits: 1 }) : '-',
     },
     {
       key: 'COMMON.BTC_DOMINANCE',
       link: 'https://www.tradingview.com/chart/tKmOIPae/?symbol=CRYPTOCAP%3ABTC.D',
-      value: `${indices.btcDominance}%`,
+      value: indices ? `${indices.btcDominance}%` : '-',
     },
     {
       key: 'COMMON.TOTAL_MARKET_CAP',
       link: 'https://www.tradingview.com/chart/tKmOIPae/?symbol=CRYPTOCAP%3ATOTAL',
-      value: formatCap({ cap: indices.totalMarketCap, baseCurrency: 'usd' }),
+      value: indices ? formatCap({ cap: indices.totalMarketCap, baseCurrency: 'usd' }) : '-',
     },
   ];
 
