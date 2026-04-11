@@ -1,5 +1,6 @@
 import { create } from 'zustand';
 import { metaStorage } from '@/lib/storage';
+import { setCookie } from '@/lib/cookie';
 
 export type CoinsectSetting = {
   blockedUsers: Record<string, any>;
@@ -38,7 +39,10 @@ export type CoinsectSetting = {
 
 interface AppState {
   settings: CoinsectSetting;
+  messages: any;
+  setMessages: (messages: any) => void;
   setSettings: (settings: Partial<CoinsectSetting>) => void;
+  loadMessages: (locale: string) => Promise<void>;
 }
 
 const DEFAULT_SETTINGS: CoinsectSetting = {
@@ -76,15 +80,59 @@ const DEFAULT_SETTINGS: CoinsectSetting = {
   chatSkin: 'basic',
 };
 
-export const useAppStore = create<AppState>((set) => ({
+export const useAppStore = create<AppState>((set, get) => ({
   settings: DEFAULT_SETTINGS,
-  setSettings: (newSettings) =>
+  messages: {},
+  
+  setMessages: (messages) => set({ messages }),
+
+  setSettings: (newSettings) => {
+    // If locale is changing, we handle it through loadMessages for atomic update
+    if (newSettings.locale && newSettings.locale !== get().settings.locale) {
+      get().loadMessages(newSettings.locale);
+      // Remove locale from this batch update to prevent race condition
+      const { locale, ...otherSettings } = newSettings;
+      if (Object.keys(otherSettings).length === 0) return;
+      newSettings = otherSettings;
+    }
+
     set((state) => {
       const updatedSettings = { ...state.settings, ...newSettings };
-      // Sync to localStorage manually to match Vue behavior (no 'state' wrapper)
       metaStorage.setItem('settings', updatedSettings);
+      
+      // Sync basic settings to cookies if needed for SSR (currently focusing on locale)
+      if (newSettings.theme) {
+        // Option to sync theme to cookie too if needed
+      }
+
       return { settings: updatedSettings };
-    }),
+    });
+  },
+
+  loadMessages: async (locale: string) => {
+    try {
+      const response = await fetch(`/locales/${locale}.json`);
+      if (!response.ok) throw new Error('Failed to load locale');
+      const messages = await response.json();
+      
+      set((state) => {
+        const updatedSettings = { ...state.settings, locale };
+        
+        // Sync to perspective storage
+        metaStorage.setItem('settings', updatedSettings);
+        
+        // Sync to cookie for SSR/Hydration matching
+        setCookie('NEXT_LOCALE', locale);
+        
+        return { 
+          messages, 
+          settings: updatedSettings 
+        };
+      });
+    } catch (e) {
+      console.error('i18n load error:', e);
+    }
+  }
 }));
 
 // Initialize store from localStorage on client side
@@ -92,5 +140,7 @@ if (typeof window !== 'undefined') {
   const savedSettings = metaStorage.getItem<CoinsectSetting>('settings');
   if (savedSettings) {
     useAppStore.setState({ settings: savedSettings });
+    // Ensure cookie is in sync with localStorage on load
+    setCookie('NEXT_LOCALE', savedSettings.locale);
   }
 }

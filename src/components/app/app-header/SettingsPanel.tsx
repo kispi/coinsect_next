@@ -1,7 +1,9 @@
 'use client';
 
-import React, { useMemo } from 'react';
+import { useMemo } from 'react';
 import { useAppStore, CoinsectSetting } from '@/store/useAppStore';
+import { useI18n } from '@/hooks/useI18n';
+import { ui } from '@/lib/ui';
 
 interface Props {
   indices?: number[];
@@ -11,27 +13,28 @@ interface Props {
 
 export default function SettingsPanel({ indices = [], className = '', onClose }: Props) {
   const { settings, setSettings } = useAppStore();
+  const { t } = useI18n();
 
   const settingItems = useMemo(() => {
     const list = [
       {
-        key: 'LOCALE',
+        key: 'SETTINGS.LOCALE',
         settingsKey: 'locale' as keyof CoinsectSetting,
         values: [
-          { title: 'KR', value: 'ko' },  // Use 'ko' for vue 'kr' equivalent
-          { title: 'EN', value: 'en' },
+          { title: 'SETTINGS.VALUES.KO', value: 'ko' },
+          { title: 'SETTINGS.VALUES.EN', value: 'en' },
         ],
       },
       {
-        key: 'CURRENCY',
+        key: 'SETTINGS.CURRENCY',
         settingsKey: 'currency' as keyof CoinsectSetting,
         values: [
-          { title: 'KRW', value: 'krw' },
-          { title: 'USD', value: 'usd' },
+          { title: 'SETTINGS.VALUES.KRW', value: 'krw' },
+          { title: 'SETTINGS.VALUES.USD', value: 'usd' },
         ],
       },
       {
-        key: 'THEME',
+        key: 'SETTINGS.THEME',
         settingsKey: 'theme' as keyof CoinsectSetting,
         values: [
           { title: '☀️', value: 'light' },
@@ -39,35 +42,35 @@ export default function SettingsPanel({ indices = [], className = '', onClose }:
         ],
       },
       {
-        key: 'CHART_FULL_WIDTH',
+        key: 'SETTINGS.CHART_FULL_WIDTH',
         settingsKey: 'chartFullWidth' as keyof CoinsectSetting,
         values: [
-          { title: 'ON', value: true },
-          { title: 'OFF', value: false },
+          { title: 'SETTINGS.VALUES.ON', value: true },
+          { title: 'SETTINGS.VALUES.OFF', value: false },
         ],
       },
       {
-        key: 'CHART_TOOL',
+        key: 'SETTINGS.CHART_TOOL',
         settingsKey: 'chartTool' as keyof CoinsectSetting,
         values: [
-          { title: 'ON', value: true },
-          { title: 'OFF', value: false },
+          { title: 'SETTINGS.VALUES.ON', value: true },
+          { title: 'SETTINGS.VALUES.OFF', value: false },
         ],
       },
       {
-        key: 'FILTER',
+        key: 'SETTINGS.FILTER',
         settingsKey: 'filter' as keyof CoinsectSetting,
         values: [
-          { title: 'ALL', value: 'all' },
-          { title: 'FAVORITES', value: 'favorites' },
+          { title: 'SETTINGS.VALUES.ALL', value: 'all' },
+          { title: 'SETTINGS.VALUES.FAVORITES', value: 'favorites' },
         ],
       },
       {
-        key: 'SORT_INTERVAL',
+        key: 'SETTINGS.SORT_INTERVAL',
         settingsKey: 'sortInterval' as keyof CoinsectSetting,
         values: [
-          { title: 'REAL_TIME', value: 50 },
-          { title: '5 SECONDS', value: 5000 }, // Assuming raw text without i18n lookup for demo
+          { title: 'SETTINGS.VALUES.REAL_TIME', value: 50 },
+          { title: 'SETTINGS.VALUES.SECONDS', value: 5000, params: { count: 5 } },
         ],
       },
     ];
@@ -78,11 +81,13 @@ export default function SettingsPanel({ indices = [], className = '', onClose }:
     return list;
   }, [indices]);
 
-  const handleInitSettings = () => {
-    // In actual implementation, we would use a custom confirmation modal
-    if (window.confirm('초기화 하시겠습니까? (Reset settings?)')) {
-      // Logic for init settings (removing meta from storage & reloading)
-      localStorage.removeItem(`ag_meta_settings`); // metaStorage key
+  const handleInitSettings = async () => {
+    const confirmed = await ui.modal.confirm({
+      body: t('SETTINGS.MODAL_INIT_SETTINGS')
+    });
+    
+    if (confirmed) {
+      localStorage.removeItem(`coinsect_settings`);
       window.location.reload();
     }
   };
@@ -92,20 +97,24 @@ export default function SettingsPanel({ indices = [], className = '', onClose }:
       <div className="flex flex-col gap-2">
         {settingItems.map((item) => (
           <div key={item.key} className="flex flex-row items-center justify-between py-1 px-3">
-            <div className="w-[120px] font-medium opacity-80">{item.key}</div>
+            <div className="w-[120px] font-medium opacity-80">{t(item.key)}</div>
             <div className="flex flex-1 gap-2">
               {item.values.map((opt) => {
                 const isActive = settings[item.settingsKey] === opt.value;
                 return (
                   <div
                     key={String(opt.value)}
-                    onClick={() => setSettings({ [item.settingsKey]: opt.value })}
+                    onClick={() => {
+                      setSettings({ [item.settingsKey]: opt.value });
+                      // Note: Theme change is now immediately applied via ThemeHandler
+                    }}
                     className={`
                       flex-1 flex items-center justify-center py-1 px-2 rounded cursor-pointer select-none text-xs
-                      ${isActive ? 'bg-zinc-200 dark:bg-zinc-700 font-bold' : 'hover:bg-zinc-100 dark:hover:bg-zinc-800'}
+                      ${isActive ? 'bg-background-light font-bold' : 'hover:bg-background-light'}
+                      border border-border-base transition-colors
                     `}
                   >
-                    {opt.title}
+                    {t(opt.title as any)}
                   </div>
                 );
               })}
@@ -116,9 +125,9 @@ export default function SettingsPanel({ indices = [], className = '', onClose }:
 
       <button
         onClick={handleInitSettings}
-        className="w-full mt-4 py-2 text-center rounded border border-zinc-300 dark:border-zinc-700 hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-colors"
+        className="w-full mt-4 py-2 text-center rounded border border-border-base hover:bg-background-light transition-colors text-text-stress font-medium"
       >
-        INIT_SETTINGS
+        {t('SETTINGS.INIT_SETTINGS')}
       </button>
     </div>
   );

@@ -14,7 +14,13 @@ interface MainSectionProps {
 export default function MainSection({ title, link, image, tooltip, children }: MainSectionProps) {
   const { i18n } = useI18n();
   // Attempt translation mapping if needed. Just rendering title for now.
-  const translatedTitle = i18n(title) === title ? title : i18n(title); 
+  const translatedTitle = (() => {
+    try {
+      return i18n(title);
+    } catch (e) {
+      return title;
+    }
+  })(); 
 
   const content = (
     <div className="flex justify-between items-center p-2 mb-2 text-text-stress border-b border-border-base text-xs hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-colors">
@@ -28,7 +34,7 @@ export default function MainSection({ title, link, image, tooltip, children }: M
         )}
       </div>
       <div className="ml-auto flex items-center text-[10px]">
-        {i18n('SEE_MORE')} <ChevronRight className="w-3 h-3 ml-1" />
+        {i18n('COMMON.SEE_MORE')} <ChevronRight className="w-3 h-3 ml-1" />
       </div>
     </div>
   );

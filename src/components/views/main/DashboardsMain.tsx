@@ -10,6 +10,7 @@ import RealTimePriceCards from '../real-time-prices/RealTimePriceCards';
 import CPosition from './CPosition';
 import WhaleAlertItem from './WhaleAlertItem';
 import { useBybitWs } from '@/hooks/websockets/useBybitWs';
+import { useGeneralWs } from '@/hooks/websockets/useGeneralWs';
 
 export default function DashboardsMain() {
   const { data: dashboards, isLoading } = useDashboards();
@@ -29,6 +30,7 @@ export default function DashboardsMain() {
   }, [dashboards?.realTimePositions?.data]);
 
   useBybitWs(bybitMarkets);
+  useGeneralWs();
 
   if (isLoading) {
     return (
@@ -50,7 +52,7 @@ export default function DashboardsMain() {
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
         {/* 자유게시판 */}
         <MainSection
-          title="COMMUNITY_FREE_GUEST"
+          title="COMMON.COMMUNITY_FREE_GUEST"
           link="/community"
           image="https://cdn-icons-png.flaticon.com/512/1946/1946355.png"
         >
@@ -59,7 +61,7 @@ export default function DashboardsMain() {
 
         {/* KIMP */}
         <MainSection
-          title="KIMP"
+          title="COMMON.KIMP"
           link="/prices"
           image="/images/binance.svg" // Note: adjust path if needed, usually kept in public/images
         >
@@ -68,10 +70,10 @@ export default function DashboardsMain() {
 
         {/* REAL_TIME_POSITIONS */}
         <MainSection
-          title="REAL_TIME_POSITIONS"
+          title="COMMON.REAL_TIME_POSITIONS"
           link="/indicators/positions"
           image="https://d1085v6s0hknp1.cloudfront.net/assets/icon-jg.jpg"
-          tooltip="TOOLTIP_REAL_TIME_POSITIONS"
+          tooltip="COMMON.TOOLTIP_REAL_TIME_POSITIONS"
         >
           <div className="flex flex-col gap-2">
             {dashboards?.realTimePositions?.data?.map((position) => (
@@ -82,7 +84,7 @@ export default function DashboardsMain() {
 
         {/* WHALE_ALERT */}
         <MainSection
-          title="WHALE_ALERT"
+          title="COMMON.WHALE_ALERT"
           link="/indicators/whale-alert"
           image="https://d1085v6s0hknp1.cloudfront.net/assets/icon-whalealert.jpg"
         >

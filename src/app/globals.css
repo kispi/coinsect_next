@@ -1,40 +1,87 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
-  --text-base: #171717;
-  --text-muted: #666666;
-  --border-base: #e5e5e5;
-  --primary: #3b82f6;
-  --primary-foreground: #ffffff;
+  /* Brand & Commons */
+  --brand-primary: rgba(22, 179, 252, 1);
+  --brand-primary-hover: rgba(22, 179, 252, 0.5);
+  --brand-primary-hover-bg: rgba(22, 179, 252, 0.2);
+  --bitcoin: #ffbb11;
+  --white: #ffffff;
+  --black: #000000;
+  
+  /* GrayScale */
+  --gs-14: #141414;
+  --gs-22: #222222;
+  --gs-44: #444444;
+  --gs-66: #666666;
+  --gs-88: #888888;
+  --gs-bb: #bbbbbb;
+  --gs-e0: #e0e0e0;
+  --gs-bybit: #17181e;
+  --text-bybit: rgba(255, 255, 255, 0.9);
+
+  /* Specific exchange colors */
+  --price-up-upbit: #d60000;
+  --price-down-upbit: #0051c7;
+  --price-up-upbit-bg: rgba(214, 0, 0, 0.1);
+  --price-down-upbit-bg: rgba(0, 81, 199, 0.1);
+  --price-up-bybit: rgba(36, 204, 100, 1);
+  --price-down-bybit: rgba(254, 64, 64, 1);
+  --price-up-bybit-bg: rgba(36, 174, 100, 0.1);
+  --price-down-bybit-bg: rgba(224, 64, 64, 0.1);
+
+  /* Semantic Variables - Light Default */
+  --text-stress: var(--black);
+  --text-base: var(--gs-22);
+  --text-light: var(--gs-bb);
+  --border-base: var(--gs-e0);
+  --border-light: rgba(0, 0, 0, 0.25);
+  --background-base: var(--white);
+  --background-light: rgba(0, 0, 0, 0.05);
+
+  --price-up: var(--price-up-upbit);
+  --price-down: var(--price-down-upbit);
+  --price-up-bg: var(--price-up-upbit-bg);
+  --price-down-bg: var(--price-down-upbit-bg);
+  --bg-chat-message: rgba(240, 240, 240, 1);
+}
+
+.dark {
+  --text-stress: var(--white);
+  --text-base: var(--text-bybit);
+  --text-light: var(--gs-88);
+  --border-base: var(--gs-44);
+  --border-light: rgba(255, 255, 255, 0.25);
+  --background-base: var(--gs-bybit);
+  --background-light: rgba(255, 255, 255, 0.05);
+
+  --price-up: var(--price-up-bybit);
+  --price-down: var(--price-down-bybit);
+  --price-up-bg: var(--price-up-bybit-bg);
+  --price-down-bg: var(--price-down-bybit-bg);
+  --bg-chat-message: rgba(57, 57, 57, 1);
 }
 
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
+  --color-brand-primary: var(--brand-primary);
+  --color-brand-primary-hover: var(--brand-primary-hover);
+  --color-brand-primary-hover-bg: var(--brand-primary-hover-bg);
+  --color-background-base: var(--background-base);
+  --color-background-light: var(--background-light);
+  --color-text-stress: var(--text-stress);
   --color-text-base: var(--text-base);
-  --color-text-muted: var(--text-muted);
+  --color-text-light: var(--text-light);
   --color-border-base: var(--border-base);
-  --color-primary: var(--primary);
-  --color-primary-foreground: var(--primary-foreground);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-    --text-base: #ededed;
-    --text-muted: #a1a1a1;
-    --border-base: #333333;
-    --primary: #60a5fa;
-    --primary-foreground: #000000;
-  }
+  --color-border-light: var(--border-light);
+  --color-price-up: var(--price-up);
+  --color-price-down: var(--price-down);
+  --color-price-up-bg: var(--price-up-bg);
+  --color-price-down-bg: var(--price-down-bg);
 }
 
 body {
-  background: var(--background);
+  background: var(--background-base);
   color: var(--text-base);
   font-family: var(--font-sans), system-ui, sans-serif;
+  transition: background-color 0.3s ease, color 0.3s ease;
 }
-

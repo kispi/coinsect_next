@@ -2,21 +2,17 @@ import React, { useMemo } from 'react';
 import { useMarketStore } from '@/store/useMarketStore';
 import { useAppStore } from '@/store/useAppStore';
 
+import { useFormatNumber } from '@/hooks/useFormatNumber';
+
 interface Props {
   symbol: string;
 }
 
-const mustUSD = (price?: number) => {
-  if (!price) return '-';
-  return price.toLocaleString(undefined, {
-    minimumFractionDigits: price < 1 ? 4 : 2,
-    maximumFractionDigits: 4,
-  });
-};
-
 export default function RealTimePriceCard({ symbol }: Props) {
   const { setSettings } = useAppStore();
   const documentTitleTicker = useAppStore(state => state.settings.documentTitleTicker);
+  
+  const { formatPrice } = useFormatNumber();
   
   const binanceSymbol = `${symbol}USDT`;
   const upbitSymbol = `KRW-${symbol}`;
@@ -35,9 +31,10 @@ export default function RealTimePriceCard({ symbol }: Props) {
   // Set document title if selected
   React.useEffect(() => {
     if (documentTitleTicker === symbol && tickerBinance?.price) {
-      document.title = `${mustUSD(tickerBinance.price)} ${symbol}/USDT`;
+      const formattedPrice = formatPrice({ price: tickerBinance.price, baseCurrency: 'usd', noConversion: true });
+      document.title = `${formattedPrice} ${symbol}/USDT`;
     }
-  }, [documentTitleTicker, symbol, tickerBinance?.price]);
+  }, [documentTitleTicker, symbol, tickerBinance?.price, formatPrice]);
 
   const handleSelectTicker = () => {
     if (tickerBinance?.price) {
@@ -51,16 +48,16 @@ export default function RealTimePriceCard({ symbol }: Props) {
 
   const containerClass = `
     flex flex-col gap-1 p-2 rounded items-center justify-center text-xs cursor-pointer transition-colors duration-300
-    ${isUp ? 'bg-rose-500/10 dark:bg-rose-500/20 hover:bg-rose-500/20' : ''}
-    ${isDown ? 'bg-blue-500/10 dark:bg-blue-500/20 hover:bg-blue-500/20' : ''}
-    ${!isUp && !isDown ? 'bg-zinc-50 dark:bg-zinc-800/50 hover:bg-zinc-200 dark:hover:bg-zinc-700' : ''}
+    ${isUp ? 'bg-price-up-bg hover:bg-price-up-bg' : ''}
+    ${isDown ? 'bg-price-down-bg hover:bg-price-down-bg' : ''}
+    ${!isUp && !isDown ? 'bg-background-light hover:bg-border-base' : ''}
   `;
 
   const priceClass = `
     font-bold text-sm tracking-tight transition-colors duration-100
-    ${isUp ? 'text-rose-600 dark:text-rose-400' : ''}
-    ${isDown ? 'text-blue-600 dark:text-blue-400' : ''}
-    ${!isUp && !isDown ? 'text-zinc-900 dark:text-zinc-100' : ''}
+    ${isUp ? 'text-price-up' : ''}
+    ${isDown ? 'text-price-down' : ''}
+    ${!isUp && !isDown ? 'text-text-base' : ''}
   `;
 
   return (
@@ -76,14 +73,15 @@ export default function RealTimePriceCard({ symbol }: Props) {
         </div>
         <div className="w-px h-3 bg-zinc-300 dark:bg-zinc-600" />
         <div className={priceClass}>
-          {mustUSD(tickerBinance?.price)}
+          {tickerBinance ? formatPrice({ price: tickerBinance.price, baseCurrency: 'usd', noConversion: true }) : '-'}
         </div>
       </div>
       
       {premiumUpbit && (
-        <div className="flex items-center text-[11px] text-zinc-500 dark:text-zinc-400 mt-0.5">
+        <div className="flex items-center text-[11px] text-text-light mt-0.5">
           <img src="/images/upbit.svg" alt="Upbit" className="w-3 h-3 mr-1 grayscale opacity-70" />
-          {tickerUpbit?.price?.toLocaleString()} <span className="opacity-80 ml-1">({premiumUpbit}%)</span>
+          {tickerUpbit?.price ? formatPrice({ price: tickerUpbit.price, baseCurrency: 'krw' }) : '-'}
+          <span className="opacity-80 ml-1">({premiumUpbit}%)</span>
         </div>
       )}
     </div>

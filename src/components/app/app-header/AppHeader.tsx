@@ -1,16 +1,18 @@
 'use client';
 
 import React, { useRef, useState } from 'react';
-import { Share2, Settings, Bell, User, Menu, X } from 'lucide-react';
+import { Share2, Settings, Bell, User, Menu, X, Users } from 'lucide-react';
+import { useI18n } from '@/hooks/useI18n';
 import Dropdown from '@/components/common/Dropdown';
 import SettingsPanel from './SettingsPanel';
+import BannerMarketIndices from './BannerMarketIndices';
 
 // Placeholder components if they don't exist yet
-const AppLogo = () => <div className="font-bold text-xl ml-2">COINSECT</div>;
-const BannerMarketIndices = () => <div className="h-4"></div>;
+const AppLogo = () => <div className="font-bold text-xl ml-2 text-text-stress">COINSECT</div>;
 const AppNotifications = () => <div className="p-4 w-60 text-sm">No new notifications</div>;
 
 export default function AppHeader() {
+  const { t } = useI18n();
   const [showNavigation, setShowNavigation] = useState(false);
   
   const [showSettings, setShowSettings] = useState(false);
@@ -27,7 +29,7 @@ export default function AppHeader() {
   const onClickShare = () => {
     const url = window.location.origin + window.location.pathname;
     navigator.clipboard.writeText(url).then(() => {
-      alert('현재 페이지 주소가 복사되었습니다.');
+      ui.toast.success(t('COMMON.URL_COPIED'));
     });
   };
 
@@ -36,18 +38,18 @@ export default function AppHeader() {
       setShowMenuAccount((prev) => !prev);
     } else {
       // Show login modal logic
-      alert('MODAL_SIGN_IN');
+      ui.modal.alert(t('COMMON.SIGN_IN'));
     }
   };
 
   return (
-    <header className="w-full px-4 bg-zinc-50 dark:bg-zinc-900 border-b border-zinc-200 dark:border-zinc-800">
-      <div className="flex justify-between py-2">
+    <header className="w-full px-4 bg-background-base border-b border-border-base">
+      <div className="flex justify-between items-center py-2">
         <BannerMarketIndices />
         {/* Chat users logic (stub) */}
-        <div className="flex items-center text-xs font-mono cursor-pointer text-zinc-500">
-          <User className="w-3 h-3 mr-1" />
-          <span>---</span>
+        <div className="flex items-center text-[11px] md:text-xs font-mono cursor-pointer text-text-light hover:text-text-base transition-colors shrink-0 ml-4">
+          <Users className="w-3 h-3 md:w-4 md:h-4 mr-1" />
+          <span>0</span>
         </div>
       </div>
       
@@ -111,7 +113,7 @@ export default function AppHeader() {
               onClick={onClickMenuAccount}
               className={`w-8 h-8 flex items-center justify-center cursor-pointer transition-colors ${showMenuAccount ? 'text-zinc-900 dark:text-zinc-100' : 'text-zinc-600 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-100'}`}
             >
-              {me ? <User className="w-5 h-5" /> : <div className="text-[10px] font-medium leading-tight text-center">SIGN IN</div>}
+              {me ? <User className="w-5 h-5" /> : <div className="text-[10px] font-medium leading-tight text-center">{t('COMMON.SIGN_IN')}</div>}
             </div>
             {me && (
               <Dropdown 
@@ -120,9 +122,9 @@ export default function AppHeader() {
                 triggerRef={refIconMenuAccount}
               >
                 <ul className="min-w-[150px] py-1 text-sm text-zinc-700 dark:text-zinc-300">
-                  <li className="px-4 py-2 hover:bg-zinc-100 dark:hover:bg-zinc-800 cursor-pointer" onClick={() => setShowMenuAccount(false)}>내 활동</li>
-                  <li className="px-4 py-2 hover:bg-zinc-100 dark:hover:bg-zinc-800 cursor-pointer" onClick={() => setShowMenuAccount(false)}>계정 설정</li>
-                  <li className="px-4 py-2 hover:bg-zinc-100 dark:hover:bg-zinc-800 cursor-pointer border-t border-zinc-200 dark:border-zinc-800" onClick={() => setShowMenuAccount(false)}>로그아웃</li>
+                  <li className="px-4 py-2 hover:bg-zinc-100 dark:hover:bg-zinc-800 cursor-pointer" onClick={() => setShowMenuAccount(false)}>{t('COMMON.MY_ACTIVITY')}</li>
+                  <li className="px-4 py-2 hover:bg-zinc-100 dark:hover:bg-zinc-800 cursor-pointer" onClick={() => setShowMenuAccount(false)}>{t('COMMON.ACCOUNT_SETTINGS')}</li>
+                  <li className="px-4 py-2 hover:bg-zinc-100 dark:hover:bg-zinc-800 cursor-pointer border-t border-zinc-200 dark:border-zinc-800" onClick={() => setShowMenuAccount(false)}>{t('COMMON.LOGOUT')}</li>
                 </ul>
               </Dropdown>
             )}

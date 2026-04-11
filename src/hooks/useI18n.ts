@@ -1,16 +1,21 @@
 'use client';
 
-import { useTranslations } from 'next-intl';
+import { useAppStore } from '@/store/useAppStore';
+import { translate } from '@/lib/i18n';
 
 /**
- * A custom hook that provides a simple i18n function.
- * Matches the requested i18n('key') pattern.
+ * Custom i18n hook that provides a global t() function.
+ * Does not use namespaces; always uses full nested paths.
  */
-export function useI18n(namespace: string = 'common') {
-  const t = useTranslations(namespace);
+export function useI18n() {
+  const messages = useAppStore((state) => state.messages);
+  
+  const t = (path: string, params?: Record<string, any>) => {
+    return translate(messages, path, params);
+  };
   
   return {
-    t: (key: string, values?: any) => t(key, values),
-    i18n: (key: string, values?: any) => t(key, values),
+    t,
+    i18n: t,
   };
 }
