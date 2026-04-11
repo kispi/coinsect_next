@@ -1,8 +1,8 @@
 import type { Metadata } from 'next';
 import { Geist, Geist_Mono } from 'next/font/google';
-import { NextIntlClientProvider } from 'next-intl';
 import { getMessages, getLocale } from 'next-intl/server';
 import Providers from '@/components/Providers';
+import DynamicI18nProvider from '@/components/DynamicI18nProvider';
 import './globals.css';
 
 const geistSans = Geist({
@@ -27,18 +27,17 @@ interface RootLayoutProps {
 export default async function RootLayout({
   children,
 }: RootLayoutProps) {
-  // Fetch active locale and messages (managed implicitly via next-intl request.ts)
+  // Fetch initial locale and messages for SSR (defaults to 'ko' per request.ts)
   const locale = await getLocale();
   const messages = await getMessages();
 
   return (
     <html lang={locale} className={`${geistSans.variable} ${geistMono.variable}`}>
       <body className="antialiased min-h-screen bg-background text-text-base">
-        <NextIntlClientProvider messages={messages}>
+        <DynamicI18nProvider initialLocale={locale} initialMessages={messages}>
           <Providers>{children}</Providers>
-        </NextIntlClientProvider>
+        </DynamicI18nProvider>
       </body>
     </html>
   );
 }
-

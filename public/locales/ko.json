@@ -1,0 +1,21 @@
+{
+  "common": {
+    "hello": "안녕하세요",
+    "counter": "카운터: {count}",
+    "increment": "증가",
+    "decrement": "감소",
+    "WHALE_ALERT": "고래 입출금",
+    "REAL_TIME_POSITIONS": "실시간 포지션",
+    "KIMP": "김프",
+    "SEE_MORE": "더보기",
+    "TOOLTIP_REAL_TIME_POSITIONS": "포지션이 맞지 않는 것 같다면 실제 방송으로 확인 후 수정을 요청하실 수 있습니다.",
+    "COMMUNITY": "커뮤니티",
+    "DASHBOARD": "대시보드",
+    "COMMUNITY_FREE_GUEST": "자유게시판 (비로그인 글쓰기 가능)",
+    "AD": "광고",
+    "FREE": "자유",
+    "NO_SEARCH_RESULT": "검색 결과가 없습니다 😢",
+    "BINANCE": "바이낸스",
+    "UPBIT": "업비트"
+  }
+}
