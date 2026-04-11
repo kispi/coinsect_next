@@ -3,6 +3,7 @@ import { Geist, Geist_Mono } from 'next/font/google';
 import { getMessages, getLocale } from 'next-intl/server';
 import Providers from '@/components/Providers';
 import DynamicI18nProvider from '@/components/DynamicI18nProvider';
+import AppHeader from '@/components/app/app-header/AppHeader';
 import './globals.css';
 
 const geistSans = Geist({
@@ -35,7 +36,12 @@ export default async function RootLayout({
     <html lang={locale} className={`${geistSans.variable} ${geistMono.variable}`}>
       <body className="antialiased min-h-screen bg-background text-text-base">
         <DynamicI18nProvider initialLocale={locale} initialMessages={messages}>
-          <Providers>{children}</Providers>
+          <Providers>
+            <AppHeader />
+            <main className="mx-auto max-w-7xl pt-4">
+              {children}
+            </main>
+          </Providers>
         </DynamicI18nProvider>
       </body>
     </html>

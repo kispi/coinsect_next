@@ -73,7 +73,7 @@ export default function DashboardsMain() {
           image="https://d1085v6s0hknp1.cloudfront.net/assets/icon-jg.jpg"
           tooltip="TOOLTIP_REAL_TIME_POSITIONS"
         >
-          <div className="flex gap-4 overflow-x-auto pretty-scrollbar pb-2">
+          <div className="flex flex-col gap-2">
             {dashboards?.realTimePositions?.data?.map((position) => (
               <CPosition key={position.name} position={position} />
             ))}
