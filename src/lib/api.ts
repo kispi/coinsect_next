@@ -1,4 +1,4 @@
-const BASE_URL = process.env.NEXT_PUBLIC_API_BASE || 'https://api.coinsect.io';
+const BASE_URL = process.env.NEXT_PUBLIC_API_BASE;
 
 type RequestOptions = RequestInit & {
   params?: Record<string, string | number | boolean>;
@@ -65,11 +65,11 @@ async function request<T>(endpoint: string, options: RequestOptions = {}): Promi
 
 export const api = {
   get: <T>(url: string, options?: RequestOptions) => request<T>(url, { ...options, method: 'GET' }),
-  post: <T>(url: string, body?: any, options?: RequestOptions) => 
+  post: <T>(url: string, body?: any, options?: RequestOptions) =>
     request<T>(url, { ...options, method: 'POST', body: JSON.stringify(body) }),
-  put: <T>(url: string, body?: any, options?: RequestOptions) => 
+  put: <T>(url: string, body?: any, options?: RequestOptions) =>
     request<T>(url, { ...options, method: 'PUT', body: JSON.stringify(body) }),
-  patch: <T>(url: string, body?: any, options?: RequestOptions) => 
+  patch: <T>(url: string, body?: any, options?: RequestOptions) =>
     request<T>(url, { ...options, method: 'PATCH', body: JSON.stringify(body) }),
   delete: <T>(url: string, options?: RequestOptions) => request<T>(url, { ...options, method: 'DELETE' }),
 };

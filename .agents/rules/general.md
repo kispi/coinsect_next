@@ -9,16 +9,16 @@ trigger: always_on
 ## 1. 커뮤니케이션 및 워크플로우
 - **답변 언어**: 에이전트 세션에서의 모든 답변은 **한글**로 작성합니다.
 - **커밋 메시지**: 
-  - 일반적인 Git Commit Convention을 따르며 **영문**으로 작성합니다.
-  - 작업 완료 후 커밋 메시지를 추천하되, **어떠한 경우에도 자동으로 커밋하지 않습니다.** 사용자의 승인 후 커밋합니다.
-- **작업 환경**: Windows 11 / Windows PowerShell (background command 사용시 l주의)
+  - 유저가 커밋 메시지 추천을 요청하면, 일반적인 Git Commit Convention을 따라 **영문**으로 추천합니다
+- **작업 환경**: Windows 11 / Windows PowerShell (background command 사용시 주의)
+- **작업 이후**: .agents/walkthrough/YYYYMMDDHHmmss_${무엇을 했는지}.md로 작업 내용 저장. 무엇을, 왜 그렇게 했는지에 초점을 맞추어 서술합니다.
+- **테스트**: 간단한 테스트들은 해도 되지만, 브라우저 E2E 테스트(DOM 체크 등)은 무거운 작업이므로 하지 않습니다. 개발자에게 테스트를 요청합니다.
 
 ## 2. 기술 스택 및 라이브러리 제약
 - **패키지 버전**: 모든 패키지는 현존 **최신 버전(latest)**을 사용합니다.
 - **React Compiler**: React 19와 함께 제공되는 React Compiler를 사용하도록 설정하고 활용합니다.
 - **Data Fetching**: 
   - `axios` 등의 서드파티 라이브러리를 사용하지 않고, 브라우저 내장 **fetch API**만 사용합니다.
-  - API Base URL: `https://api.coinsect.io`
 - **상태 관리**:
   - **Client State**: `Zustand`
   - **Server State**: `TanStack Query` (React Query: 일반 컴포넌트에서 직접 useQuery 사용 금지)
