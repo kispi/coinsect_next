@@ -1,4 +1,20 @@
+import { getCookie } from './cookie'
+
 const BASE_URL = process.env.NEXT_PUBLIC_API_BASE
+
+let inMemoryToken: string | null = null
+
+export const setAuthToken = (token: string | null) => {
+  inMemoryToken = token
+}
+
+export const getAuthToken = () => {
+  if (inMemoryToken) return inMemoryToken
+  if (typeof window !== 'undefined') {
+    return getCookie('token')
+  }
+  return null
+}
 
 type RequestOptions = RequestInit & {
   params?: Record<string, string | number | boolean>
@@ -34,12 +50,10 @@ async function request<T>(endpoint: string, options: RequestOptions = {}): Promi
     'Content-Type': 'application/json',
   }
 
-  // JWT Token (Client-side usage example)
-  if (typeof window !== 'undefined') {
-    const token = localStorage.getItem('token')
-    if (token) {
-      defaultHeaders['Authorization'] = `Bearer ${token}`
-    }
+  // JWT Token from memory or cookie
+  const token = getAuthToken()
+  if (token) {
+    defaultHeaders['Authorization'] = `Bearer ${token}`
   }
 
   const response = await fetch(url.toString(), {

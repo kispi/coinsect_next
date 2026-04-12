@@ -66,7 +66,11 @@
   },
   "MODAL": {
     "POSITION_NOTIFY_CHANGE": "[%s] Notify Position Change",
-    "POSITION_NOTIFY_CHANGE_DESC": "Notify the admin that the current position of <b class='text-underline'>%s</b> has changed.<br>If the trader liquidated the position, just empty all fields and then submit."
+    "POSITION_NOTIFY_CHANGE_DESC": "Notify the operator that [%s]'s position has changed as follows.<br>If it has become no-position, please leave it all blank and submit.",
+    "SIGN_IN": "Sign In",
+    "SIGN_IN_DESC": "By setting a nickname while signed in, you can have a unique fixed nickname.\nAlso, your profile image and nickname will be preserved even if your device changes or browser cache is deleted.",
+    "LOG_IN_WITH": "Log in with {provider}",
+    "LOGOUT_CONFIRM": "Are you sure you want to log out?"
   },
   "TOAST": {
     "REAL_TIME_TICKER_SELECTED": "{symbol} is set as real time ticker for browser title.",

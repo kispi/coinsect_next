@@ -4,6 +4,7 @@ import React from 'react'
 import { useUIStore, ModalConfig, ToastConfig, SnackbarConfig } from '@/store/useUIStore'
 import { X, Info, AlertTriangle } from 'lucide-react'
 import { useI18n } from '@/hooks/useI18n'
+import AppInitializer from '@/components/app/AppInitializer'
 
 /**
  * ModalRenderer: Replicates Modal system with animations and backdrop support
@@ -142,6 +143,9 @@ export default function UIRoot() {
           <SnackbarRenderer key={sb.id} snackbar={sb} />
         ))}
       </div>
+
+      {/* Core Initializer */}
+      <AppInitializer />
     </div>
   )
 }

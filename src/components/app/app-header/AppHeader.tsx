@@ -8,6 +8,9 @@ import WrapperDropdown from '@/components/common/WrapperDropdown'
 import SettingsPanel from './SettingsPanel'
 import BannerMarketIndices from './BannerMarketIndices'
 import Link from 'next/link'
+import { useUserStore } from '@/store/useUserStore'
+import { useMeQuery } from '@/hooks/api/useUser'
+import ModalSignIn from '@/components/modals/ModalSignIn'
 
 // Placeholder components if they don't exist yet
 const AppLogo = () => (
@@ -18,7 +21,6 @@ const AppLogo = () => (
 const AppNotifications = () => (
   <div className="app-notifications p-4 w-60 text-sm">No new notifications</div>
 )
-
 export default function AppHeader() {
   const { t } = useI18n()
   const [showNavigation, setShowNavigation] = useState(false)
@@ -31,8 +33,9 @@ export default function AppHeader() {
   const refIconNotifications = useRef<HTMLDivElement>(null)
   const refIconMenuAccount = useRef<HTMLDivElement>(null)
 
-  // Example placeholder for user
-  const me = null
+  // Fetch user data if token exists
+  useMeQuery()
+  const { me, logout } = useUserStore()
 
   const onClickShare = () => {
     const url = window.location.origin + window.location.pathname
@@ -45,9 +48,19 @@ export default function AppHeader() {
     if (me) {
       setShowMenuAccount((prev) => !prev)
     } else {
-      // Show login modal logic
-      ui.modal.alert(t('COMMON.SIGN_IN'))
+      ui.modal.custom(ModalSignIn)
     }
+  }
+
+  const handleLogout = () => {
+    ui.modal.confirm({
+      body: 'MODAL.LOGOUT_CONFIRM',
+      buttons: [
+        { text: 'COMMON.CANCEL', class: 'btn-default' },
+        { text: 'COMMON.LOGOUT', class: 'btn-primary', onClick: logout },
+      ],
+    })
+    setShowMenuAccount(false)
   }
 
   return (
@@ -136,22 +149,22 @@ export default function AppHeader() {
                   onClose={() => setShowMenuAccount(false)}
                   triggerRef={refIconMenuAccount}
                 >
-                  <ul className="min-w-[150px] py-1 text-sm text-zinc-700 dark:text-zinc-300">
+                  <ul className="min-w-[160px] py-1 text-sm text-text-base bg-background-base border border-border-base rounded-lg shadow-2xl overflow-hidden">
                     <li
-                      className="px-4 py-2 hover:bg-zinc-100 dark:hover:bg-zinc-800 cursor-pointer"
+                      className="px-4 py-2 hover:bg-background-light cursor-pointer transition-colors"
                       onClick={() => setShowMenuAccount(false)}
                     >
                       {t('COMMON.MY_ACTIVITY')}
                     </li>
                     <li
-                      className="px-4 py-2 hover:bg-zinc-100 dark:hover:bg-zinc-800 cursor-pointer"
+                      className="px-4 py-2 hover:bg-background-light cursor-pointer transition-colors"
                       onClick={() => setShowMenuAccount(false)}
                     >
                       {t('COMMON.ACCOUNT_SETTINGS')}
                     </li>
                     <li
-                      className="px-4 py-2 hover:bg-zinc-100 dark:hover:bg-zinc-800 cursor-pointer border-t border-border-base"
-                      onClick={() => setShowMenuAccount(false)}
+                      className="px-4 py-2 hover:bg-background-light cursor-pointer transition-colors border-t border-border-base text-rose-500 font-medium"
+                      onClick={handleLogout}
                     >
                       {t('COMMON.LOGOUT')}
                     </li>

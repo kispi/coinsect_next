@@ -28,3 +28,18 @@ export interface WhaleAlert {
   transactionCount: number
   transactionType: string
 }
+export interface Profile {
+  image: string
+  nickname: string
+  sentiment?: {
+    expireAt: string
+    type: 'long' | 'short'
+  }
+}
+
+export interface User {
+  id?: number
+  profile?: Profile
+  jwt?: string
+  token: string
+}

@@ -8,10 +8,9 @@ import { ui } from '@/lib/ui'
 interface Props {
   indices?: number[]
   className?: string
-  _onClose?: () => void
 }
 
-export default function SettingsPanel({ indices = [], className = '', _onClose }: Props) {
+export default function SettingsPanel({ indices = [], className = '' }: Props) {
   const { settings, setSettings } = useAppStore()
   const { t } = useI18n()
 

@@ -1,0 +1,29 @@
+'use client'
+
+import { useEffect, useRef } from 'react'
+import { getCookie } from '@/lib/cookie'
+import { useUserStore } from '@/store/useUserStore'
+
+/**
+ * AppInitializer component handles the initial bootstrap logic for the application.
+ * It is responsible for loading the auth token from cookies and initializing essential state.
+ * This should be rendered at the root level (e.g., in UIRoot).
+ */
+export default function AppInitializer() {
+  const isStarted = useRef(false)
+  const setAuthToken = useUserStore((state) => state.setAuthToken)
+
+  useEffect(() => {
+    if (isStarted.current) return
+    isStarted.current = true
+
+    // 1. Initial Auth Token Load from Cookie
+    const token = getCookie('token')
+    if (token) setAuthToken(token)
+
+    // 2. Initial Environment Setup
+    // Any other one-time initializations (e.g. mobile check, theme sync) can go here.
+  }, [setAuthToken])
+
+  return null
+}
