@@ -3,6 +3,7 @@ import React, { useMemo } from 'react'
 import { useMarketStore } from '@/store/useMarketStore'
 import { useI18n } from '@/hooks/useI18n'
 import CPositionContextMenu from './CPositionContextMenu'
+import { elapsedTime } from '@/lib/date'
 
 interface Props {
   position: RealTimePosition
@@ -17,19 +18,8 @@ const display = (v?: number | null, key?: string) => {
   })
 }
 
-const elapsedTime = (timeStr?: string) => {
-  if (!timeStr) return ''
-  // Simple approximation matching vue code logic
-  const diff = Date.now() - new Date(timeStr).getTime()
-  const minutes = Math.floor(diff / 60000)
-  if (minutes < 60) return `${minutes}m ago`
-  const hours = Math.floor(minutes / 60)
-  if (hours < 24) return `${hours}h ago`
-  return `${Math.floor(hours / 24)}d ago`
-}
-
 export default function CPosition({ position: initialPos }: Props) {
-  const { t } = useI18n()
+  const { t, locale } = useI18n()
   const containerRef = React.useRef<HTMLDivElement>(null)
   const bybitTicker = useMarketStore((state) => state.bybitTickers[initialPos.contract || ''])
 
@@ -55,9 +45,10 @@ export default function CPosition({ position: initialPos }: Props) {
       ref={containerRef}
       className={`
       c-position flex items-stretch bg-background-base border border-border-base 
-      rounded overflow-hidden text-xs select-none transition-colors min-w-[280px] w-full hover:border-text-light
+      rounded overflow-hidden text-xs select-none transition-colors min-w-[280px] w-full hover:border-text-light cursor-pointer
       ${isDanger ? 'animate-pulse border-amber-500' : ''}
     `}
+      id={`c-position-${initialPos.id}`}
     >
       {/* Context Menu Hook */}
       <CPositionContextMenu position={initialPos} triggerRef={containerRef} />
@@ -79,7 +70,7 @@ export default function CPosition({ position: initialPos }: Props) {
         </div>
         {initialPos.editable && initialPos.lastUpdate && (
           <div className="absolute top-5 left-1 text-[9px] text-white/80">
-            {elapsedTime(initialPos.lastUpdate)}
+            {elapsedTime(initialPos.lastUpdate, locale as 'ko' | 'en')}
           </div>
         )}
         <div className="absolute bottom-0 left-0 right-0 p-1 bg-gradient-to-t from-black/80 to-transparent text-white text-[11px] truncate">
@@ -91,7 +82,7 @@ export default function CPosition({ position: initialPos }: Props) {
       <div className="flex-1 p-2 flex flex-col gap-2">
         <div className="flex gap-2 text-[11px]">
           <div className="flex-1 flex flex-col items-start">
-            <div className="text-text-light mb-0.5">
+            <div className="text-text-stress font-bold mb-0.5">
               {initialPos.contract?.toLocaleString() || 'N/A'}
             </div>
             <div

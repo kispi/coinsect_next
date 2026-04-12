@@ -29,7 +29,7 @@ export const ui = {
         })
       })
     },
-    custom: (component: string, options?: any) => {
+    custom: (component: React.ComponentType<any>, options?: any) => {
       return new Promise((resolve) => {
         useUIStore.getState().addModal({
           component,

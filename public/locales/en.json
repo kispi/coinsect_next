@@ -19,6 +19,7 @@
     "MARK_PRICE": "Mark Price",
     "LIQ_PRICE": "Liq Price",
     "GO_TO_PLATFORM": "Go to Platform",
+    "GO_TO_PLATFORM_SHORT": "Go to Link",
     "REQUEST_EDIT": "Request Edit",
     "USD/KRW": "USD/KRW",
     "BTC_DOMINANCE": "BTC Dominance",
@@ -33,7 +34,11 @@
     "LOGOUT": "Log Out",
     "MY_ACTIVITY": "My Activity",
     "ACCOUNT_SETTINGS": "Account Settings",
-    "URL_COPIED": "URL copied to clipboard."
+    "URL_COPIED": "URL copied to clipboard.",
+    "SIZE_DESC": "(Size)",
+    "CONTRACT": "Symbol",
+    "ON_AIR": "On Air",
+    "ON_OFF": "ON/OFF"
   },
   "SETTINGS": {
     "TITLE": "Settings",
@@ -59,7 +64,12 @@
       "USD": "USD"
     }
   },
+  "MODAL": {
+    "POSITION_NOTIFY_CHANGE": "[%s] Notify Position Change",
+    "POSITION_NOTIFY_CHANGE_DESC": "Notify the admin that the current position of <b class='text-underline'>%s</b> has changed.<br>If the trader liquidated the position, just empty all fields and then submit."
+  },
   "TOAST": {
-    "REAL_TIME_TICKER_SELECTED": "{symbol} is set as real time ticker for browser title."
+    "REAL_TIME_TICKER_SELECTED": "{symbol} is set as real time ticker for browser title.",
+    "POSITION_EDIT_REQUESTED": "You notified the admin that the BJ has changed position"
   }
 }

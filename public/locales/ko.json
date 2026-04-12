@@ -19,6 +19,7 @@
     "MARK_PRICE": "시장가",
     "LIQ_PRICE": "청산가",
     "GO_TO_PLATFORM": "플랫폼 바로가기",
+    "GO_TO_PLATFORM_SHORT": "바로가기",
     "REQUEST_EDIT": "수정 요청",
     "USD/KRW": "USD/KRW",
     "BTC_DOMINANCE": "BTC 도미넌스",
@@ -33,7 +34,11 @@
     "LOGOUT": "로그아웃",
     "MY_ACTIVITY": "내 활동",
     "ACCOUNT_SETTINGS": "계정 설정",
-    "URL_COPIED": "현재 페이지 주소가 복사되었습니다."
+    "URL_COPIED": "현재 페이지 주소가 복사되었습니다.",
+    "SIZE_DESC": "(수량)",
+    "CONTRACT": "심볼",
+    "ON_AIR": "방송 중",
+    "ON_OFF": "ON/OFF"
   },
   "SETTINGS": {
     "TITLE": "설정",
@@ -59,7 +64,12 @@
       "USD": "USD"
     }
   },
+  "MODAL": {
+    "POSITION_NOTIFY_CHANGE": "[%s] 포지션 변경 반영 요청",
+    "POSITION_NOTIFY_CHANGE_DESC": "운영자에게 <b class='text-underline'>%s</b>님의 포지션이 다음과 같이 변경되었음을 알립니다.<br>무포지션이 된 경우 전부 비워서 제출해주시면 됩니다."
+  },
   "TOAST": {
-    "REAL_TIME_TICKER_SELECTED": "{symbol}가 실시간 티커로 브라우저 타이틀에 노출됩니다."
+    "REAL_TIME_TICKER_SELECTED": "{symbol}가 실시간 티커로 브라우저 타이틀에 노출됩니다.",
+    "POSITION_EDIT_REQUESTED": "운영자에게 BJ의 포지션 변경사항을 알렸습니다"
   }
 }

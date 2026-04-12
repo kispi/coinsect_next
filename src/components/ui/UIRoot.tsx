@@ -17,6 +17,21 @@ const ModalRenderer = ({ modal }: { modal: ModalConfig }) => {
     removeModal(modal.id)
   }
 
+  // Handle custom components
+  if (modal.component) {
+    const Component = modal.component
+    return (
+      <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm animate-in fade-in duration-200">
+        <div
+          className="bg-background-base border border-border-base rounded shadow-2xl overflow-hidden animate-in zoom-in-95 duration-200"
+          style={modal.style}
+        >
+          <Component options={modal.options} onClose={handleClose} />
+        </div>
+      </div>
+    )
+  }
+
   const buttons = modal.buttons || []
 
   return (

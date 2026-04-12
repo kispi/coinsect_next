@@ -11,7 +11,7 @@ export type ModalConfig = {
   title?: string
   body: string | React.ReactNode
   buttons?: ModalButton[]
-  component?: string
+  component?: React.ComponentType<any>
   options?: any
   resolve?: (value: any) => void
   style?: any

@@ -9,6 +9,7 @@ import { translate } from '@/lib/i18n'
  */
 export function useI18n() {
   const messages = useAppStore((state) => state.messages)
+  const locale = useAppStore((state) => state.settings.locale)
 
   const t = (path: string, params?: Record<string, any>) => {
     return translate(messages, path, params)
@@ -17,5 +18,6 @@ export function useI18n() {
   return {
     t,
     i18n: t,
+    locale,
   }
 }
