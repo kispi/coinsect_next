@@ -3,7 +3,7 @@
 import React, { useState } from 'react'
 import { X } from 'lucide-react'
 import { useI18n } from '@/hooks/useI18n'
-import { api } from '@/lib/api'
+import { usePositionChangeMutation } from '@/hooks/api/usePositionMutation'
 import { ui } from '@/lib/ui'
 import type { RealTimePosition } from '@/types'
 import AppToggler from '@/components/common/AppToggler'
@@ -29,7 +29,7 @@ export default function ModalPositionRequestEdit({ options, onClose }: Props) {
     onAir: true,
   })
 
-  const [loading, setLoading] = useState(false)
+  const { mutateAsync, isPending } = usePositionChangeMutation()
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value, type } = e.target
@@ -40,7 +40,6 @@ export default function ModalPositionRequestEdit({ options, onClose }: Props) {
   }
 
   const handleSubmit = async () => {
-    setLoading(true)
     try {
       const token = typeof window !== 'undefined' ? localStorage.getItem('token') : null
       const o = {
@@ -50,13 +49,11 @@ export default function ModalPositionRequestEdit({ options, onClose }: Props) {
         size: Number(payload.size),
         token: token,
       }
-      await api.post('contents/real_time_positions/change_notifications', o)
+      await mutateAsync(o)
       ui.toast.success('TOAST.POSITION_EDIT_REQUESTED')
       onClose()
     } catch (e: any) {
       ui.toast.error(e.data?.message || e.message)
-    } finally {
-      setLoading(false)
     }
   }
 
@@ -145,8 +142,8 @@ export default function ModalPositionRequestEdit({ options, onClose }: Props) {
         <button onClick={onClose} className="btn-default btn-md px-8">
           {t('COMMON.CANCEL')}
         </button>
-        <button onClick={handleSubmit} disabled={loading} className="btn-primary btn-md px-8">
-          {loading ? '...' : t('COMMON.CONFIRM')}
+        <button onClick={handleSubmit} disabled={isPending} className="btn-primary btn-md px-8">
+          {isPending ? '...' : t('COMMON.CONFIRM')}
         </button>
       </div>
     </div>

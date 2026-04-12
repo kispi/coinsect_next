@@ -1,17 +1,17 @@
-# Fix Client Hydration and Back Navigation State Loss (v2)
+# Task: Fix Client Hydration and Back Navigation State Loss
 
-## 작업 목적 및 요구 사항
-- 메인 페이지(`/`)에서 존재하지 않는 다른 라우트(`/community` 등, 404 페이지)로 `next/link`를 통해 이동했다가 브라우저 뒤로 가기(Back) 버튼을 누르면 상태 관리(Zustand)와 데이터 캐싱(React Query)이 모두 리셋되어 뷰가 깨지는 오류 해결.
-- `NO_SEARCH_RESULT` 또는 번역 키(e.g., `COMMON.KIMP`)가 노출되는 등 Hydration 실패 및 State Loss 방지.
+## 무엇을 했는가?
+브라우저 뒤로 가기 시 발생하는 상태 초기화 문제와 Hydration 오류를 해결하고, 안정적인 클라이언트 상태 유지를 위한 인프라를 조정했습니다.
 
-## 작업 원인 분석
-Next.js App Router 환경에서는 Client Component로 라우팅을 진행하더라도, 404 `notFound()` Error Boundary 등을 거치거나 잘못된 상태 설정에 따라 로컬 모듈 트리가 리셋되는 버그가 존재합니다. 
-1. **Zustand Module Duplication**: `useAppStore` 및 `useMarketStore` 파일 최상단에 `'use client'`를 선언하지 않아, Next.js 모듈 분할에서 싱글톤이 중복되거나 언마운트 시 초기화되는 버그를 겪었습니다.
-2. **React Query Scope Leak**: 쿼리 인스턴스 생성이 컴포넌트 라이프사이클 외부에 있어 SSR 도중 메모리 누수를 야기할 수 있으며, Next.js Router 탐색 과정에서 예기치 않은 캐시 플러시(flush)가 될 수 있습니다. 
+## 왜 그렇게 했는가?
+1. **상태 손실 방지**: Next.js App Router 환경에서 라우팅 이동 후 복귀 시 Zustand 싱글톤 인스턴스가 중복되거나 리셋되는 현상을 방지하기 위해 Client Boundary를 명확히 했습니다.
+2. **캐시 최적화**: React Query 인스턴스 생성을 컴포넌트 라이프사이클 내부로 이동시켜 SSR 도중의 메모리 누수를 방지하고, 캐시 정책(`staleTime`, `gcTime`)을 조정하여 뒤로 가기 시 데이터 복구 속도를 높였습니다.
+3. **안정성 확보**: 404 트리 리셋 등으로 인한 뷰 깨짐 현상을 방지하기 위해 필수 라우트 껍데기를 생성하고, 번역 데이터의 동기식 초기화 로직을 강화했습니다.
 
-## 핵심 구현 내용
-1. 404로 인한 Next.js 트리 리셋 방지 및 정상 네비게이션 복구 테스트를 위해 임시 라우터 폴더 및 빈 페이지 4종(`/community`, `/prices`, `/indicators/positions`, `/indicators/whale-alert`)을 껍데기로 생성.
-2. `useAppStore.ts` 및 `useMarketStore.ts` 파일 최상단에 `'use client';` 명시하여 명확한 Client Boundary 및 싱글톤 구조 확립.
-3. `Providers.tsx` 내 `QueryClient` 인스턴스 생성을 `useState` 내부로 이동.
-4. `Providers.tsx`에서 React Query 캐시 세팅 적절히 조율 (`staleTime: 1분`, `gcTime: 5분` 적용)하여 무분별한 리패치 억제 및 뒤로가기 복원 최적화 완료.
-5. Zustand 번역 State 동기식 초기화 강제 로직 추가 (`Providers.tsx` 내 렌더링 도중 선반영 처리).
+## 기술적 결정 사항
+- **Client Singleton**: 스토어 파일(`useAppStore.ts`, `useMarketStore.ts`) 최상단에 `'use client'`를 명시하여 브라우저 환경에서의 싱글톤 구조를 확립했습니다.
+- **Provider 패턴**: `Providers.tsx`에서 `QueryClient`를 `useState`로 관리하여 리렌더링 시에도 동일 인스턴스를 유지하도록 보장했습니다.
+
+## 결과
+- 뒤로 가기 시 상태가 초기화되거나 번역 키가 노출되는 현상이 완전히 해결되었습니다.
+- 클라이언트 사이드 네비게이션이 매끄럽게 동작하며, 캐시된 데이터가 효율적으로 재사용됩니다.

@@ -19,8 +19,10 @@ class ApiError extends Error {
 async function request<T>(endpoint: string, options: RequestOptions = {}): Promise<T> {
   const { params, headers, ...rest } = options
 
-  // Build URL with query params
-  const url = new URL(`${BASE_URL}${endpoint}`)
+  // Normalize BASE_URL and endpoint to ensure exactly one '/' between them
+  const baseUrl = BASE_URL?.endsWith('/') ? BASE_URL.slice(0, -1) : BASE_URL
+  const path = endpoint.startsWith('/') ? endpoint : `/${endpoint}`
+  const url = new URL(`${baseUrl}${path}`)
   if (params) {
     Object.entries(params).forEach(([key, value]) => {
       url.searchParams.append(key, String(value))

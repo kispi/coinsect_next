@@ -5,7 +5,7 @@ export const useBoardPosts = (boardId: number, limit: number = 10) => {
   return useQuery({
     queryKey: ['posts', { boardId, limit }],
     queryFn: async () => {
-      return api.get<any>('/posts', {
+      return api.get<any>('posts', {
         params: {
           where: `board_id=${boardId}`,
           limit,
