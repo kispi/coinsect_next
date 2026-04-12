@@ -60,7 +60,7 @@ export default function DashboardsMain() {
   }
 
   return (
-    <div className="w-full">
+    <div className="dashboards-main w-full">
       <SectionNews news={dashboards?.news || []} />
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">

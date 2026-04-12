@@ -70,7 +70,7 @@ export default function CPositionContextMenu({ position, triggerRef }: Props) {
   }
 
   return (
-    <div className="fixed inset-0 z-50 pointer-events-none">
+    <div className="c-position-context-menu fixed inset-0 z-50 pointer-events-none">
       <div
         ref={menuRef}
         style={{ top: pos.top, left: pos.left }}

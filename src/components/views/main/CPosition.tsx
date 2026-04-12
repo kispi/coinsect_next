@@ -54,7 +54,7 @@ export default function CPosition({ position: initialPos }: Props) {
     <div
       ref={containerRef}
       className={`
-      flex items-stretch bg-background-base border border-border-base 
+      c-position flex items-stretch bg-background-base border border-border-base 
       rounded overflow-hidden text-xs select-none transition-colors min-w-[280px] w-full hover:border-text-light
       ${isDanger ? 'animate-pulse border-amber-500' : ''}
     `}

@@ -94,7 +94,7 @@ export default function SettingsPanel({ indices = [], className = '', _onClose }
 
   return (
     <div
-      className={`w-[320px] p-4 text-sm text-text-stress bg-background-base border border-border-base rounded shadow-lg ${className}`}
+      className={`settings-panel w-[320px] p-4 text-sm text-text-stress bg-background-base border border-border-base rounded shadow-lg ${className}`}
     >
       <div className="flex flex-col gap-1">
         {settingItems.map((item) => (

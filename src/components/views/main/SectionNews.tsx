@@ -6,7 +6,7 @@ export default function SectionNews({ news }: { news: UpbitNews[] }) {
   if (!news || news.length === 0) return null
 
   return (
-    <div className="mb-4 overflow-hidden relative w-full h-8 flex items-center bg-transparent">
+    <div className="section-news mb-4 overflow-hidden relative w-full h-8 flex items-center bg-transparent">
       <div className="flex gap-2 w-max animate-ticker">
         {/* We double the news to create an infinite loop effect */}
         {[...news, ...news].map((item, index) => (

@@ -12,7 +12,9 @@ export default async function Home() {
 
   return (
     <HydrationBoundary state={dehydrate(queryClient)}>
-      <DashboardsMain />
+      <div className="page-home">
+        <DashboardsMain />
+      </div>
     </HydrationBoundary>
   )
 }

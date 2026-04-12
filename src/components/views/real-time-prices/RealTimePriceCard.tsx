@@ -70,7 +70,7 @@ export default function RealTimePriceCard({ symbol }: Props) {
   `
 
   return (
-    <div onClick={handleSelectTicker} className={containerClass}>
+    <div onClick={handleSelectTicker} className={`real-time-price-card ${containerClass}`}>
       <div className="flex items-center gap-2">
         <div className="flex items-center font-bold">
           {tickerBinance ? (

@@ -40,7 +40,7 @@ export default function BannerMarketIndices() {
   ]
 
   return (
-    <div className="flex gap-4 overflow-x-auto no-scrollbar py-1">
+    <div className="banner-market-indices flex gap-4 overflow-x-auto no-scrollbar py-1">
       {items.map((item) => (
         <a
           key={item.key}

@@ -8,8 +8,13 @@ trigger: always_on
 
 ## 1. 커뮤니케이션 및 워크플로우
 - **답변 언어**: 에이전트 세션에서의 모든 답변은 **한글**로 작성합니다.
-- **커밋 메시지**: 
-  - 유저가 커밋 메시지 추천을 요청하면, 일반적인 Git Commit Convention을 따라 **영문**으로 추천합니다
+- **커밋 메시지**: - 매 작업 후에는 해당 내용에 대한 커밋 메시지를 아래의 형태로 추천:
+```
+타입(fix, feat, chore, refactor 등...): 내용
+
+- desc 1 (if needed)
+...
+```
 - **작업 환경**: Windows 11 / Windows PowerShell (background command 사용시 주의)
 - **작업 이후**: .agents/tasks/YYYYMMDDHHmmss_${what_you_did_in_snake_case}.md로 작업 내용 저장. 무엇을, 왜 그렇게 했는지에 초점을 맞추어 서술합니다.
 - **테스트**: 간단한 테스트들은 해도 되지만, 브라우저 E2E 테스트(DOM 체크 등)은 무거운 작업이므로 하지 않습니다. 개발자에게 테스트를 요청합니다.

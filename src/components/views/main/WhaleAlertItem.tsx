@@ -88,7 +88,7 @@ export default function WhaleAlertItem({ whaleAlert }: Props) {
     <div
       onClick={onClick}
       className={`
-        flex flex-col gap-2 p-3 rounded text-[11px] font-mono transition-shadow
+        whale-alert-item flex flex-col gap-2 p-3 rounded text-[11px] font-mono transition-shadow
         ${sentimentClass} 
         ${url ? 'cursor-pointer hover:shadow-md border border-border-base' : 'border border-transparent'}
         min-w-[280px]

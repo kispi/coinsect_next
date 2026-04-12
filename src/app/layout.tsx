@@ -53,12 +53,12 @@ export default async function RootLayout({ children }: RootLayoutProps) {
       className={`${geistSans.variable} ${geistMono.variable} ${theme === 'dark' ? 'dark' : ''}`}
       style={{ colorScheme: theme }}
     >
-      <body className="antialiased min-h-screen bg-background text-text-base">
+      <body className="antialiased min-h-screen bg-background text-text-base root-layout">
         <Providers initialLocale={locale} initialMessages={messages} initialTheme={theme}>
           <ThemeHandler />
           <UIRoot />
           <AppHeader />
-          <main className="mx-auto max-w-7xl pt-4">{children}</main>
+          <main className="mx-auto max-w-7xl pt-4 px-4 md:px-6 lg:px-8">{children}</main>
         </Providers>
       </body>
     </html>

@@ -59,7 +59,7 @@ export default function Dropdown({
   return (
     <div
       ref={dropdownRef}
-      className={`absolute top-full mt-2 z-50 animate-in fade-in zoom-in-95 duration-200 ${getAlignmentClasses()} ${className}`}
+      className={`dropdown absolute top-full mt-2 z-50 animate-in fade-in zoom-in-95 duration-200 ${getAlignmentClasses()} ${className}`}
     >
       <div className="bg-zinc-50 dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-md shadow-lg overflow-hidden">
         {children}

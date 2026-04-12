@@ -14,7 +14,7 @@ export default function RealTimePriceCards({ symbols }: Props) {
   useUpbitWs(symbols)
 
   return (
-    <div className="grid grid-cols-2 gap-1">
+    <div className="real-time-price-cards grid grid-cols-2 gap-1">
       {symbols.map((symbol, index) => (
         <div key={symbol} className={index === 0 ? 'col-span-2' : 'col-span-1'}>
           <RealTimePriceCard symbol={symbol} />

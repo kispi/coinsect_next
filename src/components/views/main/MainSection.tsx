@@ -40,7 +40,7 @@ export default function MainSection({ title, link, image, tooltip, children }: M
   )
 
   return (
-    <div className="rounded-lg bg-background-light flex flex-col h-full shadow-sm overflow-hidden">
+    <div className="main-section rounded-lg bg-background-light flex flex-col h-full shadow-sm overflow-hidden">
       {link ? (
         <Link href={link} className="block group">
           <div className="group-hover:underline decoration-text-stress">{content}</div>

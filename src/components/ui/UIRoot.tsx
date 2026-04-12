@@ -172,7 +172,7 @@ export default function UIRoot() {
   const snackbars = useUIStore((state) => state.snackbars)
 
   return (
-    <>
+    <div className="ui-root">
       {/* Dynamic Modals */}
       {modals.map((modal) => (
         <ModalRenderer key={modal.id} modal={modal} />
@@ -187,6 +187,6 @@ export default function UIRoot() {
           <SnackbarRenderer key={sb.id} snackbar={sb} />
         ))}
       </div>
-    </>
+    </div>
   )
 }
