@@ -78,7 +78,7 @@ const ToastRenderer = ({ toast, index }: { toast: ToastConfig; index: number }) 
         {toast.action?.label && (
           <button
             onClick={handleAction}
-            className="px-3 py-1.5 border border-white/20 rounded-md font-bold text-xs hover:bg-white/10 transition-colors cursor-pointer"
+            className="btn-outline btn-sm border-white/20 hover:bg-white/10 text-white"
           >
             {i18n(toast.action.label)}
           </button>
@@ -110,10 +110,7 @@ const SnackbarRenderer = ({ snackbar }: { snackbar: SnackbarConfig }) => {
           dangerouslySetInnerHTML={{ __html: snackbar.html }}
         />
       </div>
-      <button
-        onClick={() => removeSnackbar(snackbar.id)}
-        className="p-1 hover:bg-white/20 rounded-full transition-colors flex-shrink-0 cursor-pointer"
-      >
+      <button onClick={() => removeSnackbar(snackbar.id)} className="btn-ghost p-1 flex-shrink-0">
         <X className="w-4 h-4" />
       </button>
     </div>

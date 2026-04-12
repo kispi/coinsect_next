@@ -67,10 +67,7 @@ export default function ModalPositionRequestEdit({ options, onClose }: Props) {
         <h3 className="font-bold text-text-stress">
           {i18n('MODAL.POSITION_NOTIFY_CHANGE').replace('%s', p.name || '')}
         </h3>
-        <button
-          onClick={onClose}
-          className="p-1 hover:bg-background-light rounded transition-colors cursor-pointer"
-        >
+        <button onClick={onClose} className="btn-ghost p-1">
           <X className="w-5 h-5 text-text-muted" />
         </button>
       </div>
@@ -145,17 +142,10 @@ export default function ModalPositionRequestEdit({ options, onClose }: Props) {
       </div>
 
       <div className="flex justify-center gap-3 p-4 border-t border-border-base">
-        <button
-          onClick={onClose}
-          className="px-8 py-2.5 rounded font-bold text-sm bg-background-light text-text-base hover:bg-zinc-200 dark:hover:bg-zinc-700 transition-colors cursor-pointer"
-        >
+        <button onClick={onClose} className="btn-default btn-md px-8">
           {t('COMMON.CANCEL')}
         </button>
-        <button
-          onClick={handleSubmit}
-          disabled={loading}
-          className="px-8 py-2.5 rounded font-bold text-sm bg-brand-primary text-white hover:opacity-90 transition-all disabled:opacity-50 cursor-pointer"
-        >
+        <button onClick={handleSubmit} disabled={loading} className="btn-primary btn-md px-8">
           {loading ? '...' : t('COMMON.CONFIRM')}
         </button>
       </div>

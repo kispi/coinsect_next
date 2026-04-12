@@ -31,10 +31,7 @@ export default function ModalBasic({ options, onClose }: Props) {
         <h3 className={`font-bold text-text-stress ${options.titleClass || ''}`}>
           {options.title ? i18n(options.title) : ''}
         </h3>
-        <button
-          onClick={() => onClose()}
-          className="p-1 hover:bg-background-light rounded transition-colors cursor-pointer"
-        >
+        <button onClick={() => onClose()} className="btn-ghost p-1">
           <X className="w-5 h-5 text-text-muted" />
         </button>
       </div>
@@ -58,11 +55,9 @@ export default function ModalBasic({ options, onClose }: Props) {
                 if (btn.onClick) btn.onClick()
                 onClose(i)
               }}
-              className={`min-w-[120px] px-10 py-3 rounded font-bold transition-all cursor-pointer ${
-                btn.class?.includes('primary')
-                  ? 'bg-brand-primary text-white hover:opacity-90 shadow-sm'
-                  : 'bg-background-light text-text-base hover:bg-zinc-200 dark:hover:bg-zinc-700 border border-border-base'
-              } ${btn.class || ''}`}
+              className={`min-w-[120px] ${
+                btn.class?.includes('primary') ? 'btn-primary' : 'btn-default'
+              } btn-lg ${btn.class || ''}`}
             >
               {i18n(btn.text)}
             </button>

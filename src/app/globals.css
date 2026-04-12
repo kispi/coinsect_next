@@ -44,6 +44,19 @@
   --price-up-bg: var(--price-up-upbit-bg);
   --price-down-bg: var(--price-down-upbit-bg);
   --bg-chat-message: rgba(240, 240, 240, 1);
+
+  /* Button Variables - Constant Colors */
+  --btn-primary-bg: #000000;
+  --btn-primary-text: #ffffff;
+  --btn-primary-hover: #333333;
+
+  --btn-default-bg: #ffffff;
+  --btn-default-text: #000000;
+  --btn-default-hover: #f0f0f0;
+
+  --btn-danger-bg: #ef4444;
+  --btn-danger-text: #ffffff;
+  --btn-danger-hover: #dc2626;
 }
 
 .dark {
@@ -60,6 +73,15 @@
   --price-up-bg: var(--price-up-bybit-bg);
   --price-down-bg: var(--price-down-bybit-bg);
   --bg-chat-message: rgba(57, 57, 57, 1);
+
+  /* Button Variables - Keep constant for Primary/Default */
+  --btn-primary-bg: #000000;
+  --btn-primary-text: #ffffff;
+  --btn-primary-hover: #333333;
+
+  --btn-default-bg: #ffffff;
+  --btn-default-text: #000000;
+  --btn-default-hover: #f0f0f0;
 }
 
 @theme inline {
@@ -77,6 +99,55 @@
   --color-price-down: var(--price-down);
   --color-price-up-bg: var(--price-up-bg);
   --color-price-down-bg: var(--price-down-bg);
+
+  /* Button Colors */
+  --color-btn-primary-bg: var(--btn-primary-bg);
+  --color-btn-primary-text: var(--btn-primary-text);
+  --color-btn-primary-hover: var(--btn-primary-hover);
+  --color-btn-default-bg: var(--btn-default-bg);
+  --color-btn-default-text: var(--btn-default-text);
+  --color-btn-default-hover: var(--btn-default-hover);
+  --color-btn-danger-bg: var(--btn-danger-bg);
+  --color-btn-danger-text: var(--btn-danger-text);
+  --color-btn-danger-hover: var(--btn-danger-hover);
+}
+
+@layer components {
+  .btn-base {
+    @apply inline-flex items-center justify-center rounded-md font-bold transition-all duration-200 cursor-pointer active:scale-[0.98] disabled:opacity-50 disabled:cursor-not-allowed select-none;
+  }
+
+  .btn-sm {
+    @apply px-2 py-1 text-xs;
+  }
+
+  .btn-md {
+    @apply px-3 py-2 text-sm;
+  }
+
+  .btn-lg {
+    @apply px-5 py-3 text-base;
+  }
+
+  .btn-primary {
+    @apply inline-flex items-center justify-center rounded-md font-bold transition-all duration-200 cursor-pointer active:scale-[0.98] disabled:opacity-50 disabled:cursor-not-allowed select-none bg-btn-primary-bg text-btn-primary-text hover:bg-btn-primary-hover;
+  }
+
+  .btn-default {
+    @apply inline-flex items-center justify-center rounded-md font-bold transition-all duration-200 cursor-pointer active:scale-[0.98] disabled:opacity-50 disabled:cursor-not-allowed select-none bg-btn-default-bg text-btn-default-text hover:bg-btn-default-hover;
+  }
+
+  .btn-outline {
+    @apply inline-flex items-center justify-center rounded-md font-bold transition-all duration-200 cursor-pointer active:scale-[0.98] disabled:opacity-50 disabled:cursor-not-allowed select-none border border-border-base text-text-base hover:bg-background-light;
+  }
+
+  .btn-danger {
+    @apply inline-flex items-center justify-center rounded-md font-bold transition-all duration-200 cursor-pointer active:scale-[0.98] disabled:opacity-50 disabled:cursor-not-allowed select-none bg-btn-danger-bg text-btn-danger-text hover:bg-btn-danger-hover;
+  }
+
+  .btn-ghost {
+    @apply inline-flex items-center justify-center rounded-md font-bold transition-all duration-200 cursor-pointer active:scale-[0.98] disabled:opacity-50 disabled:cursor-not-allowed select-none text-text-stress hover:bg-background-light;
+  }
 }
 
 body {

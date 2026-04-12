@@ -124,10 +124,7 @@ export default function SettingsPanel({ indices = [], className = '', _onClose }
         ))}
       </div>
 
-      <button
-        onClick={handleInitSettings}
-        className="w-full mt-4 py-2 text-center rounded border border-border-base hover:bg-background-light transition-colors text-text-stress font-medium text-xs"
-      >
+      <button onClick={handleInitSettings} className="btn-outline btn-sm w-full mt-4">
         {t('SETTINGS.INIT_SETTINGS')}
       </button>
     </div>

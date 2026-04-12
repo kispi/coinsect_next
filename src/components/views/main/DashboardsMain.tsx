@@ -36,10 +36,7 @@ export default function DashboardsMain() {
         <div className="text-text-light text-sm mb-4">
           {(error as Error)?.message || 'Unknown error occurred'}
         </div>
-        <button
-          onClick={() => refetch()}
-          className="px-4 py-2 bg-brand-primary text-white rounded hover:bg-brand-primary-hover transition-colors text-sm font-bold"
-        >
+        <button onClick={() => refetch()} className="btn-primary btn-md">
           Retry
         </button>
       </div>
