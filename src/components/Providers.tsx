@@ -1,7 +1,6 @@
 'use client'
 
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
-import { ReactQueryDevtools } from '@tanstack/react-query-devtools'
 import { useState, useEffect, useRef } from 'react'
 import { useAppStore } from '@/store/useAppStore'
 
@@ -9,9 +8,15 @@ interface ProvidersProps {
   children: React.ReactNode
   initialLocale: string
   initialMessages: any
+  initialTheme: string
 }
 
-export default function Providers({ children, initialLocale, initialMessages }: ProvidersProps) {
+export default function Providers({
+  children,
+  initialLocale,
+  initialMessages,
+  initialTheme,
+}: ProvidersProps) {
   // Move QueryClient into useState to ensure it is bounded to React Component Lifecycle
   // on the client, preventing SSR cross-request leaks and Next.js HMR/chunk cache wipes.
   const [queryClient] = useState(
@@ -29,12 +34,17 @@ export default function Providers({ children, initialLocale, initialMessages }: 
 
   const { settings, loadMessages } = useAppStore()
 
-  // Initialize store synchronously before children mount so translations don't flicker.
+  // Initialize store synchronously before children mount so translations/theme don't flicker.
   // This helps when Next.js restores route cache via backward navigation.
   const isZustandHydrated = useRef(false)
   if (!isZustandHydrated.current) {
     const store = useAppStore.getState()
     const currentMessages = store.messages
+
+    // Sync theme if provided
+    if (store.settings.theme !== initialTheme) {
+      store.setSettings({ theme: initialTheme })
+    }
 
     // Populate immediately if empty
     if (Object.keys(currentMessages).length === 0) {
@@ -60,10 +70,5 @@ export default function Providers({ children, initialLocale, initialMessages }: 
     return () => window.removeEventListener('pageshow', handlePageShow)
   }, [settings.locale, loadMessages, queryClient])
 
-  return (
-    <QueryClientProvider client={queryClient}>
-      {children}
-      <ReactQueryDevtools initialIsOpen={false} />
-    </QueryClientProvider>
-  )
+  return <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>
 }

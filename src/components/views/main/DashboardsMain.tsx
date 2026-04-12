@@ -1,6 +1,5 @@
 'use client'
 
-import React from 'react'
 import { useDashboards } from '@/hooks/api/useDashboards'
 import { useBoardPosts } from '@/hooks/api/useBoardPosts'
 import SectionNews from './SectionNews'

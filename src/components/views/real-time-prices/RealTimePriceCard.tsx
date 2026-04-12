@@ -1,8 +1,9 @@
 import React, { useMemo } from 'react'
 import { useMarketStore } from '@/store/useMarketStore'
 import { useAppStore } from '@/store/useAppStore'
-
 import { useFormatNumber } from '@/hooks/useFormatNumber'
+import { ui } from '@/lib/ui'
+import { useI18n } from '@/hooks/useI18n'
 
 interface Props {
   symbol: string
@@ -11,6 +12,8 @@ interface Props {
 export default function RealTimePriceCard({ symbol }: Props) {
   const { setSettings } = useAppStore()
   const documentTitleTicker = useAppStore((state) => state.settings.documentTitleTicker)
+
+  const { t } = useI18n()
 
   const { formatPrice } = useFormatNumber()
 
@@ -44,6 +47,8 @@ export default function RealTimePriceCard({ symbol }: Props) {
     if (tickerBinance?.price) {
       setSettings({ documentTitleTicker: symbol })
       // Usually there's a toast here, omitting for simplicity or add later
+
+      ui.toast.success(t('TOAST.REAL_TIME_TICKER_SELECTED', { symbol }))
     }
   }
 

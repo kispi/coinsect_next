@@ -41,7 +41,6 @@ export function translate(messages: any, path: string, params?: Record<string, a
     Object.keys(params).forEach((key) => {
       // Supporting both {key} and :key patterns for flexibility
       result = result.replace(new RegExp(`\\{${key}\\}`, 'g'), String(params[key]))
-      result = result.replace(new RegExp(`:${key}`, 'g'), String(params[key]))
     })
   }
 

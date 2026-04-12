@@ -41,15 +41,20 @@ function getServerMessages(locale: string) {
 }
 
 export default async function RootLayout({ children }: RootLayoutProps) {
-  // Read locale from cookie for SSR, fallback to 'ko'
+  // Read locale and theme from cookie for SSR, fallback to defaults
   const cookieStore = await cookies()
   const locale = cookieStore.get('NEXT_LOCALE')?.value || 'ko'
+  const theme = cookieStore.get('NEXT_THEME')?.value || 'dark'
   const messages = getServerMessages(locale)
 
   return (
-    <html lang={locale} className={`${geistSans.variable} ${geistMono.variable}`}>
+    <html
+      lang={locale}
+      className={`${geistSans.variable} ${geistMono.variable} ${theme === 'dark' ? 'dark' : ''}`}
+      style={{ colorScheme: theme }}
+    >
       <body className="antialiased min-h-screen bg-background text-text-base">
-        <Providers initialLocale={locale} initialMessages={messages}>
+        <Providers initialLocale={locale} initialMessages={messages} initialTheme={theme}>
           <ThemeHandler />
           <UIRoot />
           <AppHeader />

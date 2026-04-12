@@ -58,5 +58,8 @@
       "KRW": "KRW",
       "USD": "USD"
     }
+  },
+  "TOAST": {
+    "REAL_TIME_TICKER_SELECTED": "{symbol}가 실시간 티커로 브라우저 타이틀에 노출됩니다."
   }
 }

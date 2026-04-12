@@ -81,7 +81,7 @@ export default function CPositionContextMenu({ position, triggerRef }: Props) {
           className={`flex items-center gap-2 p-2 text-xs text-text-stress transition-colors ${!position.link ? 'opacity-30 cursor-not-allowed' : 'hover:bg-brand-primary hover:text-white cursor-pointer'}`}
         >
           <Home className="w-3.5 h-3.5" />
-          {i18n('GO_TO_PLATFORM')}
+          {i18n('COMMON.GO_TO_PLATFORM')}
         </div>
         {position.editable && (
           <div
@@ -89,7 +89,7 @@ export default function CPositionContextMenu({ position, triggerRef }: Props) {
             className="flex items-center gap-2 p-2 text-xs text-text-stress hover:bg-brand-primary hover:text-white cursor-pointer transition-colors"
           >
             <Pencil className="w-3.5 h-3.5" />
-            {i18n('REQUEST_EDIT')}
+            {i18n('COMMON.REQUEST_EDIT')}
           </div>
         )}
       </div>

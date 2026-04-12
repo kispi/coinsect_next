@@ -1,8 +1,9 @@
-# 20260411224900 next-intl Removal & Custom i18n Implementation
+# next-intl Removal & Custom i18n Implementation
 
-`next-intl` 라이브러리를 완전히 제거하고, Zustand 스토어와 연동되는 **커스텀 전역 i18n 시스템**을 구축했습니다. 이제 모든 컴포넌트에서 `t('SETTINGS.VALUES.FAVORITES')`와 같이 전체 경로(Full Path)를 사용하여 직관적으로 번역 데이터를 호출할 수 있습니다.
+## 작업 목적 및 요구 사항
+`next-intl` 라이브러리를 완전히 제거하고, Zustand 스토어와 연동되는 **커스텀 전역 i18n 시스템**을 구축하여 번역 데이터 관리의 유연성과 성능을 확보함. 이제 모든 컴포넌트에서 `t('SETTINGS.VALUES.FAVORITES')`와 같이 전체 경로(Full Path)를 사용하여 직관적으로 번역 데이터를 호출할 수 있습니다.
 
-## 주요 작업 내역
+## 핵심 구현 내용
 
 ### 1. 커스텀 i18n 코어 로직 (`src/lib/i18n.ts`)
 - 도트 표기법(A.B.C)을 해석하여 중첩된 JSON 구조에서 값을 찾아오는 `getNestedValue` 유틸리티를 구현했습니다.

@@ -53,7 +53,7 @@ export default function AppHeader() {
       <div className="flex justify-between items-center py-2">
         <BannerMarketIndices />
         {/* Chat users logic (stub) */}
-        <div className="flex items-center text-[11px] md:text-xs font-mono cursor-pointer text-text-light hover:text-text-base transition-colors shrink-0 ml-4">
+        <div className="flex items-center text-[11px] md:text-xs font-mono cursor-pointer text-text-stress hover:text-text-base transition-colors shrink-0 ml-4">
           <Users className="w-3 h-3 md:w-4 md:h-4 mr-1" />
           <span>0</span>
         </div>

@@ -58,5 +58,8 @@
       "KRW": "KRW",
       "USD": "USD"
     }
+  },
+  "TOAST": {
+    "REAL_TIME_TICKER_SELECTED": "{symbol} is set as real time ticker for browser title."
   }
 }

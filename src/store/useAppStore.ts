@@ -106,9 +106,9 @@ export const useAppStore = create<AppState>((set, get) => ({
       const updatedSettings = { ...state.settings, ...newSettings }
       metaStorage.setItem('settings', updatedSettings)
 
-      // Sync basic settings to cookies if needed for SSR (currently focusing on locale)
+      // Sync basic settings to cookies if needed for SSR
       if (newSettings.theme) {
-        // Option to sync theme to cookie too if needed
+        setCookie('NEXT_THEME', newSettings.theme)
       }
 
       return { settings: updatedSettings }
@@ -144,5 +144,6 @@ if (typeof window !== 'undefined') {
     useAppStore.setState({ settings: savedSettings })
     // Ensure cookie is in sync with localStorage on load
     setCookie('NEXT_LOCALE', savedSettings.locale)
+    setCookie('NEXT_THEME', savedSettings.theme)
   }
 }
