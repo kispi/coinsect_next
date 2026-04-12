@@ -60,7 +60,7 @@ export default function ModalPositionRequestEdit({ options, onClose }: Props) {
   }
 
   return (
-    <div className="modal-position-request-edit w-full max-w-[360px]">
+    <div className="modal-position-request-edit w-full max-w-[360px] bg-background-base border border-border-base rounded shadow-2xl overflow-hidden">
       {/* Modal Header */}
       <div className="flex items-center justify-between p-4 border-b border-border-base bg-background-light/30">
         <h3 className="font-bold text-text-stress">
@@ -68,7 +68,7 @@ export default function ModalPositionRequestEdit({ options, onClose }: Props) {
         </h3>
         <button
           onClick={onClose}
-          className="p-1 hover:bg-background-light rounded transition-colors"
+          className="p-1 hover:bg-background-light rounded transition-colors cursor-pointer"
         >
           <X className="w-5 h-5 text-text-muted" />
         </button>
@@ -149,14 +149,14 @@ export default function ModalPositionRequestEdit({ options, onClose }: Props) {
       <div className="flex justify-center gap-3 p-4 border-t border-border-base">
         <button
           onClick={onClose}
-          className="px-8 py-2.5 rounded font-bold text-sm bg-background-light text-text-base hover:bg-zinc-200 dark:hover:bg-zinc-700 transition-colors"
+          className="px-8 py-2.5 rounded font-bold text-sm bg-background-light text-text-base hover:bg-zinc-200 dark:hover:bg-zinc-700 transition-colors cursor-pointer"
         >
           {t('COMMON.CANCEL')}
         </button>
         <button
           onClick={handleSubmit}
           disabled={loading}
-          className="px-8 py-2.5 rounded font-bold text-sm bg-brand-primary text-white hover:opacity-90 transition-all disabled:opacity-50"
+          className="px-8 py-2.5 rounded font-bold text-sm bg-brand-primary text-white hover:opacity-90 transition-all disabled:opacity-50 cursor-pointer"
         >
           {loading ? '...' : t('COMMON.CONFIRM')}
         </button>

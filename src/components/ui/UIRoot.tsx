@@ -1,134 +1,73 @@
 'use client'
 
-import React, { useEffect, useRef } from 'react'
+import React from 'react'
 import { useUIStore, ModalConfig, ToastConfig, SnackbarConfig } from '@/store/useUIStore'
 import { X, Info, AlertTriangle } from 'lucide-react'
 import { useI18n } from '@/hooks/useI18n'
 
 /**
- * ModalRenderer: Replicates ModalBasic.vue
+ * ModalRenderer: Replicates Modal system with animations and backdrop support
  */
 const ModalRenderer = ({ modal }: { modal: ModalConfig }) => {
   const removeModal = useUIStore((state) => state.removeModal)
-  const { i18n } = useI18n()
 
   const handleClose = (value?: any) => {
     if (modal.resolve) modal.resolve(value)
     removeModal(modal.id)
   }
 
-  // Handle custom components
-  if (modal.component) {
-    const Component = modal.component
-    return (
-      <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm animate-in fade-in duration-200">
-        <div
-          className="bg-background-base border border-border-base rounded shadow-2xl overflow-hidden animate-in zoom-in-95 duration-200"
-          style={modal.style}
-        >
-          <Component options={modal.options} onClose={handleClose} />
-        </div>
-      </div>
-    )
+  const onBackdropClick = (e: React.MouseEvent) => {
+    if (e.target === e.currentTarget) {
+      handleClose()
+    }
   }
 
-  const buttons = modal.buttons || []
+  if (!modal.component) return null
+  const Component = modal.component
 
   return (
-    <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm animate-in fade-in duration-200">
-      <div
-        className="bg-background-base border border-border-base rounded shadow-2xl w-full max-w-[480px] overflow-hidden animate-in zoom-in-95 duration-200"
-        style={modal.style}
-      >
-        {/* Modal Header */}
-        <div className="flex items-center justify-between p-4 border-b border-border-base bg-background-light/30">
-          <h3 className={`font-bold text-text-stress ${modal.titleClass || ''}`}>
-            {modal.title ? i18n(modal.title) : ''}
-          </h3>
-          <button
-            onClick={() => handleClose()}
-            className="p-1 hover:bg-background-light rounded transition-colors"
-          >
-            <X className="w-5 h-5 text-text-muted" />
-          </button>
+    <div
+      className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-black/60 backdrop-blur-md animate-backdrop-in"
+      onClick={onBackdropClick}
+    >
+      <div className="animate-modal-in w-full flex justify-center pointer-events-none">
+        <div className="pointer-events-auto">
+          <Component options={modal.options} onClose={handleClose} />
         </div>
-
-        {/* Modal Body */}
-        <div className={`p-6 text-sm text-text-base whitespace-pre-line ${modal.bodyClass || ''}`}>
-          {typeof modal.body === 'string' ? (
-            <div dangerouslySetInnerHTML={{ __html: modal.body }} />
-          ) : (
-            modal.body
-          )}
-        </div>
-
-        {/* Modal Buttons */}
-        {buttons.length > 0 && (
-          <div className="flex justify-center gap-4 p-4 mb-4">
-            {buttons.map((btn, i) => (
-              <button
-                key={i}
-                onClick={() => {
-                  if (btn.onClick) btn.onClick()
-                  handleClose(i)
-                }}
-                className={`min-w-[120px] px-10 py-3 rounded font-bold transition-all ${
-                  btn.class?.includes('primary')
-                    ? 'bg-brand-primary text-white hover:opacity-90 shadow-sm'
-                    : 'bg-background-light text-text-base hover:bg-zinc-200 dark:hover:bg-zinc-700 border border-border-base'
-                } ${btn.class || ''}`}
-              >
-                {i18n(btn.text)}
-              </button>
-            ))}
-          </div>
-        )}
       </div>
     </div>
   )
 }
 
 /**
- * ToastRenderer: Replicates AppToast.vue
+ * ToastRenderer: Replicates AppToast.vue with top-center stacking and animations
  */
-const ToastRenderer = ({ toast }: { toast: ToastConfig }) => {
-  const setToast = useUIStore((state) => state.setToast)
+const ToastRenderer = ({ toast, index }: { toast: ToastConfig; index: number }) => {
+  const removeToast = useUIStore((state) => state.removeToast)
   const { i18n } = useI18n()
-  const timeoutRef = useRef<NodeJS.Timeout | null>(null)
-
-  useEffect(() => {
-    if (toast.show && (toast.duration ?? 0) >= 0) {
-      if (timeoutRef.current) clearTimeout(timeoutRef.current)
-      timeoutRef.current = setTimeout(() => {
-        setToast(null)
-      }, toast.duration || 3000)
-    }
-    return () => {
-      if (timeoutRef.current) clearTimeout(timeoutRef.current)
-    }
-  }, [toast.show, toast.duration, setToast])
-
-  if (!toast.show || !toast.html) return null
 
   const typeStyles = {
-    success: 'bg-zinc-700 text-white',
-    error: 'bg-rose-600 text-white',
-    info: 'bg-sky-600 text-white',
-    warning: 'bg-amber-600 text-white',
+    success: 'bg-zinc-800 text-white border-green-500/30',
+    error: 'bg-rose-900/90 text-white border-rose-500/30',
+    info: 'bg-sky-900/90 text-white border-sky-500/30',
+    warning: 'bg-amber-900/90 text-white border-amber-500/30',
   }
 
   const handleAction = () => {
     if (toast.action?.handler) {
       toast.action.handler()
-      setToast(null)
+      removeToast(toast.id)
     }
   }
 
   return (
-    <div className="fixed bottom-16 left-1/2 -translate-x-1/2 z-[110] w-full max-w-[480px] px-4 animate-in slide-in-from-bottom-8 duration-300">
+    <div
+      className="fixed left-1/2 -translate-x-1/2 z-[110] w-full max-w-[400px] px-4 animate-toast-in pointer-events-auto"
+      style={{ top: `${24 + index * 60}px` }}
+    >
       <div
         className={`
-        flex items-center gap-4 px-6 py-4 rounded shadow-2xl border border-white/10
+        flex items-center gap-3 px-5 py-3 rounded-lg shadow-2xl border backdrop-blur-md
         ${typeStyles[toast.type || 'success']}
       `}
       >
@@ -139,7 +78,7 @@ const ToastRenderer = ({ toast }: { toast: ToastConfig }) => {
         {toast.action?.label && (
           <button
             onClick={handleAction}
-            className="px-3 py-1.5 border border-white rounded font-bold text-xs hover:bg-white/10 transition-colors"
+            className="px-3 py-1.5 border border-white/20 rounded-md font-bold text-xs hover:bg-white/10 transition-colors cursor-pointer"
           >
             {i18n(toast.action.label)}
           </button>
@@ -158,12 +97,12 @@ const SnackbarRenderer = ({ snackbar }: { snackbar: SnackbarConfig }) => {
   return (
     <div
       className={`
-      flex items-center justify-between gap-3 px-4 py-3 rounded shadow-xl border border-white/10
-      bg-zinc-800/95 text-white min-w-[320px] animate-in slide-in-from-right-full duration-500
-      ${snackbar.type === 'warning' ? 'bg-amber-600/95' : ''}
+      flex items-center justify-between gap-3 px-4 py-3 rounded-lg shadow-xl border border-white/10
+      bg-zinc-900/95 text-white min-w-[320px] animate-in slide-in-from-right-full duration-500
+      ${snackbar.type === 'warning' ? 'bg-amber-700/95' : ''}
     `}
     >
-      <div className="flex items-center gap-3 overflow-hidden">
+      <div className="flex items-center gap-3 overflow-hidden text-sm">
         {snackbar.type === 'info' && <Info className="w-4 h-4 flex-shrink-0" />}
         {snackbar.type === 'warning' && <AlertTriangle className="w-4 h-4 flex-shrink-0" />}
         <div
@@ -173,7 +112,7 @@ const SnackbarRenderer = ({ snackbar }: { snackbar: SnackbarConfig }) => {
       </div>
       <button
         onClick={() => removeSnackbar(snackbar.id)}
-        className="p-1 hover:bg-white/20 rounded transition-colors flex-shrink-0"
+        className="p-1 hover:bg-white/20 rounded-full transition-colors flex-shrink-0 cursor-pointer"
       >
         <X className="w-4 h-4" />
       </button>
@@ -183,7 +122,7 @@ const SnackbarRenderer = ({ snackbar }: { snackbar: SnackbarConfig }) => {
 
 export default function UIRoot() {
   const modals = useUIStore((state) => state.modals)
-  const toast = useUIStore((state) => state.toast)
+  const toasts = useUIStore((state) => state.toasts)
   const snackbars = useUIStore((state) => state.snackbars)
 
   return (
@@ -193,8 +132,12 @@ export default function UIRoot() {
         <ModalRenderer key={modal.id} modal={modal} />
       ))}
 
-      {/* Single Global Toast */}
-      <ToastRenderer toast={toast} />
+      {/* Stacked Toasts at Top Center */}
+      <div className="fixed inset-0 pointer-events-none z-[110]">
+        {toasts.map((toast, index) => (
+          <ToastRenderer key={toast.id} toast={toast} index={index} />
+        ))}
+      </div>
 
       {/* Stacked Snackbars */}
       <div className="fixed bottom-6 right-6 z-[105] flex flex-col gap-2">

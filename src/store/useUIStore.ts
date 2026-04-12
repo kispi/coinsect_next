@@ -9,19 +9,20 @@ export type ModalButton = {
 export type ModalConfig = {
   id: string
   title?: string
-  body: string | React.ReactNode
+  body?: string | React.ReactNode
   buttons?: ModalButton[]
   component?: React.ComponentType<any>
   options?: any
   resolve?: (value: any) => void
-  style?: any
+  style?: React.CSSProperties
   bodyClass?: string
   titleClass?: string
+  closeOnBackdrop?: boolean
 }
 
 export type ToastConfig = {
-  show: boolean
-  html: string | null
+  id: string
+  html: string
   type?: 'success' | 'error' | 'info' | 'warning'
   duration?: number
   action?: {
@@ -40,14 +41,15 @@ export type SnackbarConfig = {
 
 interface UIState {
   modals: ModalConfig[]
-  toast: ToastConfig
+  toasts: ToastConfig[]
   snackbars: SnackbarConfig[]
 
   addModal: (modal: Omit<ModalConfig, 'id'>) => string
   removeModal: (id: string) => void
   removeAllModals: () => void
 
-  setToast: (toast: Partial<ToastConfig> | null) => void
+  addToast: (toast: Omit<ToastConfig, 'id'>) => string
+  removeToast: (id: string) => void
 
   addSnackbar: (snackbar: Omit<SnackbarConfig, 'id'>) => string
   removeSnackbar: (id: string) => void
@@ -55,14 +57,7 @@ interface UIState {
 
 export const useUIStore = create<UIState>((set) => ({
   modals: [],
-  toast: {
-    show: false,
-    html: null,
-    action: {
-      label: null,
-      handler: null,
-    },
-  },
+  toasts: [],
   snackbars: [],
 
   addModal: (modal) => {
@@ -76,21 +71,20 @@ export const useUIStore = create<UIState>((set) => ({
     })),
   removeAllModals: () => set({ modals: [] }),
 
-  setToast: (payload) => {
-    if (!payload) {
-      set({
-        toast: {
-          show: false,
-          html: null,
-          action: { label: null, handler: null },
-        },
-      })
-      return
+  addToast: (toast) => {
+    const id = Math.random().toString(36).substring(7)
+    set((state) => ({ toasts: [...state.toasts, { ...toast, id }] }))
+    if ((toast.duration || 3000) > 0) {
+      setTimeout(() => {
+        set((s) => ({ toasts: s.toasts.filter((t) => t.id !== id) }))
+      }, toast.duration || 3000)
     }
-    set((state) => ({
-      toast: { ...state.toast, ...payload, show: true },
-    }))
+    return id
   },
+  removeToast: (id) =>
+    set((state) => ({
+      toasts: state.toasts.filter((t) => t.id !== id),
+    })),
 
   addSnackbar: (snackbar) => {
     const id = Math.random().toString(36).substring(7)
