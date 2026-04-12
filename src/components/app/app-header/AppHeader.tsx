@@ -4,7 +4,7 @@ import { useRef, useState } from 'react'
 import { Share2, Settings, Bell, User, Menu, X, Users } from 'lucide-react'
 import { useI18n } from '@/hooks/useI18n'
 import { ui } from '@/lib/ui'
-import Dropdown from '@/components/common/Dropdown'
+import WrapperDropdown from '@/components/common/WrapperDropdown'
 import SettingsPanel from './SettingsPanel'
 import BannerMarketIndices from './BannerMarketIndices'
 import Link from 'next/link'
@@ -90,13 +90,13 @@ export default function AppHeader() {
               >
                 <Settings className="w-5 h-5" />
               </div>
-              <Dropdown
+              <WrapperDropdown
                 isOpen={showSettings}
                 onClose={() => setShowSettings(false)}
                 triggerRef={refIconSettings}
               >
                 <SettingsPanel indices={[0, 1, 2, 3, 4]} onClose={() => setShowSettings(false)} />
-              </Dropdown>
+              </WrapperDropdown>
             </div>
 
             <div className="relative">
@@ -107,13 +107,13 @@ export default function AppHeader() {
               >
                 <Bell className="w-5 h-5" />
               </div>
-              <Dropdown
+              <WrapperDropdown
                 isOpen={showNotifications}
                 onClose={() => setShowNotifications(false)}
                 triggerRef={refIconNotifications}
               >
                 <AppNotifications />
-              </Dropdown>
+              </WrapperDropdown>
             </div>
 
             <div className="relative">
@@ -131,7 +131,7 @@ export default function AppHeader() {
                 )}
               </div>
               {me && (
-                <Dropdown
+                <WrapperDropdown
                   isOpen={showMenuAccount}
                   onClose={() => setShowMenuAccount(false)}
                   triggerRef={refIconMenuAccount}
@@ -156,7 +156,7 @@ export default function AppHeader() {
                       {t('COMMON.LOGOUT')}
                     </li>
                   </ul>
-                </Dropdown>
+                </WrapperDropdown>
               )}
             </div>
           </div>

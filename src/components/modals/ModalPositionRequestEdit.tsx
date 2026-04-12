@@ -6,6 +6,7 @@ import { useI18n } from '@/hooks/useI18n'
 import { api } from '@/lib/api'
 import { ui } from '@/lib/ui'
 import type { RealTimePosition } from '@/types'
+import AppToggler from '@/components/common/AppToggler'
 
 interface Props {
   options: {
@@ -136,13 +137,10 @@ export default function ModalPositionRequestEdit({ options, onClose }: Props) {
           onClick={() => setPayload((prev) => ({ ...prev, onAir: !prev.onAir }))}
         >
           <label className="text-sm font-medium cursor-pointer">{t('COMMON.ON_AIR')}</label>
-          <div
-            className={`w-10 h-5 rounded-full relative transition-colors ${payload.onAir ? 'bg-brand-primary' : 'bg-zinc-600'}`}
-          >
-            <div
-              className={`absolute top-1 w-3 h-3 bg-white rounded-full transition-all ${payload.onAir ? 'left-6' : 'left-1'}`}
-            />
-          </div>
+          <AppToggler
+            value={payload.onAir}
+            onChange={(val) => setPayload((prev) => ({ ...prev, onAir: val }))}
+          />
         </div>
       </div>
 

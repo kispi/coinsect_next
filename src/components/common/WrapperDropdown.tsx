@@ -13,15 +13,14 @@ interface Props {
 }
 
 /**
- * Dropdown
+ * WrapperDropdown
  *
  * Replaces Vue's WrapperDropdownOverlay.
- * Uses a simpler container-relative absolute positioning paired with click-outside detection,
- * which is the standard best practice in React (vs fixed mounting and coordinate calculations).
+ * Uses a simpler container-relative absolute positioning paired with click-outside detection.
  *
  * Simply place this right next to your trigger element inside a `relative` container!
  */
-export default function Dropdown({
+export default function WrapperDropdown({
   isOpen,
   onClose,
   align = 'right',
@@ -31,8 +30,6 @@ export default function Dropdown({
 }: Props) {
   const dropdownRef = useRef<HTMLDivElement>(null)
 
-  // If a triggerRef is provided, clicking the trigger won't instantly close the dropdown
-  // just because it's considered "outside".
   useClickOutside(
     dropdownRef,
     () => {
@@ -59,7 +56,7 @@ export default function Dropdown({
   return (
     <div
       ref={dropdownRef}
-      className={`dropdown absolute top-full mt-2 z-50 animate-in fade-in zoom-in-95 duration-200 ${getAlignmentClasses()} ${className}`}
+      className={`wrapper-dropdown absolute top-full mt-2 z-50 animate-in fade-in zoom-in-95 duration-200 ${getAlignmentClasses()} ${className}`}
     >
       <div className="bg-zinc-50 dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-md shadow-lg overflow-hidden">
         {children}
