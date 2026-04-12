@@ -1,48 +1,52 @@
-'use client';
+'use client'
 
-import { useRef, useState } from 'react';
-import { Share2, Settings, Bell, User, Menu, X, Users } from 'lucide-react';
-import { useI18n } from '@/hooks/useI18n';
-import { ui } from '@/lib/ui';
-import Dropdown from '@/components/common/Dropdown';
-import SettingsPanel from './SettingsPanel';
-import BannerMarketIndices from './BannerMarketIndices';
-import Link from 'next/link';
+import { useRef, useState } from 'react'
+import { Share2, Settings, Bell, User, Menu, X, Users } from 'lucide-react'
+import { useI18n } from '@/hooks/useI18n'
+import { ui } from '@/lib/ui'
+import Dropdown from '@/components/common/Dropdown'
+import SettingsPanel from './SettingsPanel'
+import BannerMarketIndices from './BannerMarketIndices'
+import Link from 'next/link'
 
 // Placeholder components if they don't exist yet
-const AppLogo = () => <Link href="/"><div className="font-bold text-xl ml-2 text-text-stress">COINSECT</div></Link>;
-const AppNotifications = () => <div className="p-4 w-60 text-sm">No new notifications</div>;
+const AppLogo = () => (
+  <Link href="/">
+    <div className="font-bold text-xl ml-2 text-text-stress">COINSECT</div>
+  </Link>
+)
+const AppNotifications = () => <div className="p-4 w-60 text-sm">No new notifications</div>
 
 export default function AppHeader() {
-  const { t } = useI18n();
-  const [showNavigation, setShowNavigation] = useState(false);
+  const { t } = useI18n()
+  const [showNavigation, setShowNavigation] = useState(false)
 
-  const [showSettings, setShowSettings] = useState(false);
-  const [showNotifications, setShowNotifications] = useState(false);
-  const [showMenuAccount, setShowMenuAccount] = useState(false);
+  const [showSettings, setShowSettings] = useState(false)
+  const [showNotifications, setShowNotifications] = useState(false)
+  const [showMenuAccount, setShowMenuAccount] = useState(false)
 
-  const refIconSettings = useRef<HTMLDivElement>(null);
-  const refIconNotifications = useRef<HTMLDivElement>(null);
-  const refIconMenuAccount = useRef<HTMLDivElement>(null);
+  const refIconSettings = useRef<HTMLDivElement>(null)
+  const refIconNotifications = useRef<HTMLDivElement>(null)
+  const refIconMenuAccount = useRef<HTMLDivElement>(null)
 
   // Example placeholder for user
-  const me = null;
+  const me = null
 
   const onClickShare = () => {
-    const url = window.location.origin + window.location.pathname;
+    const url = window.location.origin + window.location.pathname
     navigator.clipboard.writeText(url).then(() => {
-      ui.toast.success(t('COMMON.URL_COPIED'));
-    });
-  };
+      ui.toast.success(t('COMMON.URL_COPIED'))
+    })
+  }
 
   const onClickMenuAccount = () => {
     if (me) {
-      setShowMenuAccount((prev) => !prev);
+      setShowMenuAccount((prev) => !prev)
     } else {
       // Show login modal logic
-      ui.modal.alert(t('COMMON.SIGN_IN'));
+      ui.modal.alert(t('COMMON.SIGN_IN'))
     }
-  };
+  }
 
   return (
     <header className="w-full px-4 bg-background-base border-b border-border-base">
@@ -115,7 +119,13 @@ export default function AppHeader() {
               onClick={onClickMenuAccount}
               className={`w-8 h-8 flex items-center justify-center cursor-pointer transition-colors rounded-full text-text-stress ${showMenuAccount ? 'bg-background-light' : 'hover:bg-background-light'}`}
             >
-              {me ? <User className="w-5 h-5" /> : <div className="text-[10px] font-medium leading-tight text-center">{t('COMMON.SIGN_IN')}</div>}
+              {me ? (
+                <User className="w-5 h-5" />
+              ) : (
+                <div className="text-[10px] font-medium leading-tight text-center">
+                  {t('COMMON.SIGN_IN')}
+                </div>
+              )}
             </div>
             {me && (
               <Dropdown
@@ -124,9 +134,24 @@ export default function AppHeader() {
                 triggerRef={refIconMenuAccount}
               >
                 <ul className="min-w-[150px] py-1 text-sm text-zinc-700 dark:text-zinc-300">
-                  <li className="px-4 py-2 hover:bg-zinc-100 dark:hover:bg-zinc-800 cursor-pointer" onClick={() => setShowMenuAccount(false)}>{t('COMMON.MY_ACTIVITY')}</li>
-                  <li className="px-4 py-2 hover:bg-zinc-100 dark:hover:bg-zinc-800 cursor-pointer" onClick={() => setShowMenuAccount(false)}>{t('COMMON.ACCOUNT_SETTINGS')}</li>
-                  <li className="px-4 py-2 hover:bg-zinc-100 dark:hover:bg-zinc-800 cursor-pointer border-t border-zinc-200 dark:border-zinc-800" onClick={() => setShowMenuAccount(false)}>{t('COMMON.LOGOUT')}</li>
+                  <li
+                    className="px-4 py-2 hover:bg-zinc-100 dark:hover:bg-zinc-800 cursor-pointer"
+                    onClick={() => setShowMenuAccount(false)}
+                  >
+                    {t('COMMON.MY_ACTIVITY')}
+                  </li>
+                  <li
+                    className="px-4 py-2 hover:bg-zinc-100 dark:hover:bg-zinc-800 cursor-pointer"
+                    onClick={() => setShowMenuAccount(false)}
+                  >
+                    {t('COMMON.ACCOUNT_SETTINGS')}
+                  </li>
+                  <li
+                    className="px-4 py-2 hover:bg-zinc-100 dark:hover:bg-zinc-800 cursor-pointer border-t border-zinc-200 dark:border-zinc-800"
+                    onClick={() => setShowMenuAccount(false)}
+                  >
+                    {t('COMMON.LOGOUT')}
+                  </li>
                 </ul>
               </Dropdown>
             )}
@@ -134,5 +159,5 @@ export default function AppHeader() {
         </div>
       </div>
     </header>
-  );
+  )
 }

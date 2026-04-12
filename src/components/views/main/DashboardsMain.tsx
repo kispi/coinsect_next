@@ -1,40 +1,42 @@
-'use client';
+'use client'
 
-import React from 'react';
-import { useDashboards } from '@/hooks/api/useDashboards';
-import { useBoardPosts } from '@/hooks/api/useBoardPosts';
-import SectionNews from './SectionNews';
-import MainSection from './MainSection';
-import RecentPosts from './RecentPosts';
-import RealTimePriceCards from '../real-time-prices/RealTimePriceCards';
-import CPosition from './CPosition';
-import WhaleAlertItem from './WhaleAlertItem';
-import { useBybitWs } from '@/hooks/websockets/useBybitWs';
-import { useGeneralWs } from '@/hooks/websockets/useGeneralWs';
+import React from 'react'
+import { useDashboards } from '@/hooks/api/useDashboards'
+import { useBoardPosts } from '@/hooks/api/useBoardPosts'
+import SectionNews from './SectionNews'
+import MainSection from './MainSection'
+import RecentPosts from './RecentPosts'
+import RealTimePriceCards from '../real-time-prices/RealTimePriceCards'
+import CPosition from './CPosition'
+import WhaleAlertItem from './WhaleAlertItem'
+import { useBybitWs } from '@/hooks/websockets/useBybitWs'
+import { useGeneralWs } from '@/hooks/websockets/useGeneralWs'
 
 export default function DashboardsMain() {
-  const { data: dashboards, isError, error, refetch } = useDashboards();
+  const { data: dashboards, isError, error, refetch } = useDashboards()
 
   // Board 1 Posts
-  const { data: board1Posts } = useBoardPosts(1, 10);
+  const { data: board1Posts } = useBoardPosts(1, 10)
 
-  const bybitMarkets = React.useMemo(() => {
-    if (!dashboards?.realTimePositions?.data) return [];
-    const set = new Set<string>();
-    dashboards.realTimePositions.data.forEach(pos => {
-      if (pos.contract) set.add(pos.contract);
-    });
-    return Array.from(set);
-  }, [dashboards?.realTimePositions?.data]);
+  const bybitMarkets = (() => {
+    if (!dashboards?.realTimePositions?.data) return []
+    const set = new Set<string>()
+    dashboards.realTimePositions.data.forEach((pos) => {
+      if (pos.contract) set.add(pos.contract)
+    })
+    return Array.from(set)
+  })()
 
-  useBybitWs(bybitMarkets);
-  useGeneralWs();
+  useBybitWs(bybitMarkets)
+  useGeneralWs()
 
   if (isError) {
     return (
       <div className="w-full flex flex-col items-center justify-center p-12 bg-background-light rounded-lg border border-red-500/20">
         <div className="text-red-500 font-bold mb-2">Failed to load dashboard data</div>
-        <div className="text-text-light text-sm mb-4">{(error as Error)?.message || 'Unknown error occurred'}</div>
+        <div className="text-text-light text-sm mb-4">
+          {(error as Error)?.message || 'Unknown error occurred'}
+        </div>
         <button
           onClick={() => refetch()}
           className="px-4 py-2 bg-brand-primary text-white rounded hover:bg-brand-primary-hover transition-colors text-sm font-bold"
@@ -42,7 +44,7 @@ export default function DashboardsMain() {
           Retry
         </button>
       </div>
-    );
+    )
   }
 
   if (!dashboards) {
@@ -55,10 +57,8 @@ export default function DashboardsMain() {
           ))}
         </div>
       </div>
-    );
+    )
   }
-
-
 
   return (
     <div className="w-full">
@@ -80,7 +80,9 @@ export default function DashboardsMain() {
           link="/prices"
           image="/images/binance.svg" // Note: adjust path if needed, usually kept in public/images
         >
-          <RealTimePriceCards symbols={['BTC', 'ETH', 'BNB', 'SOL', 'XRP', 'DOGE', 'TRX', 'ADA', 'SUI']} />
+          <RealTimePriceCards
+            symbols={['BTC', 'ETH', 'BNB', 'SOL', 'XRP', 'DOGE', 'TRX', 'ADA', 'SUI']}
+          />
         </MainSection>
 
         {/* REAL_TIME_POSITIONS */}
@@ -111,5 +113,5 @@ export default function DashboardsMain() {
         </MainSection>
       </div>
     </div>
-  );
+  )
 }

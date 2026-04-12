@@ -1,4 +1,4 @@
-import { useUIStore, ModalConfig, ToastConfig, SnackbarConfig } from '@/store/useUIStore';
+import { useUIStore, ToastConfig } from '@/store/useUIStore'
 
 export const ui = {
   modal: {
@@ -9,8 +9,8 @@ export const ui = {
           body,
           buttons: [{ text: 'COMMON.OK', class: 'btn-primary', onClick: () => resolve(true) }],
           resolve,
-        });
-      });
+        })
+      })
     },
     confirm: (options: { title?: string; body: string; class?: string }) => {
       return new Promise((resolve) => {
@@ -19,11 +19,15 @@ export const ui = {
           body: options.body,
           buttons: [
             { text: 'COMMON.CANCEL', class: 'btn-default', onClick: () => resolve(0) },
-            { text: 'COMMON.CONFIRM', class: options.class ? `btn-${options.class}` : 'btn-primary', onClick: () => resolve(1) },
+            {
+              text: 'COMMON.CONFIRM',
+              class: options.class ? `btn-${options.class}` : 'btn-primary',
+              onClick: () => resolve(1),
+            },
           ],
           resolve,
-        });
-      });
+        })
+      })
     },
     custom: (component: string, options?: any) => {
       return new Promise((resolve) => {
@@ -32,8 +36,8 @@ export const ui = {
           body: '',
           options,
           resolve,
-        });
-      });
+        })
+      })
     },
   },
   toast: {
@@ -43,21 +47,21 @@ export const ui = {
         type: options.type || 'success',
         duration: options.duration || 3000,
         action: options.action,
-      });
+      })
     },
     success: (html: string, duration?: number) => {
-      ui.toast.show(html, { type: 'success', duration });
+      ui.toast.show(html, { type: 'success', duration })
     },
     error: (html: string, duration?: number) => {
-      ui.toast.show(html, { type: 'error', duration });
+      ui.toast.show(html, { type: 'error', duration })
     },
   },
   snackbar: {
     info: (html: string, duration?: number) => {
-      useUIStore.getState().addSnackbar({ html, class: 'info', type: 'info', duration });
+      useUIStore.getState().addSnackbar({ html, class: 'info', type: 'info', duration })
     },
     warning: (html: string, duration?: number) => {
-      useUIStore.getState().addSnackbar({ html, class: 'warning', type: 'warning', duration });
+      useUIStore.getState().addSnackbar({ html, class: 'warning', type: 'warning', duration })
     },
-  }
-};
+  },
+}

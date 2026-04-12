@@ -1,37 +1,37 @@
-'use client';
+'use client'
 
-import { useEffect } from 'react';
-import { useQueryClient } from '@tanstack/react-query';
+import { useEffect } from 'react'
+import { useQueryClient } from '@tanstack/react-query'
 
 export function useGeneralWs() {
-  const queryClient = useQueryClient();
+  const queryClient = useQueryClient()
 
   useEffect(() => {
-    const endpoint = process.env.NEXT_PUBLIC_API_BASE?.replace('https', 'wss');
-    const socket = new WebSocket(`${endpoint}/webchat`);
+    const endpoint = process.env.NEXT_PUBLIC_API_BASE?.replace('https', 'wss')
+    const socket = new WebSocket(`${endpoint}/webchat`)
 
     socket.onmessage = (event) => {
       try {
-        const message = JSON.parse(event.data);
+        const message = JSON.parse(event.data)
 
         // Handle real-time position updates
         if (message.type === 'alert' && message.meta?.$$alertType === 'realTimePosition') {
-          const newPos = message.meta;
+          const newPos = message.meta
 
           queryClient.setQueryData(['dashboards', 'main'], (old: any) => {
-            if (!old) return old;
+            if (!old) return old
 
-            const positionData = old.realTimePositions?.data || [];
-            let newData = [...positionData];
+            const positionData = old.realTimePositions?.data || []
+            let newData = [...positionData]
 
             if (newPos.$$deleted) {
-              newData = newData.filter(p => p.name !== newPos.name);
+              newData = newData.filter((p) => p.name !== newPos.name)
             } else {
-              const idx = newData.findIndex(p => p.name === newPos.name);
+              const idx = newData.findIndex((p) => p.name === newPos.name)
               if (idx > -1) {
-                newData[idx] = { ...newData[idx], ...newPos };
+                newData[idx] = { ...newData[idx], ...newPos }
               } else {
-                newData.push(newPos);
+                newData.push(newPos)
               }
             }
 
@@ -40,29 +40,29 @@ export function useGeneralWs() {
               realTimePositions: {
                 ...old.realTimePositions,
                 data: newData,
-                lastUpdate: new Date().toISOString()
-              }
-            };
-          });
+                lastUpdate: new Date().toISOString(),
+              },
+            }
+          })
         }
       } catch (e) {
-        console.error('Error parsing general ws message', e);
+        console.error('Error parsing general ws message', e)
       }
-    };
+    }
 
     socket.onopen = () => {
       // Vue code pings every 30s
       const pingId = setInterval(() => {
         if (socket.readyState === WebSocket.OPEN) {
-          socket.send(JSON.stringify({ type: 'ping', user: { path: window.location.pathname } }));
+          socket.send(JSON.stringify({ type: 'ping', user: { path: window.location.pathname } }))
         }
-      }, 30000);
+      }, 30000)
 
-      socket.onclose = () => clearInterval(pingId);
-    };
+      socket.onclose = () => clearInterval(pingId)
+    }
 
     return () => {
-      socket.close();
-    };
-  }, [queryClient]);
+      socket.close()
+    }
+  }, [queryClient])
 }

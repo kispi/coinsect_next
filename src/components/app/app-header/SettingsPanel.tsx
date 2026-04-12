@@ -1,19 +1,19 @@
-'use client';
+'use client'
 
-import { useMemo } from 'react';
-import { useAppStore, CoinsectSetting } from '@/store/useAppStore';
-import { useI18n } from '@/hooks/useI18n';
-import { ui } from '@/lib/ui';
+import { useMemo } from 'react'
+import { useAppStore, CoinsectSetting } from '@/store/useAppStore'
+import { useI18n } from '@/hooks/useI18n'
+import { ui } from '@/lib/ui'
 
 interface Props {
-  indices?: number[];
-  className?: string;
-  onClose?: () => void;
+  indices?: number[]
+  className?: string
+  _onClose?: () => void
 }
 
-export default function SettingsPanel({ indices = [], className = '', onClose }: Props) {
-  const { settings, setSettings } = useAppStore();
-  const { t } = useI18n();
+export default function SettingsPanel({ indices = [], className = '', _onClose }: Props) {
+  const { settings, setSettings } = useAppStore()
+  const { t } = useI18n()
 
   const settingItems = useMemo(() => {
     const list = [
@@ -73,39 +73,41 @@ export default function SettingsPanel({ indices = [], className = '', onClose }:
           { title: 'SETTINGS.VALUES.SECONDS', value: 5000, params: { count: 5 } },
         ],
       },
-    ];
+    ]
 
     if (indices.length > 0) {
-      return list.filter((_, idx) => indices.includes(idx));
+      return list.filter((_, idx) => indices.includes(idx))
     }
-    return list;
-  }, [indices]);
+    return list
+  }, [indices])
 
   const handleInitSettings = async () => {
     const confirmed = await ui.modal.confirm({
-      body: t('SETTINGS.MODAL_INIT_SETTINGS')
-    });
+      body: t('SETTINGS.MODAL_INIT_SETTINGS'),
+    })
 
     if (confirmed) {
-      localStorage.removeItem(`coinsect_settings`);
-      window.location.reload();
+      localStorage.removeItem(`coinsect_settings`)
+      window.location.reload()
     }
-  };
+  }
 
   return (
-    <div className={`w-[320px] p-4 text-sm text-text-stress bg-background-base border border-border-base rounded shadow-lg ${className}`}>
+    <div
+      className={`w-[320px] p-4 text-sm text-text-stress bg-background-base border border-border-base rounded shadow-lg ${className}`}
+    >
       <div className="flex flex-col gap-1">
         {settingItems.map((item) => (
           <div key={item.key} className="flex flex-row items-center justify-between py-1 px-3">
             <div className="w-[120px] font-medium opacity-80">{t(item.key)}</div>
             <div className="flex flex-1 gap-2">
               {item.values.map((opt) => {
-                const isActive = settings[item.settingsKey] === opt.value;
+                const isActive = settings[item.settingsKey] === opt.value
                 return (
                   <div
                     key={String(opt.value)}
                     onClick={() => {
-                      setSettings({ [item.settingsKey]: opt.value });
+                      setSettings({ [item.settingsKey]: opt.value })
                     }}
                     className={`
                       flex-1 flex items-center justify-center py-1 px-2 rounded cursor-pointer select-none text-[11px]
@@ -115,7 +117,7 @@ export default function SettingsPanel({ indices = [], className = '', onClose }:
                   >
                     {t(opt.title as any)}
                   </div>
-                );
+                )
               })}
             </div>
           </div>
@@ -129,5 +131,5 @@ export default function SettingsPanel({ indices = [], className = '', onClose }:
         {t('SETTINGS.INIT_SETTINGS')}
       </button>
     </div>
-  );
+  )
 }

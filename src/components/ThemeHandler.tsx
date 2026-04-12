@@ -1,19 +1,19 @@
-'use client';
+'use client'
 
-import { useEffect } from 'react';
-import { useAppStore } from '@/store/useAppStore';
+import { useEffect } from 'react'
+import { useAppStore } from '@/store/useAppStore'
 
 export default function ThemeHandler() {
-  const theme = useAppStore((state) => state.settings.theme);
+  const theme = useAppStore((state) => state.settings.theme)
 
   useEffect(() => {
-    const root = window.document.documentElement;
+    const root = window.document.documentElement
     if (theme === 'dark') {
-      root.classList.add('dark');
+      root.classList.add('dark')
     } else {
-      root.classList.remove('dark');
+      root.classList.remove('dark')
     }
-  }, [theme]);
+  }, [theme])
 
-  return null;
+  return null
 }

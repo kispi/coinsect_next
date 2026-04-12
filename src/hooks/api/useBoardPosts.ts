@@ -1,5 +1,5 @@
-import { useQuery } from '@tanstack/react-query';
-import { api } from '@/lib/api';
+import { useQuery } from '@tanstack/react-query'
+import { api } from '@/lib/api'
 
 export const useBoardPosts = (boardId: number, limit: number = 10) => {
   return useQuery({
@@ -12,9 +12,9 @@ export const useBoardPosts = (boardId: number, limit: number = 10) => {
           sort: 'id',
           order: 'desc',
         },
-      });
+      })
     },
     // Refetch every 5 minutes (300000 ms) matching the main dashboard's behavior
     refetchInterval: 300000,
-  });
-};
+  })
+}

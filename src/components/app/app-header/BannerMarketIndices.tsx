@@ -1,25 +1,25 @@
-'use client';
+'use client'
 
-import React from 'react';
-import { useIndices } from '@/hooks/api/useIndices';
-import { useI18n } from '@/hooks/useI18n';
-import { useFormatNumber } from '@/hooks/useFormatNumber';
-import { useMarketStore } from '@/store/useMarketStore';
+import React from 'react'
+import { useIndices } from '@/hooks/api/useIndices'
+import { useI18n } from '@/hooks/useI18n'
+import { useFormatNumber } from '@/hooks/useFormatNumber'
+import { useMarketStore } from '@/store/useMarketStore'
 
 export default function BannerMarketIndices() {
-  const { data: indices } = useIndices();
-  const { i18n } = useI18n();
-  const { formatCap } = useFormatNumber();
-  const usdKrw = useMarketStore((state) => state.usdKrw);
-  const setUsdKrw = useMarketStore((state) => state.setUsdKrw);
+  const { data: indices } = useIndices()
+  const { i18n } = useI18n()
+  const { formatCap } = useFormatNumber()
+  const usdKrw = useMarketStore((state) => state.usdKrw)
+  const setUsdKrw = useMarketStore((state) => state.setUsdKrw)
 
   // Sync latest USD/KRW rate from indices API
   React.useEffect(() => {
     if (indices?.basePrice) {
-      const rounded = Math.round(indices.basePrice * 10) / 10;
-      setUsdKrw(rounded);
+      const rounded = Math.round(indices.basePrice * 10) / 10
+      setUsdKrw(rounded)
     }
-  }, [indices?.basePrice, setUsdKrw]);
+  }, [indices?.basePrice, setUsdKrw])
 
   const items = [
     {
@@ -37,7 +37,7 @@ export default function BannerMarketIndices() {
       link: 'https://www.tradingview.com/chart/tKmOIPae/?symbol=CRYPTOCAP%3ATOTAL',
       value: indices ? formatCap({ cap: indices.totalMarketCap, baseCurrency: 'usd' }) : '-',
     },
-  ];
+  ]
 
   return (
     <div className="flex gap-4 overflow-x-auto no-scrollbar py-1">
@@ -54,6 +54,5 @@ export default function BannerMarketIndices() {
         </a>
       ))}
     </div>
-  );
+  )
 }
-

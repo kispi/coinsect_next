@@ -1,4 +1,4 @@
-@import "tailwindcss";
+@import 'tailwindcss';
 
 :root {
   /* Brand & Commons */
@@ -8,7 +8,7 @@
   --bitcoin: #ffbb11;
   --white: #ffffff;
   --black: #000000;
-  
+
   /* GrayScale */
   --gs-14: #141414;
   --gs-22: #222222;
@@ -62,7 +62,6 @@
   --bg-chat-message: rgba(57, 57, 57, 1);
 }
 
-
 @theme inline {
   --color-brand-primary: var(--brand-primary);
   --color-brand-primary-hover: var(--brand-primary-hover);
@@ -84,5 +83,7 @@ body {
   background: var(--background-base);
   color: var(--text-base);
   font-family: var(--font-sans), system-ui, sans-serif;
-  transition: background-color 0.3s ease, color 0.3s ease;
+  transition:
+    background-color 0.3s ease,
+    color 0.3s ease;
 }

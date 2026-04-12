@@ -1,9 +1,9 @@
-import React from 'react';
-import type { UpbitNews } from '@/types';
-import dayjs from 'dayjs';
+import React from 'react'
+import type { UpbitNews } from '@/types'
+import dayjs from 'dayjs'
 
 export default function SectionNews({ news }: { news: UpbitNews[] }) {
-  if (!news || news.length === 0) return null;
+  if (!news || news.length === 0) return null
 
   return (
     <div className="mb-4 overflow-hidden relative w-full h-8 flex items-center bg-transparent">
@@ -21,15 +21,15 @@ export default function SectionNews({ news }: { news: UpbitNews[] }) {
               ${item.is_best ? 'text-orange-500' : 'text-text-stress'}
             `}
           >
-            <div className={`
+            <div
+              className={`
               border rounded-full px-2 whitespace-nowrap
               ${item.is_best ? 'border-orange-500 bg-orange-500 text-white' : 'border-zinc-200 dark:border-zinc-700'}
-            `}>
+            `}
+            >
               {dayjs(item.created_at).format('HH:mm')}
             </div>
-            <div className="font-bold ml-2 truncate">
-              {item.title}
-            </div>
+            <div className="font-bold ml-2 truncate">{item.title}</div>
           </a>
         ))}
       </div>
@@ -46,5 +46,5 @@ export default function SectionNews({ news }: { news: UpbitNews[] }) {
         }
       `}</style>
     </div>
-  );
+  )
 }

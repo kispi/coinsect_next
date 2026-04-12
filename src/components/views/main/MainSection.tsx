@@ -1,26 +1,26 @@
-import React from 'react';
-import Link from 'next/link';
-import { ChevronRight, HelpCircle } from 'lucide-react';
-import { useI18n } from '@/hooks/useI18n';
+import React from 'react'
+import Link from 'next/link'
+import { ChevronRight, HelpCircle } from 'lucide-react'
+import { useI18n } from '@/hooks/useI18n'
 
 interface MainSectionProps {
-  title: string;
-  link?: string;
-  image?: string;
-  tooltip?: string;
-  children: React.ReactNode;
+  title: string
+  link?: string
+  image?: string
+  tooltip?: string
+  children: React.ReactNode
 }
 
 export default function MainSection({ title, link, image, tooltip, children }: MainSectionProps) {
-  const { i18n } = useI18n();
+  const { i18n } = useI18n()
   // Attempt translation mapping if needed. Just rendering title for now.
   const translatedTitle = (() => {
     try {
-      return i18n(title);
-    } catch (e) {
-      return title;
+      return i18n(title)
+    } catch (_e) {
+      return title
     }
-  })();
+  })()
 
   const content = (
     <div className="flex justify-between items-center p-2 mb-2 text-text-stress border-b border-border-base text-xs hover:bg-black/5 dark:hover:bg-white/5 transition-colors">
@@ -37,24 +37,20 @@ export default function MainSection({ title, link, image, tooltip, children }: M
         {i18n('COMMON.SEE_MORE')} <ChevronRight className="w-3 h-3 ml-1" />
       </div>
     </div>
-  );
+  )
 
   return (
     <div className="rounded-lg bg-background-light flex flex-col h-full shadow-sm overflow-hidden">
       {link ? (
         <Link href={link} className="block group">
-          <div className="group-hover:underline decoration-text-stress">
-            {content}
-          </div>
+          <div className="group-hover:underline decoration-text-stress">{content}</div>
         </Link>
       ) : (
         <div className="cursor-pointer">{content}</div>
       )}
       <div className="relative px-2 pb-2 flex-1 flex flex-col">
-        <div className="max-h-[336px] overflow-y-auto flex-1 pretty-scrollbar">
-          {children}
-        </div>
+        <div className="max-h-[336px] overflow-y-auto flex-1 pretty-scrollbar">{children}</div>
       </div>
     </div>
-  );
+  )
 }

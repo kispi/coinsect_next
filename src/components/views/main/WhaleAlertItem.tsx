@@ -1,13 +1,13 @@
-'use client';
+'use client'
 
-import type { WhaleAlert } from '@/types';
-import { STABLE_COINS } from '@/lib/constants';
-import { useFormatNumber } from '@/hooks/useFormatNumber';
-import { ChevronRight } from 'lucide-react';
-import { useAppStore } from '@/store/useAppStore';
+import type { WhaleAlert } from '@/types'
+import { STABLE_COINS } from '@/lib/constants'
+import { useFormatNumber } from '@/hooks/useFormatNumber'
+import { ChevronRight } from 'lucide-react'
+import { useAppStore } from '@/store/useAppStore'
 
 interface Props {
-  whaleAlert: WhaleAlert;
+  whaleAlert: WhaleAlert
 }
 
 const getExplorerUrl = (transaction: WhaleAlert) => {
@@ -16,72 +16,73 @@ const getExplorerUrl = (transaction: WhaleAlert) => {
     ethereum: 'https://etherscan.io/tx/0x',
     tron: 'https://tronscan.org/#/transaction/',
     ripple: 'https://xrpscan.com/tx/',
-  };
+  }
 
-  const baseUrl = urls[transaction.blockchain.toLowerCase()];
-  if (!baseUrl) return null;
+  const baseUrl = urls[transaction.blockchain.toLowerCase()]
+  if (!baseUrl) return null
 
-  return baseUrl + transaction.hash;
-};
+  return baseUrl + transaction.hash
+}
 
 const getSentiment = (whaleAlert: WhaleAlert) => {
-  const isStable = STABLE_COINS.includes(whaleAlert.symbol.toLowerCase());
-  const { fromOwnerType, toOwnerType } = whaleAlert;
+  const isStable = STABLE_COINS.includes(whaleAlert.symbol.toLowerCase())
+  const { fromOwnerType, toOwnerType } = whaleAlert
 
   if (fromOwnerType === 'exchange' && toOwnerType === 'unknown') {
-    return isStable ? 'bear' : 'bull';
+    return isStable ? 'bear' : 'bull'
   }
   if (fromOwnerType === 'unknown' && toOwnerType === 'exchange') {
-    return isStable ? 'bull' : 'bear';
+    return isStable ? 'bull' : 'bear'
   }
-  return null;
-};
+  return null
+}
 
 const displayAddressName = (transaction: WhaleAlert, target: 'from' | 'to') => {
-  const owner = target === 'from' ? transaction.fromOwner : transaction.toOwner;
-  const ownerType = target === 'from' ? transaction.fromOwnerType : transaction.toOwnerType;
+  const owner = target === 'from' ? transaction.fromOwner : transaction.toOwner
+  const ownerType = target === 'from' ? transaction.fromOwnerType : transaction.toOwnerType
 
-  return owner || (ownerType === 'unknown' ? '?' : ownerType);
-};
+  return owner || (ownerType === 'unknown' ? '?' : ownerType)
+}
 
 const elapsedTime = (timestamp: number) => {
-  const diff = Date.now() - timestamp * 1000;
-  const minutes = Math.floor(diff / 60000);
-  if (minutes < 60) return `${minutes}m ago`;
-  const hours = Math.floor(minutes / 60);
-  if (hours < 24) return `${hours}h ago`;
-  return `${Math.floor(hours / 24)}d ago`;
-};
+  const diff = Date.now() - timestamp * 1000
+  const minutes = Math.floor(diff / 60000)
+  if (minutes < 60) return `${minutes}m ago`
+  const hours = Math.floor(minutes / 60)
+  if (hours < 24) return `${hours}h ago`
+  return `${Math.floor(hours / 24)}d ago`
+}
 
 export default function WhaleAlertItem({ whaleAlert }: Props) {
-  const { formatPrice } = useFormatNumber();
-  const sentiment = getSentiment(whaleAlert);
-  const url = getExplorerUrl(whaleAlert);
+  const { formatPrice } = useFormatNumber()
+  const sentiment = getSentiment(whaleAlert)
+  const url = getExplorerUrl(whaleAlert)
 
-  const currency = useAppStore((state) => state.settings.currency);
+  const currency = useAppStore((state) => state.settings.currency)
 
   const displayAmount = () => {
-    const parsed = parseFloat(whaleAlert.amount) || 0;
-    if (!parsed) return '?';
+    const parsed = parseFloat(whaleAlert.amount) || 0
+    if (!parsed) return '?'
 
-    const isStable = STABLE_COINS.includes(whaleAlert.symbol.toLowerCase());
+    const isStable = STABLE_COINS.includes(whaleAlert.symbol.toLowerCase())
     return isStable
       ? Math.round(parsed).toLocaleString()
       : parsed.toLocaleString(undefined, {
-        minimumFractionDigits: 4,
-        maximumFractionDigits: 4,
-      });
-  };
+          minimumFractionDigits: 4,
+          maximumFractionDigits: 4,
+        })
+  }
 
-  const sentimentClass = sentiment === 'bull'
-    ? 'bg-price-up-bg text-text-stress'
-    : sentiment === 'bear'
-      ? 'bg-price-down-bg text-text-stress'
-      : 'bg-background-light text-text-stress';
+  const sentimentClass =
+    sentiment === 'bull'
+      ? 'bg-price-up-bg text-text-stress'
+      : sentiment === 'bear'
+        ? 'bg-price-down-bg text-text-stress'
+        : 'bg-background-light text-text-stress'
 
   const onClick = () => {
-    if (url) window.open(url, '_blank');
-  };
+    if (url) window.open(url, '_blank')
+  }
 
   return (
     <div
@@ -106,17 +107,17 @@ export default function WhaleAlertItem({ whaleAlert }: Props) {
             {displayAmount()} {whaleAlert.symbol}
           </span>
           <span className="opacity-70 whitespace-nowrap uppercase">
-            ({currency} {formatPrice({
+            ({currency}{' '}
+            {formatPrice({
               price: parseFloat(whaleAlert.amountUsd),
               baseCurrency: 'usd',
-              fracs: 0
-            })})
+              fracs: 0,
+            })}
+            )
           </span>
         </div>
         <div className="h-4 w-px bg-border-base mx-1 hidden sm:block" />
-        <span className="opacity-60 whitespace-nowrap">
-          {elapsedTime(whaleAlert.timestamp)}
-        </span>
+        <span className="opacity-60 whitespace-nowrap">{elapsedTime(whaleAlert.timestamp)}</span>
       </div>
 
       {/* From/To */}
@@ -146,5 +147,5 @@ export default function WhaleAlertItem({ whaleAlert }: Props) {
         </div>
       </div>
     </div>
-  );
+  )
 }
