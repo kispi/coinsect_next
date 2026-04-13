@@ -12,7 +12,9 @@ export const ui = {
     custom: (component: React.ComponentType<any>, options?: any) => {
       return new Promise((resolve) => {
         if (!uiStore) {
-          console.warn('ui.modal called before store initialization')
+          console.warn(
+            '[UI Bridge] ui.modal called before store was attached to the bridge. Ensure StoreProvider is mounted.'
+          )
           return
         }
         uiStore.getState().addModal({

@@ -97,11 +97,7 @@ export const StoreProvider = ({
   // Other stores initialization
   const [userStore] = useState(() => createUserStore())
   const [marketStore] = useState(() => createMarketStore())
-  const [uiStore] = useState(() => {
-    const store = createUIStore()
-    setUIStore(store)
-    return store
-  })
+  const [uiStore] = useState(() => createUIStore())
 
   // Handle dynamic prop updates for AppStore (locale change)
   const lastSync = useRef({
@@ -110,6 +106,9 @@ export const StoreProvider = ({
   })
 
   useEffect(() => {
+    // Attach UI store to the static bridge (Client-side only)
+    setUIStore(uiStore)
+
     const currentMsgLen = initialMessages ? Object.keys(initialMessages).length : 0
     if (initialLocale !== lastSync.current.locale || currentMsgLen !== lastSync.current.msgLen) {
       appStore.setState((state) => ({

@@ -108,7 +108,7 @@ export default function AppHeader() {
                 onClose={() => setShowSettings(false)}
                 triggerRef={refIconSettings}
               >
-                <SettingsPanel indices={[0, 1, 2, 3, 4]} onClose={() => setShowSettings(false)} />
+                <SettingsPanel indices={[0, 1, 2, 3, 4]} />
               </WrapperDropdown>
             </div>
 
