@@ -1,4 +1,4 @@
-import { UIStore, ToastConfig } from '@/store/StoreProvider'
+import { UIStore, ToastConfig, ModalConfig } from '@/store/StoreProvider'
 import ModalBasic from '@/components/modals/ModalBasic'
 
 let uiStore: UIStore | null = null
@@ -9,7 +9,11 @@ export const setUIStore = (store: UIStore) => {
 
 export const ui = {
   modal: {
-    custom: (component: React.ComponentType<any>, options?: any) => {
+    custom: (
+      component: React.ComponentType<any>,
+      options?: any,
+      config: Partial<Omit<ModalConfig, 'id' | 'component' | 'options' | 'resolve'>> = {}
+    ) => {
       return new Promise((resolve) => {
         if (!uiStore) {
           console.warn(
@@ -21,10 +25,14 @@ export const ui = {
           component,
           options,
           resolve,
+          ...config,
         })
       })
     },
-    basic: (options: any) => ui.modal.custom(ModalBasic, options),
+    basic: (
+      options: any,
+      config?: Partial<Omit<ModalConfig, 'id' | 'component' | 'options' | 'resolve'>>
+    ) => ui.modal.custom(ModalBasic, options, config),
     alert: (body: string, title: string = 'COMMON.NOTICE') => {
       return ui.modal.confirm({
         body,
@@ -32,7 +40,10 @@ export const ui = {
         buttons: [{ text: 'COMMON.OK', class: 'btn-primary' }],
       })
     },
-    confirm: (options: { title?: string; body: string; class?: string; buttons?: any[] }) => {
+    confirm: (
+      options: { title?: string; body: string; class?: string; buttons?: any[] },
+      config?: Partial<Omit<ModalConfig, 'id' | 'component' | 'options' | 'resolve'>>
+    ) => {
       const mergedOptions = {
         title: options.title || 'COMMON.NOTICE',
         body: options.body,
@@ -44,7 +55,7 @@ export const ui = {
           },
         ],
       }
-      return ui.modal.basic(mergedOptions)
+      return ui.modal.basic(mergedOptions, config)
     },
   },
   toast: {

@@ -12,16 +12,52 @@ import AppInitializer from '@/components/app/AppInitializer'
 const ModalRenderer = ({ modal }: { modal: ModalConfig }) => {
   const removeModal = useUIStore((state) => state.removeModal)
 
-  const handleClose = (value?: any) => {
-    if (modal.resolve) modal.resolve(value)
-    removeModal(modal.id)
-  }
+  const handleClose = React.useCallback(
+    (value?: any) => {
+      if (modal.resolve) modal.resolve(value)
+      removeModal(modal.id)
+      // Cleanup virtual history state if we are still on it
+      if (typeof window !== 'undefined' && window.history.state?.modalId === modal.id) {
+        window.history.back()
+      }
+    },
+    [modal, removeModal]
+  )
 
   const onBackdropClick = (e: React.MouseEvent) => {
-    if (e.target === e.currentTarget) {
+    if (e.target === e.currentTarget && !modal.preventCloseOnClickBackdrop) {
       handleClose()
     }
   }
+
+  React.useEffect(() => {
+    if (typeof window === 'undefined') return
+
+    // 1. Push virtual state for back-button interception
+    window.history.pushState({ modalId: modal.id }, '')
+
+    // 2. Event Handlers
+    const handlePopState = (e: PopStateEvent) => {
+      // If the current state is not this modal, it means we went back (or navigated)
+      if (e.state?.modalId !== modal.id) {
+        handleClose()
+      }
+    }
+
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') {
+        handleClose()
+      }
+    }
+
+    window.addEventListener('popstate', handlePopState)
+    window.addEventListener('keydown', handleKeyDown)
+
+    return () => {
+      window.removeEventListener('popstate', handlePopState)
+      window.removeEventListener('keydown', handleKeyDown)
+    }
+  }, [modal.id, handleClose])
 
   if (!modal.component) return null
   const Component = modal.component

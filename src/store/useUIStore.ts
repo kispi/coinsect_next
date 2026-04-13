@@ -17,7 +17,7 @@ export type ModalConfig = {
   style?: React.CSSProperties
   bodyClass?: string
   titleClass?: string
-  closeOnBackdrop?: boolean
+  preventCloseOnClickBackdrop?: boolean
 }
 
 export type ToastConfig = {
