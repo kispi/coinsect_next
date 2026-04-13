@@ -1,19 +1,19 @@
-# Task: Dashboard Migration Phase 2: UI/UX and Real-time Sync
+# TASK: Dashboard Migration Phase 2: UI/UX and Real-time Sync
 
-## 무엇을 했는가?
+## WHAT
 대시보드의 시각적 완성도를 높이고, 실시간 데이터 동기화 기능을 대폭 강화했습니다. UI/UX 리팩토링, i18n 시스템 고도화, 전역 모달/토스트 시스템 이식을 완료했습니다.
 
-## 왜 그렇게 했는가?
+## WHY
 1. **사용자 경험(UX) 고도화**: 포지션 레이아웃을 세로형으로 변경하여 가독성을 높였으며, `useClickOutside` 기반의 드롭다운 시스템으로 전환하여 성능과 안정성을 모두 잡았습니다.
 2. **다크모드 및 시맨틱 디자인**: `ThemeHandler`와 Semantic CSS 변수 구조를 도입하여 환경에 따라 자연스럽게 반응하는 UI 시스템을 구축했습니다.
 3. **실시간성 확보**: `webchat` 소켓 연동을 통해 서버 알림을 감지하고, 포지션 수정 시 React Query 캐시를 실시간으로 업데이트하도록 하여 동기화 수준을 높였습니다.
 4. **i18n 관리 효율성**: 번역 파일을 Nested JSON 구조로 리팩토링하고 누락된 키에 대한 Fallback 처리를 추가하여 안정성을 확보했습니다.
 
-## 기술적 결정 사항
+## HOW & WHY
 - **Zustand & React Query 연합**: 단순 UI 상태는 Zustand로, 서버 상태는 React Query로 관리하며 소켓 메시지를 통해 두 영역을 유기적으로 연동했습니다.
 - **UIRoot 시스템**: Vue의 전역 헬퍼 패턴을 React Context/Store 기반의 `UIRoot.tsx`로 이식하여 추상화된 UI 조작 환경을 제공합니다.
 
-## 결과
+## RESULT
 - 테마 전환 및 다국어 대응이 즉각적으로 이루어지는 고급스러운 UI를 완성했습니다.
 - 새로고침 없이도 다른 사용자의 수정 사항이 반영되는 실시간 대시보드 환경을 구축했습니다.
 - `ui.modal`, `ui.toast`를 통해 서비스 전반에서 일관된 알림 경험을 제공합니다.

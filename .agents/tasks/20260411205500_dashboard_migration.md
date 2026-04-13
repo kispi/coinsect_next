@@ -1,10 +1,10 @@
-# Task: 메인 라우트(Dashboard) 마이그레이션
+# TASK: 메인 라우트(Dashboard) 마이그레이션
 
-## 무엇을 했는가?
+## WHAT
 기존 Vue 코드베이스의 `ViewMain.vue` 및 `DashboardsMain.vue`를 Next.js의 App Router 아키텍처 및 React 19 / Tailwind CSS 기반으로 마이그레이션 하였습니다.
 또한 암호화된 API(`GET /dashboards/main`)를 복호화하는 기능과 주기적으로 데이터를 가져오는 것을 TanStack Query를 사용해 재구성했습니다.
 
-## 왜 그렇게 했는가?
+## WHY
 1. **API Polling 및 서버 상태 관리**
    - 기존 Vue 앱에서는 `setInterval`과 `vuex` 액션을 사용해 5분 단위로 데이터를 폴링했습니다. Next.js에서는 `TanStack Query`의 `refetchInterval: 300000` 옵션을 사용하여 폴링 코드를 간소화하고, React 컴포넌트 라이프사이클에 안전하게 통합했습니다.
    - API 응답을 자체 포맷에 맞춰 복호화하는 `cryptoUtils.decryptAPIResponse` 유틸리티를 추가했습니다.
