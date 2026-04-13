@@ -3,6 +3,7 @@ import { Geist, Geist_Mono } from 'next/font/google'
 import fs from 'fs'
 import path from 'path'
 import { cookies } from 'next/headers'
+import { StoreProvider } from '@/store/StoreProvider'
 import Providers from '@/components/Providers'
 import AppHeader from '@/components/app/app-header/AppHeader'
 import ThemeHandler from '@/components/ThemeHandler'
@@ -54,12 +55,14 @@ export default async function RootLayout({ children }: RootLayoutProps) {
       style={{ colorScheme: theme }}
     >
       <body className="antialiased min-h-screen bg-background text-text-base root-layout">
-        <Providers initialLocale={locale} initialMessages={messages} initialTheme={theme}>
-          <ThemeHandler />
-          <UIRoot />
-          <AppHeader />
-          <main className="mx-auto max-w-7xl pt-4 px-4 md:px-6 lg:px-8">{children}</main>
-        </Providers>
+        <StoreProvider initialLocale={locale} initialMessages={messages} initialTheme={theme}>
+          <Providers>
+            <ThemeHandler />
+            <UIRoot />
+            <AppHeader />
+            <main className="mx-auto max-w-7xl pt-4 px-4 md:px-6 lg:px-8">{children}</main>
+          </Providers>
+        </StoreProvider>
       </body>
     </html>
   )

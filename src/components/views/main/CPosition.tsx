@@ -1,7 +1,7 @@
 import type { RealTimePosition } from '@/types'
 import React, { useMemo } from 'react'
-import { useMarketStore } from '@/store/useMarketStore'
-import { useI18n } from '@/hooks/useI18n'
+import { useMarketStore } from '@/store/StoreProvider'
+import { useT } from '@/hooks/useT'
 import CPositionContextMenu from './CPositionContextMenu'
 import { elapsedTime } from '@/lib/date'
 
@@ -19,7 +19,7 @@ const display = (v?: number | null, key?: string) => {
 }
 
 export default function CPosition({ position: initialPos }: Props) {
-  const { t, locale } = useI18n()
+  const { t, locale } = useT()
   const containerRef = React.useRef<HTMLDivElement>(null)
   const bybitTicker = useMarketStore((state) => state.bybitTickers[initialPos.contract || ''])
 

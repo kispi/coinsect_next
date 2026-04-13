@@ -1,8 +1,10 @@
 'use client'
 
 import { useMemo } from 'react'
-import { useAppStore, CoinsectSetting } from '@/store/useAppStore'
-import { useI18n } from '@/hooks/useI18n'
+import { useRouter } from 'next/navigation'
+import { useAppStore } from '@/store/StoreProvider'
+import { CoinsectSetting } from '@/store/useAppStore'
+import { useT } from '@/hooks/useT'
 import { ui } from '@/lib/ui'
 
 interface Props {
@@ -12,7 +14,8 @@ interface Props {
 
 export default function SettingsPanel({ indices = [], className = '' }: Props) {
   const { settings, setSettings } = useAppStore()
-  const { t } = useI18n()
+  const { t } = useT()
+  const router = useRouter()
 
   const settingItems = useMemo(() => {
     const list = [
@@ -107,6 +110,9 @@ export default function SettingsPanel({ indices = [], className = '' }: Props) {
                     key={String(opt.value)}
                     onClick={() => {
                       setSettings({ [item.settingsKey]: opt.value })
+                      if (item.settingsKey === 'locale') {
+                        router.refresh()
+                      }
                     }}
                     className={`
                       flex-1 flex items-center justify-center py-1 px-2 rounded cursor-pointer select-none text-[11px]

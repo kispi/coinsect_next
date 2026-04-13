@@ -1,6 +1,6 @@
 'use client'
 
-import { create } from 'zustand'
+import { createStore } from 'zustand'
 import { metaStorage } from '@/lib/storage'
 import { setCookie } from '@/lib/cookie'
 
@@ -39,15 +39,14 @@ export type CoinsectSetting = {
   chatSkin: string | null
 }
 
-interface AppState {
+export interface AppState {
   settings: CoinsectSetting
   messages: any
   setMessages: (messages: any) => void
   setSettings: (settings: Partial<CoinsectSetting>) => void
-  loadMessages: (locale: string) => Promise<void>
 }
 
-const DEFAULT_SETTINGS: CoinsectSetting = {
+export const DEFAULT_SETTINGS: CoinsectSetting = {
   blockedUsers: {},
   locale: 'ko',
   dockFolded: false,
@@ -82,68 +81,34 @@ const DEFAULT_SETTINGS: CoinsectSetting = {
   chatSkin: 'basic',
 }
 
-// Module-level i18n message cache - survives BFCache restoration and
-// is available synchronously before React effects run.
-let messagesCache: Record<string, string> = {}
+export type AppStore = ReturnType<typeof createAppStore>
 
-export const useAppStore = create<AppState>((set, get) => ({
-  settings: DEFAULT_SETTINGS,
-  messages: messagesCache,
+export const createAppStore = (initProps: Partial<AppState> = {}) => {
+  return createStore<AppState>()((set) => ({
+    settings: initProps.settings || DEFAULT_SETTINGS,
+    messages: initProps.messages || {},
 
-  setMessages: (messages) => set({ messages }),
+    setMessages: (messages) => set({ messages }),
 
-  setSettings: (newSettings) => {
-    // If locale is changing, we handle it through loadMessages for atomic update
-    if (newSettings.locale && newSettings.locale !== get().settings.locale) {
-      get().loadMessages(newSettings.locale)
-      // Remove locale from this batch update to prevent race condition
-      const { locale: _locale, ...otherSettings } = newSettings
-      if (Object.keys(otherSettings).length === 0) return
-      newSettings = otherSettings
-    }
-
-    set((state) => {
-      const updatedSettings = { ...state.settings, ...newSettings }
-      metaStorage.setItem('settings', updatedSettings)
-
-      // Sync basic settings to cookies if needed for SSR
-      if (newSettings.theme) {
-        setCookie('NEXT_THEME', newSettings.theme)
-      }
-
-      return { settings: updatedSettings }
-    })
-  },
-
-  loadMessages: async (locale: string) => {
-    try {
-      const response = await fetch(`/locales/${locale}.json`)
-      if (!response.ok) throw new Error('Failed to load locale')
-      const messages = await response.json()
-
-      // Update module-level cache so BFCache restorations
-      // can seed the store synchronously before effects run.
-      messagesCache = messages
-
+    setSettings: (newSettings) => {
       set((state) => {
-        const updatedSettings = { ...state.settings, locale }
-        metaStorage.setItem('settings', updatedSettings)
-        setCookie('NEXT_LOCALE', locale)
-        return { messages, settings: updatedSettings }
-      })
-    } catch (e) {
-      console.error('i18n load error:', e)
-    }
-  },
-}))
+        const updatedSettings = { ...state.settings, ...newSettings }
 
-// Initialize store from localStorage on client side
-if (typeof window !== 'undefined') {
-  const savedSettings = metaStorage.getItem<CoinsectSetting>('settings')
-  if (savedSettings) {
-    useAppStore.setState({ settings: savedSettings })
-    // Ensure cookie is in sync with localStorage on load
-    setCookie('NEXT_LOCALE', savedSettings.locale)
-    setCookie('NEXT_THEME', savedSettings.theme)
-  }
+        // localStorage is client-only
+        if (typeof window !== 'undefined') {
+          metaStorage.setItem('settings', updatedSettings)
+        }
+
+        // Sync settings to cookies if needed for SSR
+        if (newSettings.locale) {
+          setCookie('NEXT_LOCALE', newSettings.locale)
+        }
+        if (newSettings.theme) {
+          setCookie('NEXT_THEME', newSettings.theme)
+        }
+
+        return { settings: updatedSettings }
+      })
+    },
+  }))
 }

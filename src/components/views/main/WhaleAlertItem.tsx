@@ -4,7 +4,7 @@ import type { WhaleAlert } from '@/types'
 import { STABLE_COINS } from '@/lib/constants'
 import { useFormatNumber } from '@/hooks/useFormatNumber'
 import { ChevronRight } from 'lucide-react'
-import { useAppStore } from '@/store/useAppStore'
+import { useAppStore } from '@/store/StoreProvider'
 
 interface Props {
   whaleAlert: WhaleAlert

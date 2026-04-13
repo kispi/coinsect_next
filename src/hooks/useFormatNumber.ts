@@ -1,7 +1,9 @@
 'use client'
 
-import { useAppStore } from '@/store/useAppStore'
-import { useMarketStore } from '@/store/useMarketStore'
+'use client'
+
+import { useAppStore } from '@/store/StoreProvider'
+import { useMarketStore } from '@/store/StoreProvider'
 import { useCallback } from 'react'
 
 export interface FormatPriceOptions {

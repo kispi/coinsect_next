@@ -1,9 +1,9 @@
 'use client'
 
 import React from 'react'
-import { useUIStore, ModalConfig, ToastConfig, SnackbarConfig } from '@/store/useUIStore'
+import { useUIStore, ModalConfig, ToastConfig, SnackbarConfig } from '@/store/StoreProvider'
 import { X, Info, AlertTriangle } from 'lucide-react'
-import { useI18n } from '@/hooks/useI18n'
+import { useT } from '@/hooks/useT'
 import AppInitializer from '@/components/app/AppInitializer'
 
 /**
@@ -45,7 +45,7 @@ const ModalRenderer = ({ modal }: { modal: ModalConfig }) => {
  */
 const ToastRenderer = ({ toast, index }: { toast: ToastConfig; index: number }) => {
   const removeToast = useUIStore((state) => state.removeToast)
-  const { i18n } = useI18n()
+  const { t } = useT()
 
   const typeStyles = {
     success: 'bg-zinc-800 text-white border-green-500/30',
@@ -74,14 +74,14 @@ const ToastRenderer = ({ toast, index }: { toast: ToastConfig; index: number }) 
       >
         <div
           className="flex-1 text-sm font-medium whitespace-pre-line"
-          dangerouslySetInnerHTML={{ __html: i18n(toast.html) }}
+          dangerouslySetInnerHTML={{ __html: t(toast.html) }}
         />
         {toast.action?.label && (
           <button
             onClick={handleAction}
             className="btn-outline btn-sm border-white/20 hover:bg-white/10 text-white"
           >
-            {i18n(toast.action.label)}
+            {t(toast.action.label)}
           </button>
         )}
       </div>

@@ -2,8 +2,8 @@
 
 import React from 'react'
 import { X } from 'lucide-react'
-import { useI18n } from '@/hooks/useI18n'
-import type { ModalButton } from '@/store/useUIStore'
+import { useT } from '@/hooks/useT'
+import type { ModalButton } from '@/store/StoreProvider'
 
 interface Props {
   options: {
@@ -18,7 +18,7 @@ interface Props {
 }
 
 export default function ModalBasic({ options, onClose }: Props) {
-  const { i18n } = useI18n()
+  const { t } = useT()
   const buttons = options.buttons || []
 
   return (
@@ -29,7 +29,7 @@ export default function ModalBasic({ options, onClose }: Props) {
       {/* Modal Header */}
       <div className="flex items-center justify-between p-4 border-b border-border-base bg-background-light/30">
         <h3 className={`font-bold text-text-stress ${options.titleClass || ''}`}>
-          {options.title ? i18n(options.title) : ''}
+          {options.title ? t(options.title) : ''}
         </h3>
         <button onClick={() => onClose()} className="btn-ghost p-1">
           <X className="w-5 h-5 text-text-muted" />
@@ -59,7 +59,7 @@ export default function ModalBasic({ options, onClose }: Props) {
                 btn.class?.includes('primary') ? 'btn-primary' : 'btn-default'
               } btn-lg ${btn.class || ''}`}
             >
-              {i18n(btn.text)}
+              {t(btn.text)}
             </button>
           ))}
         </div>

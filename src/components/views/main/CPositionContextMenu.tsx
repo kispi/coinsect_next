@@ -2,7 +2,7 @@
 
 import React, { useState, useRef } from 'react'
 import { Home, Pencil } from 'lucide-react'
-import { useI18n } from '@/hooks/useI18n'
+import { useT } from '@/hooks/useT'
 import type { RealTimePosition } from '@/types'
 import { ui } from '@/lib/ui'
 import { useRouter } from 'next/navigation'
@@ -19,7 +19,7 @@ export default function CPositionContextMenu({ position, triggerRef }: Props) {
   const [isOpen, setIsOpen] = useState(false)
   const [pos, setPos] = useState({ top: 0, left: 0 })
   const menuRef = useRef<HTMLDivElement>(null)
-  const { i18n } = useI18n()
+  const { t } = useT()
   const router = useRouter()
 
   useClickOutside(menuRef, () => setIsOpen(false), [triggerRef])
@@ -106,7 +106,7 @@ export default function CPositionContextMenu({ position, triggerRef }: Props) {
           className={`c-position-context-menu-item flex items-center gap-2 px-3 py-2 text-xs text-text-stress cursor-pointer transition-colors ${!position.link ? 'opacity-30 cursor-not-allowed' : 'hover:bg-background-light'}`}
         >
           <Home className="w-3.5 h-3.5" />
-          {i18n('COMMON.GO_TO_PLATFORM_SHORT') || '바로가기'}
+          {t('COMMON.GO_TO_PLATFORM_SHORT') || '바로가기'}
         </div>
         {position.editable && (
           <div
@@ -114,7 +114,7 @@ export default function CPositionContextMenu({ position, triggerRef }: Props) {
             className="c-position-context-menu-item flex items-center gap-2 px-3 py-2 text-xs text-text-stress cursor-pointer hover:bg-background-light transition-colors border-t border-border-base/50"
           >
             <Pencil className="w-3.5 h-3.5" />
-            {i18n('COMMON.REQUEST_EDIT')}
+            {t('COMMON.REQUEST_EDIT')}
           </div>
         )}
       </div>

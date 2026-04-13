@@ -21,4 +21,4 @@
 
 ## 미해결 및 차후 작업 사항
 - **WebSocket 연동**: `useRealTimePosition` (업비트 및 바이낸스 실시간 시세 관련 소켓) 연결은 아직 포팅되지 않았으므로 `RealTimePriceCards` 구현 시 추가해야합니다.
-- **다국어 매핑**: `i18n('SEE_MORE')` 등 다국어 키 추가 작업이 `messages` 파일에 필요할 수 있습니다.
+- **다국어 매핑**: `t('SEE_MORE')` 등 다국어 키 추가 작업이 `messages` 파일에 필요할 수 있습니다.

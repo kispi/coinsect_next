@@ -1,5 +1,5 @@
 import { useEffect, useRef } from 'react'
-import { useMarketStore } from '@/store/useMarketStore'
+import { useMarketStore } from '@/store/StoreProvider'
 
 export const useUpbitWs = (symbols: string[]) => {
   const setUpbitTicker = useMarketStore((state) => state.setUpbitTicker)

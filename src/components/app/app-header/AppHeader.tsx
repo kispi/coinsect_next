@@ -2,13 +2,13 @@
 
 import { useRef, useState } from 'react'
 import { Share2, Settings, Bell, User, Menu, X, Users } from 'lucide-react'
-import { useI18n } from '@/hooks/useI18n'
+import { useT } from '@/hooks/useT'
 import { ui } from '@/lib/ui'
 import WrapperDropdown from '@/components/common/WrapperDropdown'
 import SettingsPanel from './SettingsPanel'
 import BannerMarketIndices from './BannerMarketIndices'
 import Link from 'next/link'
-import { useUserStore } from '@/store/useUserStore'
+import { useUserStore } from '@/store/StoreProvider'
 import { useMeQuery } from '@/hooks/api/useUser'
 import ModalSignIn from '@/components/modals/ModalSignIn'
 
@@ -22,7 +22,7 @@ const AppNotifications = () => (
   <div className="app-notifications p-4 w-60 text-sm">No new notifications</div>
 )
 export default function AppHeader() {
-  const { t } = useI18n()
+  const { t } = useT()
   const [showNavigation, setShowNavigation] = useState(false)
 
   const [showSettings, setShowSettings] = useState(false)

@@ -1,0 +1,304 @@
+﻿
+> coinsect-next@0.1.0 lint
+> eslint
+
+
+C:\dev\coinsect_next\src\components\app\app-header\SettingsPanel.tsx
+  16:71  error  'onClose' is defined but never used. Allowed unused args must match /^_/u  unused-imports/no-unused-vars
+
+C:\dev\coinsect_next\src\components\modals\ModalBasic.tsx
+  58:43  error  Insert `?띯룑쨌쨌쨌쨌쨌쨌쨌쨌쨌쨌쨌쨌쨌쨌쨌쨌`  prettier/prettier
+  59:1   error  Delete `쨌쨌`                  prettier/prettier
+
+C:\dev\coinsect_next\src\components\modals\ModalSignIn.tsx
+  41:75  error  Replace `?띯룑쨌쨌쨌쨌쨌쨌쨌쨌쨌쨌{t('MODAL.SIGN_IN')}?띯룑쨌쨌쨌쨌쨌쨌쨌쨌` with `{t('MODAL.SIGN_IN')}`  prettier/prettier
+
+C:\dev\coinsect_next\src\hooks\oauth\useKakao.ts
+  58:30  error  Compilation Skipped: Existing memoization could not be preserved
+
+React Compiler has skipped optimizing this component because the existing manual memoization could not be preserved. The inferred dependencies did not match the manually specified dependencies, which could cause the value to change more or less frequently than expected. The inferred dependency was `setAuthToken`, but the source dependencies were [init, mutateAsync, queryClient]. Inferred different dependency than source.
+
+C:\dev\coinsect_next\src\hooks\oauth\useKakao.ts:58:30
+  56 |     })
+  57 |
+> 58 |   const signIn = useCallback(async () => {
+     |                              ^^^^^^^^^^^^^
+> 59 |     // Ensure SDK is ready before trying to use it
+     | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+> 60 |     await init()
+     ??     | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+> 88 |     })
+     | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+> 89 |   }, [init, mutateAsync, queryClient])
+     | ^^^^ Could not preserve existing manual memoization
+  90 |
+  91 |   return { signIn }
+  92 | }  react-hooks/preserve-manual-memoization
+
+C:\dev\coinsect_next\src\hooks\useFormatNumber.ts
+  4:1  error  Delete `쨌`  prettier/prettier
+
+C:\dev\coinsect_next\src\lib\i18n.server.ts
+  13:1   error  Delete `쨌쨌`  prettier/prettier
+  25:11  error  Insert `,`   prettier/prettier
+
+C:\dev\coinsect_next\src\store\StoreProvider.tsx
+    6:9   error  Replace `쨌createAppStore,쨌AppStore,쨌AppState,쨌DEFAULT_SETTINGS,쨌CoinsectSetting쨌` with `?렺력톍reateAppStore,?렺력텮ppStore,?렺력텮ppState,?렺력텱EFAULT_SETTINGS,?렺력텰oinsectSetting,??                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                prettier/prettier
+    9:9   error  Replace `쨌createUIStore,쨌UIStore,쨌UIState,쨌ModalButton,쨌ModalConfig,쨌ToastConfig,쨌SnackbarConfig쨌` with `?렺력톍reateUIStore,?렺력톃IStore,?렺력톃IState,?렺력텺odalButton,?렺력텺odalConfig,?렺력톂oastConfig,?렺력톁nackbarConfig,??                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          prettier/prettier
+   60:8   error  Error: Cannot access refs during render
+
+React refs are values that are not needed for rendering. Refs should only be accessed outside of render, such as in event handlers or effects. Accessing a ref value (the `current` property) during render can cause your component not to update as expected (https://react.dev/reference/react/useRef).
+
+C:\dev\coinsect_next\src\store\StoreProvider.tsx:60:8
+  58 |
+  59 |   // AppStore Initialization (includes i18n and global settings)
+> 60 |   if (!appStoreRef.current) {
+     |        ^^^^^^^^^^^^^^^^^^^ Cannot access ref value during render
+  61 |     const initSettings = {
+  62 |       ...DEFAULT_SETTINGS,
+  63 |       ...(initialLocale ? { locale: initialLocale } : {}),
+
+To initialize a ref only once, check that the ref is null with the pattern `if (ref.current == null) { ref.current = ... }`                                                                                  react-hooks/refs
+   74:9   error  Error: Cannot access refs during render
+
+React refs are values that are not needed for rendering. Refs should only be accessed outside of render, such as in event handlers or effects. Accessing a ref value (the `current` property) during render can cause your component not to update as expected (https://react.dev/reference/react/useRef).
+
+C:\dev\coinsect_next\src\store\StoreProvider.tsx:74:9
+  72 |       const savedSettings = metaStorage.getItem<any>('settings')
+  73 |       if (savedSettings) {
+> 74 |         appStoreRef.current.setState((state) => ({
+     |         ^^^^^^^^^^^^^^^^^^^ Passing a ref to a function may read its value during render
+  75 |           settings: {
+  76 |             ...state.settings,
+  77 |             ...savedSettings,                                                                                                                                                                     react-hooks/refs
+   74:9   error  Error: Cannot access refs during render
+
+React refs are values that are not needed for rendering. Refs should only be accessed outside of render, such as in event handlers or effects. Accessing a ref value (the `current` property) during render can cause your component not to update as expected (https://react.dev/reference/react/useRef).
+
+C:\dev\coinsect_next\src\store\StoreProvider.tsx:74:9
+  72 |       const savedSettings = metaStorage.getItem<any>('settings')
+  73 |       if (savedSettings) {
+> 74 |         appStoreRef.current.setState((state) => ({
+     |         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^ Passing a ref to a function may read its value during render
+  75 |           settings: {
+  76 |             ...state.settings,
+  77 |             ...savedSettings,                                                                                                                                                            react-hooks/refs
+   82:34  error  Error: Cannot access refs during render
+
+React refs are values that are not needed for rendering. Refs should only be accessed outside of render, such as in event handlers or effects. Accessing a ref value (the `current` property) during render can cause your component not to update as expected (https://react.dev/reference/react/useRef).
+
+C:\dev\coinsect_next\src\store\StoreProvider.tsx:82:34
+  80 |           },
+  81 |         }))
+> 82 |         setCookie('NEXT_LOCALE', appStoreRef.current.getState().settings.locale)
+     |                                  ^^^^^^^^^^^^^^^^^^^ Passing a ref to a function may read its value during render
+  83 |         setCookie('NEXT_THEME', appStoreRef.current.getState().settings.theme)
+  84 |       }
+  85 |     }                                                                                                                                                                      react-hooks/refs
+   82:34  error  Error: Cannot access refs during render
+
+React refs are values that are not needed for rendering. Refs should only be accessed outside of render, such as in event handlers or effects. Accessing a ref value (the `current` property) during render can cause your component not to update as expected (https://react.dev/reference/react/useRef).
+
+C:\dev\coinsect_next\src\store\StoreProvider.tsx:82:34
+  80 |           },
+  81 |         }))
+> 82 |         setCookie('NEXT_LOCALE', appStoreRef.current.getState().settings.locale)
+     |                                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^ Passing a ref to a function may read its value during render
+  83 |         setCookie('NEXT_THEME', appStoreRef.current.getState().settings.theme)
+  84 |       }
+  85 |     }                                                                                                                                                             react-hooks/refs
+   83:33  error  Error: Cannot access refs during render
+
+React refs are values that are not needed for rendering. Refs should only be accessed outside of render, such as in event handlers or effects. Accessing a ref value (the `current` property) during render can cause your component not to update as expected (https://react.dev/reference/react/useRef).
+
+C:\dev\coinsect_next\src\store\StoreProvider.tsx:83:33
+  81 |         }))
+  82 |         setCookie('NEXT_LOCALE', appStoreRef.current.getState().settings.locale)
+> 83 |         setCookie('NEXT_THEME', appStoreRef.current.getState().settings.theme)
+     |                                 ^^^^^^^^^^^^^^^^^^^ Passing a ref to a function may read its value during render
+  84 |       }
+  85 |     }
+  86 |   }                                                                                                                                                                                react-hooks/refs
+   83:33  error  Error: Cannot access refs during render
+
+React refs are values that are not needed for rendering. Refs should only be accessed outside of render, such as in event handlers or effects. Accessing a ref value (the `current` property) during render can cause your component not to update as expected (https://react.dev/reference/react/useRef).
+
+C:\dev\coinsect_next\src\store\StoreProvider.tsx:83:33
+  81 |         }))
+  82 |         setCookie('NEXT_LOCALE', appStoreRef.current.getState().settings.locale)
+> 83 |         setCookie('NEXT_THEME', appStoreRef.current.getState().settings.theme)
+     |                                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^ Passing a ref to a function may read its value during render
+  84 |       }
+  85 |     }
+  86 |   }                                                                                                                                                                       react-hooks/refs
+   89:8   error  Error: Cannot access refs during render
+
+React refs are values that are not needed for rendering. Refs should only be accessed outside of render, such as in event handlers or effects. Accessing a ref value (the `current` property) during render can cause your component not to update as expected (https://react.dev/reference/react/useRef).
+
+C:\dev\coinsect_next\src\store\StoreProvider.tsx:89:8
+  87 |
+  88 |   // UserStore Initialization
+> 89 |   if (!userStoreRef.current) {
+     |        ^^^^^^^^^^^^^^^^^^^^ Cannot access ref value during render
+  90 |     userStoreRef.current = createUserStore()
+  91 |   }
+  92 |
+
+To initialize a ref only once, check that the ref is null with the pattern `if (ref.current == null) { ref.current = ... }`                                                                                                                                                                                   react-hooks/refs
+   94:8   error  Error: Cannot access refs during render
+
+React refs are values that are not needed for rendering. Refs should only be accessed outside of render, such as in event handlers or effects. Accessing a ref value (the `current` property) during render can cause your component not to update as expected (https://react.dev/reference/react/useRef).
+
+C:\dev\coinsect_next\src\store\StoreProvider.tsx:94:8
+  92 |
+  93 |   // MarketStore Initialization
+> 94 |   if (!marketStoreRef.current) {
+     |        ^^^^^^^^^^^^^^^^^^^^^^ Cannot access ref value during render
+  95 |     marketStoreRef.current = createMarketStore()
+  96 |   }
+  97 |
+
+To initialize a ref only once, check that the ref is null with the pattern `if (ref.current == null) { ref.current = ... }`                                                                                                                                                                         react-hooks/refs
+   99:8   error  Error: Cannot access refs during render
+
+React refs are values that are not needed for rendering. Refs should only be accessed outside of render, such as in event handlers or effects. Accessing a ref value (the `current` property) during render can cause your component not to update as expected (https://react.dev/reference/react/useRef).
+
+C:\dev\coinsect_next\src\store\StoreProvider.tsx:99:8
+   97 |
+   98 |   // UIStore Initialization
+>  99 |   if (!uiStoreRef.current) {
+      |        ^^^^^^^^^^^^^^^^^^ Cannot access ref value during render
+  100 |     uiStoreRef.current = createUIStore()
+  101 |     setUIStore(uiStoreRef.current)
+  102 |   }
+
+To initialize a ref only once, check that the ref is null with the pattern `if (ref.current == null) { ref.current = ... }`                                                                                                                                                   react-hooks/refs
+  101:16  error  Error: Cannot access refs during render
+
+React refs are values that are not needed for rendering. Refs should only be accessed outside of render, such as in event handlers or effects. Accessing a ref value (the `current` property) during render can cause your component not to update as expected (https://react.dev/reference/react/useRef).
+
+C:\dev\coinsect_next\src\store\StoreProvider.tsx:101:16
+   99 |   if (!uiStoreRef.current) {
+  100 |     uiStoreRef.current = createUIStore()
+> 101 |     setUIStore(uiStoreRef.current)
+      |                ^^^^^^^^^^^^^^^^^^ Passing a ref to a function may read its value during render
+  102 |   }
+  103 |
+  104 |   // Handle dynamic prop updates for AppStore (locale change)                                                                                                                                                                                                             react-hooks/refs
+  105:28  error  Replace `쨌locale:쨌initialLocale,쨌msgLen:쨌initialMessages쨌?쨌Object.keys(initialMessages).length쨌:쨌0` with `?렺력력력톖ocale:쨌initialLocale,?렺력력력톗sgLen:쨌initialMessages쨌?쨌Object.keys(initialMessages).length쨌:쨌0,?렺?                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            prettier/prettier
+  107:23  error  Error: Cannot access refs during render
+
+React refs are values that are not needed for rendering. Refs should only be accessed outside of render, such as in event handlers or effects. Accessing a ref value (the `current` property) during render can cause your component not to update as expected (https://react.dev/reference/react/useRef).
+
+C:\dev\coinsect_next\src\store\StoreProvider.tsx:107:23
+  105 |   const lastSync = useRef({ locale: initialLocale, msgLen: initialMessages ? Object.keys(initialMessages).length : 0 })
+  106 |   if (
+> 107 |     initialLocale !== lastSync.current.locale ||
+      |                       ^^^^^^^^^^^^^^^^^^^^^^^ Cannot access ref value during render
+  108 |     (initialMessages && Object.keys(initialMessages).length !== lastSync.current.msgLen)
+  109 |   ) {
+  110 |     appStoreRef.current.setState((state) => ({                                                                     react-hooks/refs
+  108:65  error  Error: Cannot access refs during render
+
+React refs are values that are not needed for rendering. Refs should only be accessed outside of render, such as in event handlers or effects. Accessing a ref value (the `current` property) during render can cause your component not to update as expected (https://react.dev/reference/react/useRef).
+
+C:\dev\coinsect_next\src\store\StoreProvider.tsx:108:65
+  106 |   if (
+  107 |     initialLocale !== lastSync.current.locale ||
+> 108 |     (initialMessages && Object.keys(initialMessages).length !== lastSync.current.msgLen)
+      |                                                                 ^^^^^^^^^^^^^^^^^^^^^^^ Cannot access ref value during render
+  109 |   ) {
+  110 |     appStoreRef.current.setState((state) => ({
+  111 |       settings: { ...state.settings, locale: initialLocale || state.settings.locale },                                                            react-hooks/refs
+  110:5   error  Error: Cannot access refs during render
+
+React refs are values that are not needed for rendering. Refs should only be accessed outside of render, such as in event handlers or effects. Accessing a ref value (the `current` property) during render can cause your component not to update as expected (https://react.dev/reference/react/useRef).
+
+C:\dev\coinsect_next\src\store\StoreProvider.tsx:110:5
+  108 |     (initialMessages && Object.keys(initialMessages).length !== lastSync.current.msgLen)
+  109 |   ) {
+> 110 |     appStoreRef.current.setState((state) => ({
+      |     ^^^^^^^^^^^^^^^^^^^ Passing a ref to a function may read its value during render
+  111 |       settings: { ...state.settings, locale: initialLocale || state.settings.locale },
+  112 |       messages: initialMessages || state.messages,
+  113 |     }))                                                                                                   react-hooks/refs
+  110:5   error  Error: Cannot access refs during render
+
+React refs are values that are not needed for rendering. Refs should only be accessed outside of render, such as in event handlers or effects. Accessing a ref value (the `current` property) during render can cause your component not to update as expected (https://react.dev/reference/react/useRef).
+
+C:\dev\coinsect_next\src\store\StoreProvider.tsx:110:5
+  108 |     (initialMessages && Object.keys(initialMessages).length !== lastSync.current.msgLen)
+  109 |   ) {
+> 110 |     appStoreRef.current.setState((state) => ({
+      |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^ Passing a ref to a function may read its value during render
+  111 |       settings: { ...state.settings, locale: initialLocale || state.settings.locale },
+  112 |       messages: initialMessages || state.messages,
+  113 |     }))                                                                                          react-hooks/refs
+  114:5   error  Error: Cannot access refs during render
+
+React refs are values that are not needed for rendering. Refs should only be accessed outside of render, such as in event handlers or effects. Accessing a ref value (the `current` property) during render can cause your component not to update as expected (https://react.dev/reference/react/useRef).
+
+C:\dev\coinsect_next\src\store\StoreProvider.tsx:114:5
+  112 |       messages: initialMessages || state.messages,
+  113 |     }))
+> 114 |     lastSync.current = { locale: initialLocale, msgLen: initialMessages ? Object.keys(initialMessages).length : 0 }
+      |     ^^^^^^^^^^^^^^^^ Cannot update ref during render
+  115 |   }
+  116 |
+  117 |   return (                                                                                                                                                                                                                                     react-hooks/refs
+  114:25  error  Replace `쨌locale:쨌initialLocale,쨌msgLen:쨌initialMessages쨌?쨌Object.keys(initialMessages).length쨌:쨌0` with `?렺력력력력력톖ocale:쨌initialLocale,?렺력력력력력톗sgLen:쨌initialMessages쨌?쨌Object.keys(initialMessages).length쨌:쨌0,?렺력력?                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      prettier/prettier
+  118:38  error  Error: Cannot access refs during render
+
+React refs are values that are not needed for rendering. Refs should only be accessed outside of render, such as in event handlers or effects. Accessing a ref value (the `current` property) during render can cause your component not to update as expected (https://react.dev/reference/react/useRef).
+
+C:\dev\coinsect_next\src\store\StoreProvider.tsx:118:38
+  116 |
+  117 |   return (
+> 118 |     <AppStoreContext.Provider value={appStoreRef.current}>
+      |                                      ^^^^^^^^^^^^^^^^^^^ Cannot access ref value during render
+  119 |       <UserStoreContext.Provider value={userStoreRef.current}>
+  120 |         <MarketStoreContext.Provider value={marketStoreRef.current}>
+  121 |           <UIStoreContext.Provider value={uiStoreRef.current}>{children}</UIStoreContext.Provider>                                                                           react-hooks/refs
+  119:41  error  Error: Cannot access refs during render
+
+React refs are values that are not needed for rendering. Refs should only be accessed outside of render, such as in event handlers or effects. Accessing a ref value (the `current` property) during render can cause your component not to update as expected (https://react.dev/reference/react/useRef).
+
+C:\dev\coinsect_next\src\store\StoreProvider.tsx:119:41
+  117 |   return (
+  118 |     <AppStoreContext.Provider value={appStoreRef.current}>
+> 119 |       <UserStoreContext.Provider value={userStoreRef.current}>
+      |                                         ^^^^^^^^^^^^^^^^^^^^ Cannot access ref value during render
+  120 |         <MarketStoreContext.Provider value={marketStoreRef.current}>
+  121 |           <UIStoreContext.Provider value={uiStoreRef.current}>{children}</UIStoreContext.Provider>
+  122 |         </MarketStoreContext.Provider>                                react-hooks/refs
+  120:45  error  Error: Cannot access refs during render
+
+React refs are values that are not needed for rendering. Refs should only be accessed outside of render, such as in event handlers or effects. Accessing a ref value (the `current` property) during render can cause your component not to update as expected (https://react.dev/reference/react/useRef).
+
+C:\dev\coinsect_next\src\store\StoreProvider.tsx:120:45
+  118 |     <AppStoreContext.Provider value={appStoreRef.current}>
+  119 |       <UserStoreContext.Provider value={userStoreRef.current}>
+> 120 |         <MarketStoreContext.Provider value={marketStoreRef.current}>
+      |                                             ^^^^^^^^^^^^^^^^^^^^^^ Cannot access ref value during render
+  121 |           <UIStoreContext.Provider value={uiStoreRef.current}>{children}</UIStoreContext.Provider>
+  122 |         </MarketStoreContext.Provider>
+  123 |       </UserStoreContext.Provider>  react-hooks/refs
+  121:43  error  Error: Cannot access refs during render
+
+React refs are values that are not needed for rendering. Refs should only be accessed outside of render, such as in event handlers or effects. Accessing a ref value (the `current` property) during render can cause your component not to update as expected (https://react.dev/reference/react/useRef).
+
+C:\dev\coinsect_next\src\store\StoreProvider.tsx:121:43
+  119 |       <UserStoreContext.Provider value={userStoreRef.current}>
+  120 |         <MarketStoreContext.Provider value={marketStoreRef.current}>
+> 121 |           <UIStoreContext.Provider value={uiStoreRef.current}>{children}</UIStoreContext.Provider>
+      |                                           ^^^^^^^^^^^^^^^^^^ Cannot access ref value during render
+  122 |         </MarketStoreContext.Provider>
+  123 |       </UserStoreContext.Provider>
+  124 |     </AppStoreContext.Provider>                                   react-hooks/refs
+
+C:\dev\coinsect_next\src\store\useAppStore.ts
+  96:1  error  Delete `쨌쨌쨌쨌쨌쨌쨌쨌`  prettier/prettier
+
+??33 problems (33 errors, 0 warnings)
+  11 errors and 0 warnings potentially fixable with the `--fix` option.
+

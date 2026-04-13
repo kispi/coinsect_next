@@ -3,7 +3,7 @@
 import { useQuery } from '@tanstack/react-query'
 import { api } from '@/lib/api'
 import { User } from '@/types'
-import { useUserStore } from '@/store/useUserStore'
+import { useUserStore } from '@/store/StoreProvider'
 import { useEffect } from 'react'
 
 export const useMeQuery = () => {

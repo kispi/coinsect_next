@@ -1,11 +1,21 @@
-import { useUIStore, ToastConfig } from '@/store/useUIStore'
+import { UIStore, ToastConfig } from '@/store/StoreProvider'
 import ModalBasic from '@/components/modals/ModalBasic'
+
+let uiStore: UIStore | null = null
+
+export const setUIStore = (store: UIStore) => {
+  uiStore = store
+}
 
 export const ui = {
   modal: {
     custom: (component: React.ComponentType<any>, options?: any) => {
       return new Promise((resolve) => {
-        useUIStore.getState().addModal({
+        if (!uiStore) {
+          console.warn('ui.modal called before store initialization')
+          return
+        }
+        uiStore.getState().addModal({
           component,
           options,
           resolve,
@@ -37,7 +47,8 @@ export const ui = {
   },
   toast: {
     show: (html: string, options: Partial<ToastConfig> = {}) => {
-      useUIStore.getState().addToast({
+      if (!uiStore) return
+      uiStore.getState().addToast({
         html,
         type: options.type || 'success',
         duration: options.duration || 3000,
@@ -53,10 +64,12 @@ export const ui = {
   },
   snackbar: {
     info: (html: string, duration?: number) => {
-      useUIStore.getState().addSnackbar({ html, class: 'info', type: 'info', duration })
+      if (!uiStore) return
+      uiStore.getState().addSnackbar({ html, class: 'info', type: 'info', duration })
     },
     warning: (html: string, duration?: number) => {
-      useUIStore.getState().addSnackbar({ html, class: 'warning', type: 'warning', duration })
+      if (!uiStore) return
+      uiStore.getState().addSnackbar({ html, class: 'warning', type: 'warning', duration })
     },
   },
 }

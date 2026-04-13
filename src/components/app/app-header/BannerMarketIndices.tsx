@@ -2,13 +2,13 @@
 
 import React from 'react'
 import { useIndices } from '@/hooks/api/useIndices'
-import { useI18n } from '@/hooks/useI18n'
+import { useT } from '@/hooks/useT'
 import { useFormatNumber } from '@/hooks/useFormatNumber'
-import { useMarketStore } from '@/store/useMarketStore'
+import { useMarketStore } from '@/store/StoreProvider'
 
 export default function BannerMarketIndices() {
   const { data: indices } = useIndices()
-  const { i18n } = useI18n()
+  const { t } = useT()
   const { formatCap } = useFormatNumber()
   const usdKrw = useMarketStore((state) => state.usdKrw)
   const setUsdKrw = useMarketStore((state) => state.setUsdKrw)
@@ -49,7 +49,7 @@ export default function BannerMarketIndices() {
           rel="noreferrer"
           className="flex items-center gap-2 whitespace-nowrap text-[11px] md:text-xs hover:opacity-70 transition-opacity"
         >
-          <span className="text-text-base opacity-70">{i18n(item.key)}</span>
+          <span className="text-text-base opacity-70">{t(item.key)}</span>
           <span className="text-text-stress font-mono font-medium">{item.value}</span>
         </a>
       ))}

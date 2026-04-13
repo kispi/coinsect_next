@@ -1,7 +1,7 @@
 import React from 'react'
 import Link from 'next/link'
 import { ChevronRight, HelpCircle } from 'lucide-react'
-import { useI18n } from '@/hooks/useI18n'
+import { useT } from '@/hooks/useT'
 
 interface MainSectionProps {
   title: string
@@ -12,11 +12,11 @@ interface MainSectionProps {
 }
 
 export default function MainSection({ title, link, image, tooltip, children }: MainSectionProps) {
-  const { i18n } = useI18n()
+  const { t } = useT()
   // Attempt translation mapping if needed. Just rendering title for now.
   const translatedTitle = (() => {
     try {
-      return i18n(title)
+      return t(title)
     } catch (_e) {
       return title
     }
@@ -28,13 +28,13 @@ export default function MainSection({ title, link, image, tooltip, children }: M
       <div className="font-bold flex-1 flex items-center">
         <span>{translatedTitle}</span>
         {tooltip && (
-          <span title={i18n(tooltip)} className="flex items-center">
+          <span title={t(tooltip)} className="flex items-center">
             <HelpCircle className="w-3 h-3 ml-1 cursor-pointer text-text-light hover:text-text-base" />
           </span>
         )}
       </div>
       <div className="ml-auto flex items-center text-[10px]">
-        {i18n('COMMON.SEE_MORE')} <ChevronRight className="w-3 h-3 ml-1" />
+        {t('COMMON.SEE_MORE')} <ChevronRight className="w-3 h-3 ml-1" />
       </div>
     </div>
   )

@@ -1,7 +1,7 @@
 'use client'
 
 import { useEffect } from 'react'
-import { useAppStore } from '@/store/useAppStore'
+import { useAppStore } from '@/store/StoreProvider'
 
 export default function ThemeHandler() {
   const theme = useAppStore((state) => state.settings.theme)

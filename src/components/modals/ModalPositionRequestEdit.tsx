@@ -2,7 +2,7 @@
 
 import React, { useState } from 'react'
 import { X } from 'lucide-react'
-import { useI18n } from '@/hooks/useI18n'
+import { useT } from '@/hooks/useT'
 import { usePositionChangeMutation } from '@/hooks/api/usePositionMutation'
 import { ui } from '@/lib/ui'
 import type { RealTimePosition } from '@/types'
@@ -16,7 +16,7 @@ interface Props {
 }
 
 export default function ModalPositionRequestEdit({ options, onClose }: Props) {
-  const { t, i18n } = useI18n()
+  const { t } = useT()
   const p = options.position
 
   const [payload, setPayload] = useState({
@@ -62,7 +62,7 @@ export default function ModalPositionRequestEdit({ options, onClose }: Props) {
       {/* Modal Header */}
       <div className="flex items-center justify-between p-4 border-b border-border-base bg-background-light/30">
         <h3 className="font-bold text-text-stress">
-          {i18n('MODAL.POSITION_NOTIFY_CHANGE').replace('%s', p.name || '')}
+          {t('MODAL.POSITION_NOTIFY_CHANGE').replace('%s', p.name || '')}
         </h3>
         <button onClick={onClose} className="btn-ghost p-1">
           <X className="w-5 h-5 text-text-muted" />
@@ -73,7 +73,7 @@ export default function ModalPositionRequestEdit({ options, onClose }: Props) {
         <div
           className="text-sm text-text-stress text-center"
           dangerouslySetInnerHTML={{
-            __html: i18n('MODAL.POSITION_NOTIFY_CHANGE_DESC').replace('%s', p.name || ''),
+            __html: t('MODAL.POSITION_NOTIFY_CHANGE_DESC').replace('%s', p.name || ''),
           }}
         />
 

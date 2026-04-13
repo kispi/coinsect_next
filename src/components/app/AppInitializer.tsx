@@ -2,7 +2,7 @@
 
 import { useEffect, useRef } from 'react'
 import { getCookie } from '@/lib/cookie'
-import { useUserStore } from '@/store/useUserStore'
+import { useUserStore } from '@/store/StoreProvider'
 
 /**
  * AppInitializer component handles the initial bootstrap logic for the application.

@@ -5,7 +5,7 @@ import { useQueryClient } from '@tanstack/react-query'
 import { useKakaoSignInMutation } from '../api/useAuthMutation'
 import { dom } from '@/lib/dom'
 import { setCookie } from '@/lib/cookie'
-import { useUserStore } from '@/store/useUserStore'
+import { useUserStore } from '@/store/StoreProvider'
 
 declare global {
   interface Window {
@@ -14,6 +14,7 @@ declare global {
 }
 
 export const useKakao = () => {
+  const setAuthToken = useUserStore((state) => state.setAuthToken)
   const { mutateAsync } = useKakaoSignInMutation()
   const queryClient = useQueryClient()
   const isInitialized = useRef<Promise<void> | null>(null)
@@ -74,7 +75,7 @@ export const useKakao = () => {
             })
             if (token) {
               setCookie('token', token)
-              useUserStore.getState().setAuthToken(token)
+              setAuthToken(token)
               await queryClient.invalidateQueries({ queryKey: ['me'] })
             }
             resolve()
@@ -85,7 +86,7 @@ export const useKakao = () => {
         fail: reject,
       })
     })
-  }, [init, mutateAsync, queryClient])
+  }, [init, mutateAsync, queryClient, setAuthToken])
 
   return { signIn }
 }

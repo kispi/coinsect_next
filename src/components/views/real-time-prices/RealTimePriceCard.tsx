@@ -1,9 +1,9 @@
 import React, { useMemo } from 'react'
-import { useMarketStore } from '@/store/useMarketStore'
-import { useAppStore } from '@/store/useAppStore'
+import { useMarketStore } from '@/store/StoreProvider'
+import { useAppStore } from '@/store/StoreProvider'
 import { useFormatNumber } from '@/hooks/useFormatNumber'
 import { ui } from '@/lib/ui'
-import { useI18n } from '@/hooks/useI18n'
+import { useT } from '@/hooks/useT'
 
 interface Props {
   symbol: string
@@ -13,7 +13,7 @@ export default function RealTimePriceCard({ symbol }: Props) {
   const { setSettings } = useAppStore()
   const documentTitleTicker = useAppStore((state) => state.settings.documentTitleTicker)
 
-  const { t } = useI18n()
+  const { t } = useT()
 
   const { formatPrice } = useFormatNumber()
 

@@ -1,4 +1,4 @@
-import { create } from 'zustand'
+import { createStore } from 'zustand'
 
 export type ModalButton = {
   text: string
@@ -39,7 +39,7 @@ export type SnackbarConfig = {
   type?: 'info' | 'warning'
 }
 
-interface UIState {
+export interface UIState {
   modals: ModalConfig[]
   toasts: ToastConfig[]
   snackbars: SnackbarConfig[]
@@ -55,49 +55,53 @@ interface UIState {
   removeSnackbar: (id: string) => void
 }
 
-export const useUIStore = create<UIState>((set) => ({
-  modals: [],
-  toasts: [],
-  snackbars: [],
+export type UIStore = ReturnType<typeof createUIStore>
 
-  addModal: (modal) => {
-    const id = Math.random().toString(36).substring(7)
-    set((state) => ({ modals: [...state.modals, { ...modal, id }] }))
-    return id
-  },
-  removeModal: (id) =>
-    set((state) => ({
-      modals: state.modals.filter((m) => m.id !== id),
-    })),
-  removeAllModals: () => set({ modals: [] }),
+export const createUIStore = () => {
+  return createStore<UIState>((set) => ({
+    modals: [],
+    toasts: [],
+    snackbars: [],
 
-  addToast: (toast) => {
-    const id = Math.random().toString(36).substring(7)
-    set((state) => ({ toasts: [...state.toasts, { ...toast, id }] }))
-    if ((toast.duration || 3000) > 0) {
-      setTimeout(() => {
-        set((s) => ({ toasts: s.toasts.filter((t) => t.id !== id) }))
-      }, toast.duration || 3000)
-    }
-    return id
-  },
-  removeToast: (id) =>
-    set((state) => ({
-      toasts: state.toasts.filter((t) => t.id !== id),
-    })),
+    addModal: (modal) => {
+      const id = Math.random().toString(36).substring(7)
+      set((state) => ({ modals: [...state.modals, { ...modal, id }] }))
+      return id
+    },
+    removeModal: (id) =>
+      set((state) => ({
+        modals: state.modals.filter((m) => m.id !== id),
+      })),
+    removeAllModals: () => set({ modals: [] }),
 
-  addSnackbar: (snackbar) => {
-    const id = Math.random().toString(36).substring(7)
-    set((state) => ({ snackbars: [...state.snackbars, { ...snackbar, id }] }))
-    if (snackbar.duration !== -1) {
-      setTimeout(() => {
-        set((s) => ({ snackbars: s.snackbars.filter((sb) => sb.id !== id) }))
-      }, snackbar.duration || 5000)
-    }
-    return id
-  },
-  removeSnackbar: (id) =>
-    set((state) => ({
-      snackbars: state.snackbars.filter((sb) => sb.id !== id),
-    })),
-}))
+    addToast: (toast) => {
+      const id = Math.random().toString(36).substring(7)
+      set((state) => ({ toasts: [...state.toasts, { ...toast, id }] }))
+      if ((toast.duration || 3000) > 0) {
+        setTimeout(() => {
+          set((s) => ({ toasts: s.toasts.filter((t) => t.id !== id) }))
+        }, toast.duration || 3000)
+      }
+      return id
+    },
+    removeToast: (id) =>
+      set((state) => ({
+        toasts: state.toasts.filter((t) => t.id !== id),
+      })),
+
+    addSnackbar: (snackbar) => {
+      const id = Math.random().toString(36).substring(7)
+      set((state) => ({ snackbars: [...state.snackbars, { ...snackbar, id }] }))
+      if (snackbar.duration !== -1) {
+        setTimeout(() => {
+          set((s) => ({ snackbars: s.snackbars.filter((sb) => sb.id !== id) }))
+        }, snackbar.duration || 5000)
+      }
+      return id
+    },
+    removeSnackbar: (id) =>
+      set((state) => ({
+        snackbars: state.snackbars.filter((sb) => sb.id !== id),
+      })),
+  }))
+}
