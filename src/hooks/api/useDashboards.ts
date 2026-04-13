@@ -1,4 +1,4 @@
-import { useQuery } from '@tanstack/react-query'
+import { useQuery, useSuspenseQuery } from '@tanstack/react-query'
 import { cryptoUtils } from '@/lib/crypto'
 import type { UpbitNews, RealTimePosition, WhaleAlert } from '@/types'
 
@@ -38,6 +38,13 @@ export const getDashboards = async (): Promise<ResponseDashboard> => {
 
 export const useDashboards = () => {
   return useQuery({
+    queryKey: ['dashboards', 'main'],
+    queryFn: getDashboards,
+  })
+}
+
+export const useSuspenseDashboards = () => {
+  return useSuspenseQuery({
     queryKey: ['dashboards', 'main'],
     queryFn: getDashboards,
   })
