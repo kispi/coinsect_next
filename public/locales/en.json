@@ -38,7 +38,12 @@
     "SIZE_DESC": "(Size)",
     "CONTRACT": "Symbol",
     "ON_AIR": "On Air",
-    "ON_OFF": "ON/OFF"
+    "ON_OFF": "ON/OFF",
+    "MODAL_CHAT_USERS": "Chat Participants",
+    "NON_BLOCKED": "Participating",
+    "BLOCKED": "Blocked",
+    "UNBLOCK_ALL": "Unblock All",
+    "NO_USERS": "No users"
   },
   "SETTINGS": {
     "TITLE": "Settings",
@@ -79,6 +84,23 @@
   "APP_CHAT": {
     "PLACEHOLDER": "Enter message (max 255 chars)",
     "REPLY_PLACEHOLDER": "Enter reply...",
-    "NO_SEARCH_RESULT": "No Search Result 😢"
+    "NO_SEARCH_RESULT": "No Search Result 😢",
+    "MODAL_CHAT_SETTINGS": "Chat Settings",
+    "CHAT_TRANSPARENT": "Transparent Background",
+    "CHAT_DING": "Notification Sound",
+    "CHAT_OVERLAY_NEW_MESSAGE": "New Message Overlay",
+    "CHAT_SIZE_MAX": "Full Screen Chat",
+    "CHAT_SKIN": "Chat Skin",
+    "SKIN_basic": "Basic",
+    "SKIN_kakao": "KakaoTalk",
+    "PUSH_POSITION_CHANGE": "Position Change Push Notification",
+    "TOOLTIP_CHAT_TRANSPARENT": "Makes the chat background transparent.",
+    "TOOLTIP_CHAT_DING": "Plays a sound when a new message arrives.",
+    "TOOLTIP_CHAT_OVERLAY_NEW_MESSAGE": "Shows a summary of new messages when the chat is closed or hidden.",
+    "TOOLTIP_CHAT_SIZE_MAX": "Expands the chat window to fill the screen.",
+    "TOOLTIP_FIXED_NICKNAME": "This account has a unique fixed nickname.",
+    "MODAL_CONFIRM_DELETE_IMAGE": "Are you sure you want to delete your profile image?",
+    "IMAGE": "Image",
+    "DELETED_BY_ADMIN": "Message deleted by administrator."
   }
 }

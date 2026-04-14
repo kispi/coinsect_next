@@ -202,23 +202,32 @@ export function useMarketStore<T>(selector?: (store: MarketState) => T): T | Mar
   return useStore(context, selector as (store: MarketState) => T)
 }
 
+export function useUIStore<T>(selector: (store: UIState) => T): T
+export function useUIStore(): UIState
 export function useUIStore<T>(selector?: (store: UIState) => T): T | UIState {
   const context = useContext(UIStoreContext)
   if (!context) throw new Error('useUIStore must be used within StoreProvider')
 
-  return useStore(context, selector || ((s: UIState) => s as any))
+  return useStore(context, (selector as (store: UIState) => T) || ((s: UIState) => s as any))
 }
 
+export function useChatStore<T>(selector: (store: ChatState) => T): T
+export function useChatStore(): ChatState
 export function useChatStore<T>(selector?: (store: ChatState) => T): T | ChatState {
   const context = useContext(ChatStoreContext)
   if (!context) throw new Error('useChatStore must be used within StoreProvider')
 
-  return useStore(context, selector || ((s: ChatState) => s as any))
+  return useStore(context, (selector as (store: ChatState) => T) || ((s: ChatState) => s as any))
 }
 
+export function useConfigStore<T>(selector: (store: ConfigState) => T): T
+export function useConfigStore(): ConfigState
 export function useConfigStore<T>(selector?: (store: ConfigState) => T): T | ConfigState {
   const context = useContext(ConfigStoreContext)
   if (!context) throw new Error('useConfigStore must be used within StoreProvider')
 
-  return useStore(context, selector || ((s: ConfigState) => s as any))
+  return useStore(
+    context,
+    (selector as (store: ConfigState) => T) || ((s: ConfigState) => s as any)
+  )
 }

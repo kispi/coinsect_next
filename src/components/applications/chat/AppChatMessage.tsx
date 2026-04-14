@@ -7,7 +7,7 @@ import AppChatMessageMetaTags from './AppChatMessageMetaTags'
 import AppPortal from '@/components/common/AppPortal'
 import dayjs from 'dayjs'
 import { Reply, Plus, CircleHelp } from 'lucide-react'
-import { useChatStore, useConfigStore } from '@/store/StoreProvider'
+import { useChatStore, useConfigStore, useT } from '@/store/StoreProvider'
 import { useToggleReaction } from '@/hooks/api/useToggleReaction'
 import EmojiPicker from './EmojiPicker'
 import ReactedUsers from './ReactedUsers'
@@ -33,6 +33,7 @@ export default function AppChatMessage({
   const [showEmojiSelector, setShowEmojiSelector] = useState(false)
   const [showReactedUsers, setShowReactedUsers] = useState(false)
   const emojiAnchorRef = useRef<HTMLButtonElement>(null)
+  const { t } = useT()
 
   const meta = useMemo(() => {
     if (!message.meta) return null
@@ -176,7 +177,7 @@ export default function AppChatMessage({
             </div>
           ) : (
             <div className="text px-2 py-1 rounded bg-rose-900/30 text-rose-400 text-xs italic">
-              Deleted by admin
+              {t('APP_CHAT.DELETED_BY_ADMIN')}
             </div>
           )}
 
