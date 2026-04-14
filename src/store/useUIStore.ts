@@ -1,3 +1,4 @@
+import ModalBasic from '@/components/modals/ModalBasic'
 import { createStore } from 'zustand'
 
 export type ModalButton = {
@@ -53,6 +54,12 @@ export interface UIState {
 
   addSnackbar: (snackbar: Omit<SnackbarConfig, 'id'>) => string
   removeSnackbar: (id: string) => void
+
+  confirm: (options: {
+    title?: string
+    body: string | React.ReactNode
+    buttons?: ModalButton[]
+  }) => Promise<any>
 }
 
 export type UIStore = ReturnType<typeof createUIStore>
@@ -103,5 +110,26 @@ export const createUIStore = () => {
       set((state) => ({
         snackbars: state.snackbars.filter((sb) => sb.id !== id),
       })),
+
+    confirm: ({ title, body, buttons }) =>
+      new Promise((resolve) => {
+        set((state) => {
+          const id = Math.random().toString(36).substring(7)
+          const modal: ModalConfig = {
+            id,
+            component: ModalBasic,
+            options: {
+              title: title || '알림',
+              body,
+              buttons: buttons || [
+                { text: 'COMMON.CANCEL', class: 'btn-default' },
+                { text: 'COMMON.CONFIRM', class: 'btn-primary' },
+              ],
+            },
+            resolve: (res) => resolve(res),
+          }
+          return { modals: [...state.modals, modal] }
+        })
+      }),
   }))
 }

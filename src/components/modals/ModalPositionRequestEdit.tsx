@@ -1,11 +1,11 @@
 'use client'
 
 import React, { useState } from 'react'
-import { X } from 'lucide-react'
-import { useT } from '@/hooks/useT'
-import { usePositionChangeMutation } from '@/hooks/api/usePositionMutation'
+import ModalHeader from '@/components/common/modal/ModalHeader'
+import { useT } from '@/store/StoreProvider'
 import { ui } from '@/lib/ui'
-import type { RealTimePosition } from '@/types'
+import { RealTimePosition } from '@/types'
+import { usePositionChangeMutation } from '@/hooks/api/usePositionMutation'
 import AppToggler from '@/components/common/AppToggler'
 
 interface Props {
@@ -44,6 +44,7 @@ export default function ModalPositionRequestEdit({ options, onClose }: Props) {
       const token = typeof window !== 'undefined' ? localStorage.getItem('token') : null
       const o = {
         ...payload,
+        id: Number(payload.id),
         entryPrice: Number(payload.entryPrice),
         liqPrice: Number(payload.liqPrice),
         size: Number(payload.size),
@@ -59,15 +60,10 @@ export default function ModalPositionRequestEdit({ options, onClose }: Props) {
 
   return (
     <div className="modal-position-request-edit w-full max-w-[360px] bg-background-base border border-border-base rounded shadow-2xl overflow-hidden">
-      {/* Modal Header */}
-      <div className="flex items-center justify-between p-4 border-b border-border-base bg-background-light/30">
-        <h3 className="font-bold text-text-stress">
-          {t('MODAL.POSITION_NOTIFY_CHANGE').replace('%s', p.name || '')}
-        </h3>
-        <button onClick={onClose} className="btn-ghost p-1">
-          <X className="w-5 h-5 text-text-muted" />
-        </button>
-      </div>
+      <ModalHeader
+        title={t('MODAL.POSITION_NOTIFY_CHANGE').replace('%s', p.name || '')}
+        onClose={onClose}
+      />
 
       <div className="p-6 flex flex-col items-center gap-4">
         <div

@@ -8,6 +8,7 @@ import Providers from '@/components/Providers'
 import AppHeader from '@/components/app/app-header/AppHeader'
 import ThemeHandler from '@/components/ThemeHandler'
 import UIRoot from '@/components/ui/UIRoot'
+import AppAddons from '@/components/app/AppAddons'
 import './globals.css'
 
 const geistSans = Geist({
@@ -59,6 +60,7 @@ export default async function RootLayout({ children }: RootLayoutProps) {
           <Providers>
             <ThemeHandler />
             <UIRoot />
+            <AppAddons />
             <AppHeader />
             <main className="mx-auto max-w-7xl pt-4 px-4 md:px-6 lg:px-8">{children}</main>
           </Providers>

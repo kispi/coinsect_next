@@ -1,9 +1,8 @@
 'use client'
 
 import React from 'react'
-import { X } from 'lucide-react'
-import { useT } from '@/hooks/useT'
-import type { ModalButton } from '@/store/StoreProvider'
+import ModalHeader from '@/components/common/modal/ModalHeader'
+import { useT, ModalButton } from '@/store/StoreProvider'
 
 interface Props {
   options: {
@@ -23,18 +22,14 @@ export default function ModalBasic({ options, onClose }: Props) {
 
   return (
     <div
-      className="modal-basic bg-background-base border border-border-base rounded shadow-2xl w-full max-w-[480px] overflow-hidden"
+      className="modal-basic bg-background-base border border-border-base rounded shadow-2xl w-[480px] max-w-[calc(100vw-32px)] overflow-hidden"
       style={options.style}
     >
-      {/* Modal Header */}
-      <div className="flex items-center justify-between p-4 border-b border-border-base bg-background-light/30">
-        <h3 className={`font-bold text-text-stress ${options.titleClass || ''}`}>
-          {options.title ? t(options.title) : ''}
-        </h3>
-        <button onClick={() => onClose()} className="btn-ghost p-1">
-          <X className="w-5 h-5 text-text-muted" />
-        </button>
-      </div>
+      <ModalHeader
+        title={options.title ? t(options.title) : ''}
+        titleClass={options.titleClass}
+        onClose={onClose}
+      />
 
       {/* Modal Body */}
       <div className={`p-6 text-sm text-text-base whitespace-pre-line ${options.bodyClass || ''}`}>

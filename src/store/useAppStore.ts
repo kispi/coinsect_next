@@ -5,7 +5,6 @@ import { metaStorage } from '@/lib/storage'
 import { setCookie } from '@/lib/cookie'
 
 export type CoinsectSetting = {
-  blockedUsers: Record<string, any>
   locale: string
   dockFolded: boolean
   sort: {
@@ -31,23 +30,20 @@ export type CoinsectSetting = {
     numFamily: number | null
     nonTax: number | null
   }
-  chatFolded: boolean | null
-  chatSizeMax: boolean | null
-  chatDing: boolean | null
-  chatTransparent: boolean | null
-  chatOverlayNewMessage: boolean | null
-  chatSkin: string | null
 }
 
 export interface AppState {
   settings: CoinsectSetting
   messages: any
+  isMobile: boolean
+  showNavigation: boolean
   setMessages: (messages: any) => void
   setSettings: (settings: Partial<CoinsectSetting>) => void
+  setIsMobile: (isMobile: boolean) => void
+  setShowNavigation: (show: boolean) => void
 }
 
 export const DEFAULT_SETTINGS: CoinsectSetting = {
-  blockedUsers: {},
   locale: 'ko',
   dockFolded: false,
   sort: {
@@ -73,12 +69,6 @@ export const DEFAULT_SETTINGS: CoinsectSetting = {
     numFamily: 1,
     nonTax: 1200000,
   },
-  chatFolded: false,
-  chatSizeMax: false,
-  chatDing: false,
-  chatTransparent: false,
-  chatOverlayNewMessage: true,
-  chatSkin: 'basic',
 }
 
 export type AppStore = ReturnType<typeof createAppStore>
@@ -87,8 +77,13 @@ export const createAppStore = (initProps: Partial<AppState> = {}) => {
   return createStore<AppState>()((set) => ({
     settings: initProps.settings || DEFAULT_SETTINGS,
     messages: initProps.messages || {},
+    isMobile: false,
+    showNavigation: true,
 
     setMessages: (messages) => set({ messages }),
+
+    setIsMobile: (isMobile) => set({ isMobile }),
+    setShowNavigation: (showNavigation) => set({ showNavigation }),
 
     setSettings: (newSettings) => {
       set((state) => {

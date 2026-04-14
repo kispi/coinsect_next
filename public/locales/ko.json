@@ -38,7 +38,12 @@
     "SIZE_DESC": "(수량)",
     "CONTRACT": "심볼",
     "ON_AIR": "방송 중",
-    "ON_OFF": "ON/OFF"
+    "ON_OFF": "ON/OFF",
+    "MODAL_CHAT_USERS": "채팅 참여 유저",
+    "NON_BLOCKED": "참여 중",
+    "BLOCKED": "차단 중",
+    "UNBLOCK_ALL": "모든 차단 해제",
+    "NO_USERS": "유저가 없습니다"
   },
   "SETTINGS": {
     "TITLE": "설정",
@@ -75,5 +80,26 @@
   "TOAST": {
     "REAL_TIME_TICKER_SELECTED": "{symbol}가 실시간 티커로 브라우저 타이틀에 노출됩니다.",
     "POSITION_EDIT_REQUESTED": "운영자에게 BJ의 포지션 변경사항을 알렸습니다"
+  },
+  "APP_CHAT": {
+    "PLACEHOLDER": "메시지를 입력하세요 (255자 이내)",
+    "REPLY_PLACEHOLDER": "답장을 입력하세요...",
+    "NO_SEARCH_RESULT": "검색 결과가 없습니다 😢",
+    "MODAL_CHAT_SETTINGS": "채팅 설정",
+    "CHAT_TRANSPARENT": "배경 투명하게",
+    "CHAT_DING": "새 메시지 알림음",
+    "CHAT_OVERLAY_NEW_MESSAGE": "새 메시지 알림 팝업",
+    "CHAT_SIZE_MAX": "채팅창 전체화면",
+    "CHAT_SKIN": "채팅 스킨",
+    "SKIN_basic": "기본",
+    "SKIN_kakao": "카카오톡",
+    "PUSH_POSITION_CHANGE": "포지션 변경 푸시 알림",
+    "TOOLTIP_CHAT_TRANSPARENT": "채팅창의 배경을 투명하게 만듭니다.",
+    "TOOLTIP_CHAT_DING": "새 메시지가 도착할 때 효과음을 재생합니다.",
+    "TOOLTIP_CHAT_OVERLAY_NEW_MESSAGE": "채팅창이 닫혀있거나 가려져 있을 때 새 메시지를 요약해서 보여줍니다.",
+    "TOOLTIP_CHAT_SIZE_MAX": "채팅창을 화면에 꽉 차게 확장합니다.",
+    "TOOLTIP_FIXED_NICKNAME": "고유 닉네임이 설정된 계정입니다.",
+    "MODAL_CONFIRM_DELETE_IMAGE": "프로필 이미지를 삭제하시겠습니까?",
+    "IMAGE": "이미지"
   }
 }

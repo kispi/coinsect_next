@@ -2,7 +2,9 @@
 
 import { useEffect, useRef } from 'react'
 import { getCookie } from '@/lib/cookie'
-import { useUserStore } from '@/store/StoreProvider'
+import { useUserStore, useConfigStore } from '@/store/StoreProvider'
+import { api } from '@/lib/api'
+import { CoinsectConfig } from '@/store/useConfigStore'
 
 /**
  * AppInitializer component handles the initial bootstrap logic for the application.
@@ -12,6 +14,7 @@ import { useUserStore } from '@/store/StoreProvider'
 export default function AppInitializer() {
   const isStarted = useRef(false)
   const setAuthToken = useUserStore((state) => state.setAuthToken)
+  const setConfig = useConfigStore((state) => state.setConfig)
 
   useEffect(() => {
     if (isStarted.current) return
@@ -22,8 +25,14 @@ export default function AppInitializer() {
     if (token) setAuthToken(token)
 
     // 2. Initial Environment Setup
-    // Any other one-time initializations (e.g. mobile check, theme sync) can go here.
-  }, [setAuthToken])
+    // Fetch global config (emojis, etc.)
+    api
+      .get<CoinsectConfig>('config')
+      .then((data) => {
+        setConfig(data)
+      })
+      .catch((e) => console.error('Failed to load config', e))
+  }, [setAuthToken, setConfig])
 
   return null
 }

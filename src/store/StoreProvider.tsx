@@ -21,6 +21,8 @@ import {
   ToastConfig,
   SnackbarConfig,
 } from '@/store/useUIStore'
+import { createChatStore, ChatStore, ChatState } from '@/store/useChatStore'
+import { createConfigStore, ConfigStore, ConfigState } from '@/store/useConfigStore'
 
 export type {
   AppStore,
@@ -37,10 +39,15 @@ export type {
   ModalConfig,
   ToastConfig,
   SnackbarConfig,
+  ChatStore,
+  ChatState,
+  ConfigStore,
+  ConfigState,
 }
 
+export { useT } from '@/hooks/useT'
+
 import { metaStorage } from '@/lib/storage'
-import { setCookie } from '@/lib/cookie'
 import { setUIStore } from '@/lib/ui'
 
 // 1. Contexts
@@ -48,6 +55,8 @@ export const AppStoreContext = createContext<AppStore | undefined>(undefined)
 export const UserStoreContext = createContext<UserStore | undefined>(undefined)
 export const MarketStoreContext = createContext<MarketStore | undefined>(undefined)
 export const UIStoreContext = createContext<UIStore | undefined>(undefined)
+export const ChatStoreContext = createContext<ChatStore | undefined>(undefined)
+export const ConfigStoreContext = createContext<ConfigStore | undefined>(undefined)
 
 // 2. Provider Props
 export interface StoreProviderProps {
@@ -66,49 +75,78 @@ export const StoreProvider = ({
 }: StoreProviderProps) => {
   // Initialize each store only once using useState for render-safety
   const [appStore] = useState(() => {
-    const initSettings = {
-      ...DEFAULT_SETTINGS,
-      ...(initialLocale ? { locale: initialLocale } : {}),
-      ...(initialTheme ? { theme: initialTheme } : {}),
-    }
-    const store = createAppStore({
+    return createAppStore({
       messages: initialMessages || {},
-      settings: initSettings,
+      settings: {
+        ...DEFAULT_SETTINGS,
+        ...(initialLocale ? { locale: initialLocale } : {}),
+        ...(initialTheme ? { theme: initialTheme } : {}),
+      },
     })
-
-    if (typeof window !== 'undefined') {
-      const savedSettings = metaStorage.getItem<any>('settings')
-      if (savedSettings) {
-        store.setState((state) => ({
-          settings: {
-            ...state.settings,
-            ...savedSettings,
-            locale: initialLocale || savedSettings.locale,
-            theme: initialTheme || savedSettings.theme,
-          },
-        }))
-        setCookie('NEXT_LOCALE', store.getState().settings.locale)
-        setCookie('NEXT_THEME', store.getState().settings.theme)
-      }
-    }
-    return store
   })
 
-  // Other stores initialization
   const [userStore] = useState(() => createUserStore())
   const [marketStore] = useState(() => createMarketStore())
   const [uiStore] = useState(() => createUIStore())
+  const [chatStore] = useState(() => createChatStore())
+  const [configStore] = useState(() => createConfigStore())
 
-  // Handle dynamic prop updates for AppStore (locale change)
+  // Track hydration state to prevent double-runs or racing
+  const isHydrated = useRef(false)
   const lastSync = useRef({
     locale: initialLocale,
     msgLen: initialMessages ? Object.keys(initialMessages).length : 0,
   })
 
   useEffect(() => {
-    // Attach UI store to the static bridge (Client-side only)
+    if (typeof window === 'undefined') return
+
+    // 1. Initial Client-Side Hydration (Runs once on mount)
+    if (!isHydrated.current) {
+      // Hydrate AppStore Settings
+      const savedAppSettings = metaStorage.getItem<any>('settings')
+      if (savedAppSettings) {
+        appStore.setState((state) => ({
+          settings: {
+            ...state.settings,
+            ...savedAppSettings,
+            // Prioritize SSR-driven initial props if they differ
+            locale: initialLocale || savedAppSettings.locale,
+            theme: initialTheme || savedAppSettings.theme,
+          },
+        }))
+      }
+
+      // Hydrate UserStore (Profile & Token)
+      const savedUser = metaStorage.getItem<any>('user')
+      const savedToken = metaStorage.getItem<string>('token') // Or getCookie('token')
+      if (savedUser || savedToken) {
+        userStore.setState((state) => ({
+          ...state,
+          me: savedUser || state.me,
+          authToken: savedToken || state.authToken,
+        }))
+        if (savedToken) {
+          userStore.getState().setAuthToken(savedToken)
+        }
+      }
+
+      // Hydrate ChatStore Settings
+      const savedChatSettings = metaStorage.getItem<any>('chatSettings')
+      if (savedChatSettings) {
+        chatStore.setState((state) => ({
+          ...state,
+          settings: { ...state.settings, ...savedChatSettings },
+        }))
+      }
+
+      isHydrated.current = true
+    }
+
+    // 2. Attach UI store to the static bridge
     setUIStore(uiStore)
 
+    // 3. Sync Dynamic SSR Props (Locale/Messages) on navigation
     const currentMsgLen = initialMessages ? Object.keys(initialMessages).length : 0
     if (initialLocale !== lastSync.current.locale || currentMsgLen !== lastSync.current.msgLen) {
       appStore.setState((state) => ({
@@ -120,13 +158,19 @@ export const StoreProvider = ({
         msgLen: currentMsgLen,
       }
     }
-  }, [initialLocale, initialMessages, appStore])
+  }, [initialLocale, initialMessages, appStore, uiStore, userStore, chatStore])
 
   return (
     <AppStoreContext.Provider value={appStore}>
       <UserStoreContext.Provider value={userStore}>
         <MarketStoreContext.Provider value={marketStore}>
-          <UIStoreContext.Provider value={uiStore}>{children}</UIStoreContext.Provider>
+          <UIStoreContext.Provider value={uiStore}>
+            <ChatStoreContext.Provider value={chatStore}>
+              <ConfigStoreContext.Provider value={configStore}>
+                {children}
+              </ConfigStoreContext.Provider>
+            </ChatStoreContext.Provider>
+          </UIStoreContext.Provider>
         </MarketStoreContext.Provider>
       </UserStoreContext.Provider>
     </AppStoreContext.Provider>
@@ -158,10 +202,23 @@ export function useMarketStore<T>(selector?: (store: MarketState) => T): T | Mar
   return useStore(context, selector as (store: MarketState) => T)
 }
 
-export function useUIStore<T>(selector: (store: UIState) => T): T
-export function useUIStore(): UIState
 export function useUIStore<T>(selector?: (store: UIState) => T): T | UIState {
   const context = useContext(UIStoreContext)
   if (!context) throw new Error('useUIStore must be used within StoreProvider')
-  return useStore(context, selector as (store: UIState) => T)
+
+  return useStore(context, selector || ((s: UIState) => s as any))
+}
+
+export function useChatStore<T>(selector?: (store: ChatState) => T): T | ChatState {
+  const context = useContext(ChatStoreContext)
+  if (!context) throw new Error('useChatStore must be used within StoreProvider')
+
+  return useStore(context, selector || ((s: ChatState) => s as any))
+}
+
+export function useConfigStore<T>(selector?: (store: ConfigState) => T): T | ConfigState {
+  const context = useContext(ConfigStoreContext)
+  if (!context) throw new Error('useConfigStore must be used within StoreProvider')
+
+  return useStore(context, selector || ((s: ConfigState) => s as any))
 }

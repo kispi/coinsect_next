@@ -4,7 +4,6 @@ import React from 'react'
 import { useUIStore, ModalConfig, ToastConfig, SnackbarConfig } from '@/store/StoreProvider'
 import { X, Info, AlertTriangle } from 'lucide-react'
 import { useT } from '@/hooks/useT'
-import AppInitializer from '@/components/app/AppInitializer'
 
 /**
  * ModalRenderer: Replicates Modal system with animations and backdrop support
@@ -64,11 +63,11 @@ const ModalRenderer = ({ modal }: { modal: ModalConfig }) => {
 
   return (
     <div
-      className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-black/60 backdrop-blur-md animate-backdrop-in"
+      className="fixed inset-0 z-[200] flex items-center justify-center p-4 bg-black/60 backdrop-blur-md animate-backdrop-in"
       onClick={onBackdropClick}
     >
       <div className="animate-modal-in w-full flex justify-center pointer-events-none">
-        <div className="pointer-events-auto">
+        <div className="pointer-events-auto min-w-[400px] max-w-full flex justify-center">
           <Component options={modal.options} onClose={handleClose} />
         </div>
       </div>
@@ -99,7 +98,7 @@ const ToastRenderer = ({ toast, index }: { toast: ToastConfig; index: number }) 
 
   return (
     <div
-      className="fixed left-1/2 -translate-x-1/2 z-[110] w-full max-w-[400px] px-4 animate-toast-in pointer-events-auto"
+      className="fixed left-1/2 -translate-x-1/2 z-[210] w-full max-w-[400px] px-4 animate-toast-in pointer-events-auto"
       style={{ top: `${24 + index * 60}px` }}
     >
       <div
@@ -167,21 +166,18 @@ export default function UIRoot() {
       ))}
 
       {/* Stacked Toasts at Top Center */}
-      <div className="fixed inset-0 pointer-events-none z-[110]">
+      <div className="fixed inset-0 pointer-events-none z-[210]">
         {toasts.map((toast, index) => (
           <ToastRenderer key={toast.id} toast={toast} index={index} />
         ))}
       </div>
 
       {/* Stacked Snackbars */}
-      <div className="fixed bottom-6 right-6 z-[105] flex flex-col gap-2">
+      <div className="fixed bottom-6 right-6 z-[205] flex flex-col gap-2">
         {snackbars.map((sb) => (
           <SnackbarRenderer key={sb.id} snackbar={sb} />
         ))}
       </div>
-
-      {/* Core Initializer */}
-      <AppInitializer />
     </div>
   )
 }

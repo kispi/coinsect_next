@@ -75,5 +75,10 @@
   "TOAST": {
     "REAL_TIME_TICKER_SELECTED": "{symbol} is set as real time ticker for browser title.",
     "POSITION_EDIT_REQUESTED": "You notified the admin that the BJ has changed position"
+  },
+  "APP_CHAT": {
+    "PLACEHOLDER": "Enter message (max 255 chars)",
+    "REPLY_PLACEHOLDER": "Enter reply...",
+    "NO_SEARCH_RESULT": "No Search Result 😢"
   }
 }

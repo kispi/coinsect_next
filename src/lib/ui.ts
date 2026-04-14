@@ -74,6 +74,9 @@ export const ui = {
     error: (html: string, duration?: number) => {
       ui.toast.show(html, { type: 'error', duration })
     },
+    info: (html: string, duration?: number) => {
+      ui.toast.show(html, { type: 'info', duration })
+    },
   },
   snackbar: {
     info: (html: string, duration?: number) => {

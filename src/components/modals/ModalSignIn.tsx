@@ -1,8 +1,5 @@
-'use client'
-
-import React from 'react'
-import { X } from 'lucide-react'
-import { useT } from '@/hooks/useT'
+import ModalHeader from '@/components/common/modal/ModalHeader'
+import { useT } from '@/store/StoreProvider'
 import { useKakao } from '@/hooks/oauth/useKakao'
 import { ui } from '@/lib/ui'
 
@@ -35,18 +32,8 @@ export default function ModalSignIn({ onClose }: Props) {
   ]
 
   return (
-    <div className="modal-sign-in w-full max-w-[400px] bg-background-base border border-border-base rounded-2xl shadow-2xl overflow-hidden transition-all duration-300 transform scale-100">
-      {/* Modal Header */}
-      <div className="flex items-center justify-between p-5 border-b border-border-base bg-background-light/20 backdrop-blur-sm">
-        <h3 className="font-bold text-text-stress text-lg tracking-tight">{t('MODAL.SIGN_IN')}</h3>
-        <button
-          onClick={onClose}
-          className="p-1.5 hover:bg-background-light rounded-full transition-all text-text-muted hover:text-text-stress"
-          aria-label="Close"
-        >
-          <X className="w-5 h-5" />
-        </button>
-      </div>
+    <div className="modal-sign-in w-[420px] max-w-[calc(100vw-32px)] bg-background-base border border-border-base rounded-2xl shadow-2xl overflow-hidden">
+      <ModalHeader title={t('MODAL.SIGN_IN')} onClose={onClose} />
 
       {/* Modal Body */}
       <div className="p-8 flex flex-col gap-8">

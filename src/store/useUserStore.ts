@@ -2,7 +2,7 @@
 
 import { createStore } from 'zustand'
 import { User } from '@/types'
-import { deleteCookie, getCookie } from '@/lib/cookie'
+import { deleteCookie } from '@/lib/cookie'
 import { setAuthToken as setAuthTokenApi } from '@/lib/api'
 
 export interface UserState {
@@ -17,13 +17,9 @@ export type UserStore = ReturnType<typeof createUserStore>
 
 export const createUserStore = () => {
   return createStore<UserState>((set) => {
-    // Initial token load for memory sync
-    const initialToken = typeof window !== 'undefined' ? getCookie('token') || null : null
-    if (initialToken) setAuthTokenApi(initialToken)
-
     return {
       me: null,
-      authToken: initialToken,
+      authToken: null,
       setMe: (me) => set({ me }),
       setAuthToken: (token) => {
         setAuthTokenApi(token)

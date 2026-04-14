@@ -6,9 +6,22 @@ export interface UpbitNews {
   is_best?: boolean
 }
 
-export interface RealTimePosition {
+export type RealTimePosition = {
+  $$unrealized: number
+  $$value: number
+  contract: string
+  editable: boolean
+  entryPrice: number
+  id: string
+  image: string
+  lastUpdate: string
+  link: string
+  markPrice: number
+  liqPrice?: number
   name: string
-  // add more properties based on actual API response
+  onAir: boolean
+  size: number
+  tracking: boolean
   [key: string]: any
 }
 
@@ -32,14 +45,40 @@ export interface Profile {
   image: string
   nickname: string
   sentiment?: {
-    expireAt: string
-    type: 'long' | 'short'
+    expireAt?: string
+    type?: string
   }
 }
 
 export interface User {
   id?: number
-  profile?: Profile
-  jwt?: string
+  profile: Profile
   token: string
+}
+
+export interface Reaction {
+  id?: string | number
+  type: string
+  userId?: number
+  ip?: string
+  nickname?: string
+  isActive?: boolean
+  count?: number
+}
+
+export interface Message {
+  id: number
+  user: User
+  text: string
+  type: 'text' | 'image' | 'alert' | 'auth' | string
+  ts: number
+  isMine?: boolean
+  meta?: any
+  reactions?: Reaction[]
+  $$hide?: boolean
+}
+
+export interface ChatStats {
+  onlineUsers: number
+  [key: string]: any
 }
