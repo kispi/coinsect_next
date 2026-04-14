@@ -1,7 +1,7 @@
 'use client'
 
 import { User } from '@/types'
-import { useUIStore, useChatStore } from '@/store/StoreProvider'
+import { useUIStore, useChatStore, useT } from '@/store/StoreProvider'
 import { Ban, ShieldCheck } from 'lucide-react'
 
 interface AppChatProfileProps {
@@ -14,6 +14,7 @@ export default function AppChatProfile({ user, useBan, useSentiment }: AppChatPr
   const toggleBlockUser = useChatStore((s) => s.toggleBlockUser)
   const blockedUsers = useChatStore((s) => s.settings.blockedUsers)
   const confirm = useUIStore((s) => s.confirm)
+  const { t } = useT()
 
   if (!user) return null
 
@@ -27,7 +28,7 @@ export default function AppChatProfile({ user, useBan, useSentiment }: AppChatPr
     // Show confirmation if blocking
     if (!blockedUsers[user.token]) {
       const res = await confirm({
-        body: `<div class="text-center font-bold">"${user.profile.nickname}"<br/>유저를 차단하시겠습니까?</div>`,
+        body: t('APP_CHAT.CONFIRM_BLOCK_USER', { nickname: user.profile.nickname }),
       })
       if (res !== 1) return // 1 is CONFIRM button index in ModalBasic
     }

@@ -101,6 +101,7 @@
     "TOOLTIP_FIXED_NICKNAME": "고유 닉네임이 설정된 계정입니다.",
     "MODAL_CONFIRM_DELETE_IMAGE": "프로필 이미지를 삭제하시겠습니까?",
     "IMAGE": "이미지",
-    "DELETED_BY_ADMIN": "운영자에 의해 삭제된 메시지입니다."
+    "DELETED_BY_ADMIN": "운영자에 의해 삭제된 메시지입니다.",
+    "CONFIRM_BLOCK_USER": "<div class='text-center font-bold font-lg'>\"{nickname}\"<br/>유저를 차단하시겠습니까?</div>"
   }
 }

@@ -101,6 +101,7 @@
     "TOOLTIP_FIXED_NICKNAME": "This account has a unique fixed nickname.",
     "MODAL_CONFIRM_DELETE_IMAGE": "Are you sure you want to delete your profile image?",
     "IMAGE": "Image",
-    "DELETED_BY_ADMIN": "Message deleted by administrator."
+    "DELETED_BY_ADMIN": "Message deleted by administrator.",
+    "CONFIRM_BLOCK_USER": "<div class='text-center font-bold font-lg'>Do you want to block<br/>\"{nickname}\"?</div>"
   }
 }

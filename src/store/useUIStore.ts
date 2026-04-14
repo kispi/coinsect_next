@@ -65,7 +65,7 @@ export interface UIState {
 export type UIStore = ReturnType<typeof createUIStore>
 
 export const createUIStore = () => {
-  return createStore<UIState>((set) => ({
+  return createStore<UIState>((set, get) => ({
     modals: [],
     toasts: [],
     snackbars: [],
@@ -113,22 +113,17 @@ export const createUIStore = () => {
 
     confirm: ({ title, body, buttons }) =>
       new Promise((resolve) => {
-        set((state) => {
-          const id = Math.random().toString(36).substring(7)
-          const modal: ModalConfig = {
-            id,
-            component: ModalBasic,
-            options: {
-              title: title || '알림',
-              body,
-              buttons: buttons || [
-                { text: 'COMMON.CANCEL', class: 'btn-default' },
-                { text: 'COMMON.CONFIRM', class: 'btn-primary' },
-              ],
-            },
-            resolve: (res) => resolve(res),
-          }
-          return { modals: [...state.modals, modal] }
+        get().addModal({
+          component: ModalBasic,
+          options: {
+            title: title || 'COMMON.NOTICE',
+            body,
+            buttons: buttons || [
+              { text: 'COMMON.CANCEL', class: 'btn-default' },
+              { text: 'COMMON.CONFIRM', class: 'btn-primary' },
+            ],
+          },
+          resolve: (res) => resolve(res),
         })
       }),
   }))

@@ -9,22 +9,30 @@ import { useT } from '@/hooks/useT'
  * ModalRenderer: Replicates Modal system with animations and backdrop support
  */
 const ModalRenderer = ({ modal }: { modal: ModalConfig }) => {
+  const { id, resolve, component: Component, options, preventCloseOnClickBackdrop } = modal
   const removeModal = useUIStore((state) => state.removeModal)
+  const isTop = useUIStore((state) => state.modals[state.modals.length - 1]?.id === id)
+  const isPushed = React.useRef(false)
 
   const handleClose = React.useCallback(
     (value?: any) => {
-      if (modal.resolve) modal.resolve(value)
-      removeModal(modal.id)
+      if (resolve) resolve(value)
+      removeModal(id)
       // Cleanup virtual history state if we are still on it
-      if (typeof window !== 'undefined' && window.history.state?.modalId === modal.id) {
+      if (
+        typeof window !== 'undefined' &&
+        isPushed.current &&
+        window.history.state?.modalId === id
+      ) {
         window.history.back()
+        isPushed.current = false
       }
     },
-    [modal, removeModal]
+    [id, resolve, removeModal]
   )
 
   const onBackdropClick = (e: React.MouseEvent) => {
-    if (e.target === e.currentTarget && !modal.preventCloseOnClickBackdrop) {
+    if (e.target === e.currentTarget && !preventCloseOnClickBackdrop) {
       handleClose()
     }
   }
@@ -32,19 +40,23 @@ const ModalRenderer = ({ modal }: { modal: ModalConfig }) => {
   React.useEffect(() => {
     if (typeof window === 'undefined') return
 
-    // 1. Push virtual state for back-button interception
-    window.history.pushState({ modalId: modal.id }, '')
+    // 1. Push virtual state for back-button interception (once)
+    if (!isPushed.current) {
+      window.history.pushState({ modalId: id }, '')
+      isPushed.current = true
+    }
 
     // 2. Event Handlers
     const handlePopState = (e: PopStateEvent) => {
       // If the current state is not this modal, it means we went back (or navigated)
-      if (e.state?.modalId !== modal.id) {
+      // Only trigger handleClose if we were in a 'pushed' state
+      if (isPushed.current && e.state?.modalId !== id) {
         handleClose()
       }
     }
 
     const handleKeyDown = (e: KeyboardEvent) => {
-      if (e.key === 'Escape') {
+      if (e.key === 'Escape' && isTop) {
         handleClose()
       }
     }
@@ -56,10 +68,9 @@ const ModalRenderer = ({ modal }: { modal: ModalConfig }) => {
       window.removeEventListener('popstate', handlePopState)
       window.removeEventListener('keydown', handleKeyDown)
     }
-  }, [modal.id, handleClose])
+  }, [id, isTop, handleClose])
 
-  if (!modal.component) return null
-  const Component = modal.component
+  if (!Component) return null
 
   return (
     <div
@@ -68,7 +79,7 @@ const ModalRenderer = ({ modal }: { modal: ModalConfig }) => {
     >
       <div className="animate-modal-in w-full flex justify-center pointer-events-none">
         <div className="pointer-events-auto min-w-[400px] max-w-full flex justify-center">
-          <Component options={modal.options} onClose={handleClose} />
+          <Component options={options} onClose={handleClose} />
         </div>
       </div>
     </div>
